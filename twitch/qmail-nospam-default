@@ -1,0 +1,3 @@
+|sendok-check $HOME/.sendok "$EXT2"; case $? in 100) exit 99 ;; 0) exit 0 ;; *) exit 111 ;; esac
+|spamprobe good
+./mail/

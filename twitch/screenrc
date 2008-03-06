@@ -1,0 +1,12 @@
+deflogin off
+defscrollback 1000
+msgwait 2
+setenv SSH_AUTH_SOCK $HOME/.ssh/sock
+shell -bash
+shelltitle sh
+startup_message off
+term xterm
+termcapinfo * 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+vbell off
+
+screen -M -t mutt 0

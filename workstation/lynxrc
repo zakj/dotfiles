@@ -1,0 +1,12 @@
+user_mode=ADVANCED
+file_editor=$EDITOR
+case_sensitive_searching=off
+verbose_images=on
+
+file_sorting_method=BY_FILENAME
+dir_list_style=MIXED_STYLE
+
+accept_all_cookies=TRUE
+cookie_file=/dev/null
+cookie_accept_domains=
+cookie_reject_domains=

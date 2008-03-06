@@ -1,0 +1,72 @@
+Mrxvt.termName: xterm
+Mrxvt.hideTabbar: true
+Mrxvt.loginShell: true
+Mrxvt.scrollBar: false
+Mrxvt.visualBell: true
+Mrxvt.saveLines: 1024
+Mrxvt.holdExit: 0x02
+
+! Replace default macros with my own smaller set.
+Mrxvt.noSysConfig: true
+Mrxvt.macro.Shift+Insert: Paste
+Mrxvt.macro.Shift+Page_Up: Scroll -1p
+Mrxvt.macro.Shift+Page_Down: Scroll 1p
+Mrxvt.macro.Ctrl+Shift+plus: ResizeFont +1
+Mrxvt.macro.Ctrl+Shift+underscore: ResizeFont -1
+
+Mrxvt.syncTabIcon: true
+Mrxvt.syncTabTitle: true
+
+Mrxvt.xft: true
+Mrxvt.xftFont: Consolas
+Mrxvt.xftSize: 14
+Mrxvt.xftAntialias: true
+Mrxvt.xftHinting: true
+Mrxvt.xftAutoHint: true
+Mrxvt.xftNomFont: true
+Mrxvt.font: lucidasanstypewriter-12
+
+! LCD subpixels.
+Mrxvt.xftRGBA: rgb
+
+Mrxvt.foreground: rgb:c/c/c
+Mrxvt.background: rgb:0/0/0
+Mrxvt.cursorColor: rgb:c/c/c
+Mrxvt.highlightColor: #303060
+Mrxvt.veryBoldFont: false
+
+! Softer colors by default.
+Mrxvt.color0:  rgb:0/0/0
+Mrxvt.color1:  rgb:b/7/5
+Mrxvt.color2:  rgb:5/b/7
+Mrxvt.color3:  rgb:a/a/7
+Mrxvt.color4:  rgb:5/7/b
+Mrxvt.color5:  rgb:a/7/a
+Mrxvt.color6:  rgb:7/a/a
+Mrxvt.color7:  rgb:c/c/c
+Mrxvt.color8:  rgb:50/54/58
+Mrxvt.color9:  rgb:d/9/7
+Mrxvt.color10: rgb:7/d/9
+Mrxvt.color11: rgb:c/c/9
+Mrxvt.color12: rgb:7/9/d
+Mrxvt.color13: rgb:c/9/c
+Mrxvt.color14: rgb:9/c/c
+Mrxvt.color15: rgb:e0/e4/e8
+
+! Standard VGA colors.
+vga.color0:  rgb:0/0/0
+vga.color1:  rgb:b/0/0
+vga.color2:  rgb:0/b/0
+vga.color3:  rgb:b/b/0
+vga.color4:  rgb:0/0/b
+vga.color5:  rgb:b/0/b
+vga.color6:  rgb:0/b/b
+vga.color7:  rgb:b/b/b
+vga.color8:  rgb:5/5/5
+vga.color9:  rgb:f/5/5
+vga.color10: rgb:5/f/5
+vga.color11: rgb:f/f/5
+vga.color12: rgb:5/5/f
+vga.color13: rgb:f/5/f
+vga.color14: rgb:5/f/f
+vga.color15: rgb:f/f/f

@@ -1,0 +1,86 @@
+set autoindent
+set backspace=2
+set cinoptions=:0
+set confirm
+set diffopt+=iwhite
+set expandtab
+set hidden
+set nohlsearch
+set incsearch
+set linebreak
+set listchars=tab:[-,trail:_,extends:>,precedes:<
+set pastetoggle=<Insert>
+set report=0
+set noruler
+set showbreak=+
+set shiftwidth=4
+set shortmess=fnrxotTI
+set smarttab
+set textwidth=79
+set title
+set viminfo=""
+set whichwrap=""
+set wildmode=list:longest
+
+filetype indent on
+syntax on
+"highlight Comment cterm=bold
+"highlight MatchParen ctermbg=blue guibg=lightblue
+"highlight Search ctermfg=black ctermbg=green guibg=green
+"highlight PmenuSel ctermfg=black ctermbg=white
+
+let g:pyindent_open_paren = '&sw'
+let g:pyindent_continue = '&sw'
+let g:is_bash = 1
+
+if has("gui_running")
+    set guicursor+=a:blinkwait0
+    set guifont=Consolas:h12
+    set guioptions=agimt
+    set lines=40
+    set columns=80
+endif
+
+if has("autocmd")
+    au FileType hog setl textwidth=0
+    au FileType make setl noexpandtab shiftwidth=8
+    au FileType css,html,htmldjango,xhtml setl shiftwidth=2
+    au FileType mail setl textwidth=72
+    au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
+    au BufNewFile,BufRead /tmp/mutt-* set notitle
+endif
+
+map <silent> <C-H> :set hlsearch!<CR>
+map <silent> <C-J> :bnext<CR>
+map <silent> <C-K> :bprevious<CR>
+map <silent> <C-N> :cnext<CR>
+map <silent> <C-P> :cprevious<CR>
+map <silent> <Leader>l :set list!<CR>
+map <silent> <Leader>p :set paste!<CR>
+map <silent> <Leader>s :set spell!<CR>
+map <silent> <Leader>w :call ToggleWrap()<CR>
+
+function! ToggleWrap()
+    set linebreak!
+    if &showbreak == ''
+        let &showbreak = g:old_showbreak
+    else
+        let g:old_showbreak = &showbreak
+        let &showbreak = ''
+    endif
+endfunction
+
+" Hitting tab at the beginning of a line indents; elsewhere completes.
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-n>"
+    endif
+endfunction
+inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+
+" Hooray backslashes.
+set grepprg=find\ .\ \\!\ -path\ '*.svn/*'\ \\!\ -type\ d\ -print0\ \\\|\ xargs\ -0\ egrep\ -nHI
+command! -nargs=+ -complete=tag G :grep <args>

@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+(cd firefox; tar -cf ~/pub/firefox.tar --exclude CVS *)
+
+mkdir tmp
+for file in $(find default -maxdepth 1 -type f ! -name IGNORE); do
+  target=".$(basename $file | tr , /)"
+  targetd="tmp/$(dirname $target)"
+  test -d $targetd || mkdir -p $targetd
+  cp $file tmp/$target
+done
+(cd tmp; tar cf ~/pub/etc.tar .[^.]*)
+rm -rf tmp

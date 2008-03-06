@@ -1,0 +1,71 @@
+#!/bin/sh
+
+alternates() {
+  for i in $*; do
+    type $i >/dev/null 2>&1 && echo $i && return
+  done
+}
+
+set -a
+PATH="$HOME/bin:/usr/ucb:$HOME/sadm/bin:$HOME/mmake/bin"
+PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+PATH="$PATH:/usr/X11R6/bin:/var/qmail/bin:/usr/games"
+CVS_RSH=ssh
+CVSROOT=cvs:/cvs
+DJBLIB="$MMAKE_ROOT/lib/djb/lib"
+EDITOR=$(alternates vim vi)
+ENV="$HOME/.profile"
+FENRISDOC="$HOME/fenris/doc"
+FTP_PASSIVE_MODE=YES
+HISTFILE=''
+HISTIGNORE='&'
+HOMETEXMF="$HOME/fenris/hometexmf"
+TEXMFHOME="$HOMETEXMF"
+LESS=gij5M
+MMAKE_ROOT="$HOME/mmake"
+PAGER=$(alternates less more)
+#POSIXLY_CORRECT=1
+QMAILINJECT=i
+RSYNC_RSH=ssh
+set +a
+
+test -d /cvs && CVSROOT=/cvs
+
+test -n "$BASH" && PS1='\h:\w\$ '
+
+case $TERM in
+xterm* | rxvt | screen)
+  test -n "$BASH" && PS1="\[]0;\u@\h:\w\]${PS1}"
+
+  alias lynx='name Lynx; lynx -nopause'
+  alias mutt="name mutt; mutt"
+  name() { echo -n "]0;$*"; }
+;;
+esac
+
+alias hcvs='cvs -d zakj@cvs.nox.cx:/cvs'
+alias pcvs='cvs -d zakj@cvs.peff.net:/cvs/shared'
+alias grep=egrep
+test "$PAGER" = less || alias less="$PAGER"
+alias ls='ls -F'
+alias ll='ls -laF'
+alias mutt-etsy='mutt -F ~/.mutt/rc-etsy'
+alias mutt-nox='mutt -F ~/.mutt/rc-nox'
+alias mutt-securify='mutt -F ~/.mutt/rc-securify'
+alias sudo=$(alternates tinysu sudo)
+alias term=$(alternates mrxvt terminal rxvt xterm)
+test "$EDITOR" = vi || alias vi="$EDITOR"
+
+hgdiff() { vimdiff -c 'map q :qa!<CR>' <(hg cat "$1") "$1"; }
+psg() { ps auxww | egrep $* | fgrep -v grep; }
+psi() { psg $* | awk '{print $2}'; }
+
+if [ "$OSTYPE" = cygwin ]; then
+    LESS=r$LESS
+    USER=$(id -un); export USER
+    psi() { psg $* | awk '{print $1}'; }
+fi
+
+unset alternates
+
+test -f "$HOME/.local/profile" && source "$HOME/.local/profile"

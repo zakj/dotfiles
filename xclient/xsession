@@ -1,0 +1,27 @@
+#!/bin/sh
+
+. "$HOME"/.profile
+
+test $# -eq 0 && exec ssh-agent "$HOME"/.xsession run
+SSH_ASKPASS=ssh-askpass; export SSH_ASKPASS
+find "$HOME"/.ssh -name 'id_*' ! -name '*.pub' -print0 | xargs -0 ssh-add
+
+#xsetroot -mod 2 2 -bg rgb:50/58/68 -fg rgb:60/68/78
+#xset m 2 0
+#xset dpms 1800 1800 3600
+xsetroot -solid '#333333'
+xsetroot -cursor_name left_ptr
+
+# Capslock -> Ctrl.
+xmodmap - <<-EOF
+	remove Lock = Caps_Lock
+	keysym Caps_Lock = Control_L
+	add Control = Control_L
+EOF
+
+mrxvt &
+
+# Get rid of xconsole.
+#xconsole & sh -c 'sleep 1; killall xconsole'
+
+exec wmii

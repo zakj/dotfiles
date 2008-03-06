@@ -1,0 +1,21 @@
+# vim:ft=muttrc:
+source ~/.mutt/defaults
+
+set from=zakj@nox.cx
+set folder=imaps://mail.nox.cx/
+set postponed="=postponed"
+set spoolfile="=INBOX"
+set record="=sent/`date '+%Y/%m'`"
+set tunnel="ssh -q mail.nox.cx /etc/rimapd"
+
+mailboxes ! =fenris =root =django =djb =freebsd =bugtraq
+
+unhook *
+folder-hook . push <delete-pattern>~=<enter>
+folder-hook . unmy_hdr From:
+folder-hook . unset hostname
+
+folder-hook fenris$ my_hdr From: zakj@fenris.cc
+folder-hook fenris$ set hostname=fenris.cc
+
+folder-hook bugtraq push "<limit>~d<1m<enter>"

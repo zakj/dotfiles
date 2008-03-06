@@ -1,0 +1,5 @@
+Host *
+    User zakj
+    Protocol 2
+    ForwardAgent yes
+    ServerAliveInterval 30

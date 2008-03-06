@@ -1,0 +1,6 @@
+# vim:ft=muttrc:
+source ~/.mutt/rc-securify
+
+set folder=imaps://zjohnson@localhost:1993
+set preconnect="ssh -f -q -p 220 -L 1993:hq-ex:993 \
+  zjohnson@pae-relay.securify.com sleep 20 </dev/null >/dev/null"

@@ -1,0 +1,15 @@
+# vim:ft=muttrc:
+source ~/.mutt/defaults
+
+set from=zak@etsy.com
+set folder=imaps://zak@mailbox.etsy.com/
+set hostname=etsy.com
+set imap_pass="`cat ~/.mutt/pw-etsy`"
+set record="=sent/`date '+%Y/%m'`"
+set spoolfile=+
+
+#mailboxes ! =Bugzilla "=Vuln Research"
+#subscribe sbps@securify.com engineeringall@securify.com hqall@securify.com everyone@securify.com
+
+macro index d "<save-message>=Trash <enter>" "move message to trash"
+macro pager d "<save-message>=Trash <enter>" "move message to trash"

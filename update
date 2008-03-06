@@ -1,0 +1,75 @@
+#!/bin/sh
+
+warn() {
+  echo "==> $*"
+}
+
+# If PROFILES exists and there is a line that matches the hostname, use that
+# line as a space-delimited list of profiles (directories).  Otherwise, simply
+# use the default and hostname profiles.
+host=$(hostname)
+host=${host%%.*}
+profiles=$(grep "^$host " PROFILES 2>/dev/null)
+test -n "$profiles" || profiles="$host default"
+
+trap 'rm $tmp $expected' EXIT
+tmp=$(mktemp /tmp/etcupdate.XXXXXXX) || exit 1
+expected=$(mktemp /tmp/etcupdate.XXXXXXX) || exit 1
+
+unset force quiet verbose
+while getopts fqv opt; do
+  case "$opt" in
+    f) force=1 ;;
+    q) quiet=1 ;;
+    v) verbose=1 ;;
+    ?) exit ;;
+  esac
+done
+
+for profile in $profiles; do
+  test -d "$profile" || continue
+  # If Makefile exists, use it.
+  test -e "$profile/Makefile" && (cd "$profile" && make)
+
+  # If DOTFILES exists, it is a list of files to be copied to the destination.
+  # By default, all files are copied.
+  files=$(cat "$profile/DOTFILES" 2>/dev/null)
+  if [ -z "$files" ]; then
+    files=$(find "$profile" -maxdepth 1 -type f | sed -e 's}.*/}}')
+  fi
+
+  # If IGNORE exists, do not warn about extra files listed there.
+  sed -e "s}^}$HOME/.}" -e 'y},}/}' "$profile/IGNORE" >>$expected 2>/dev/null
+
+  for file in $files; do
+    target="$HOME/.$(echo $file | tr , /)"
+    targetd=$(dirname "$target")
+    test "$file" = "IGNORE" && continue
+    echo $target >>$expected
+    source="$profile/$file"
+
+    if [ -e "$target" -o -L "$target" ]; then
+      test "$source" -ef "$target" && continue
+
+      cmp -s "$source" "$target"; differ=$?
+      if [ $differ -eq 1 -a -z "$force" ]; then
+        warn "$target is stale"
+        test -n "$verbose" && diff -u "$target" "$source"
+        continue
+      fi
+    fi
+
+    test -d "$targetd" || mkdir -p "$targetd"
+    ln -fv "$profile/$file" "$target"
+  done
+done
+
+# Check for extra files in $HOME and display them.
+if [ -z "$quiet" ]; then
+  sort $expected >$tmp && cp $tmp $expected
+  find "$HOME"/.[^.]* ! -type d | sort >$tmp
+  if ! cmp -s $tmp $expected; then
+    warn "Extra files in $HOME:"
+    comm -23 $tmp $expected
+  fi
+fi

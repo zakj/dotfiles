@@ -1,0 +1,75 @@
+# vim:ft=muttrc:
+
+alternates "zak(j-.*)?@nox.cx"
+
+#set abort_nosubject=ask-no
+#set abort_unmodified=no
+set alias_format="%3n %t %-20a  %r"
+set attribution="%n wrote:"
+set beep=no
+set certificate_file=~/.mutt/certificates
+set confirmappend=no
+set date_format="%Y-%m-%d %H:%M%Z"
+set envelope_from=yes
+set fast_reply=yes
+#set folder_format=" %t %N %F %8s %d %f"
+set forward_format="Fwd: %s"
+set help=no
+set hidden_host=yes
+#set imap_servernoise=no
+set include=yes
+set index_format="%4C %Z %[%b %d] %-15.15L (%4c) %s"
+set mark_old=no
+set markers=no
+set mime_forward=ask-yes
+set move=no
+set pager_format="-%S- %C/%m: %-15.15n -- %s"
+set pager_stop=yes
+set realname="Zak Johnson"
+set reverse_alias=yes
+#set sendmail_wait=-1
+set sig_dashes=no
+set signature="printf '\n-Zak\n'|"
+set sleep_time=0
+set sort=threads
+set tilde=yes
+set timeout=60
+set user_agent=no
+set wait_key=no
+set wrapmargin=2
+
+auto_view text/html
+
+bind alias d noop
+bind index a noop
+bind index G imap-fetch-mail
+bind pager G imap-fetch-mail
+bind index \Cf next-page
+bind index \Cb previous-page
+bind pager \Cf next-page
+bind pager \Cb previous-page
+bind pager \Ce next-line
+bind pager \Cy previous-line
+bind pager <down> next-line
+bind pager <up> previous-line
+macro index S <save-message>=spam<enter> "move message to the spam folder"
+macro index <Esc>S <shell-escape>mvspam<enter> "archive spam messages"
+macro index B <bounce-message>zak.johnson@gmail.com<enter><enter> "gmail bounce"
+macro pager B <bounce-message>zak.johnson@gmail.com<enter><enter> "gmail bounce"
+
+color body magenta default "(http|https|ftp|telnet)://[-A-Za-z0-9._/~#%?&=]*"
+color body magenta default "[-a-z_0-9.]+@[-a-z_0-9.]+"
+color markers brightcyan default
+color quoted brightblue default
+color signature magenta default
+color status brightwhite blue
+color tilde brightblue default
+
+alternative_order text/enriched text/plain text
+
+ignore *
+unignore date from: to cc reply-to mail-followup-to x-mailer x-url subject
+hdr_order date from to cc reply-to mail-followup-to x-mailer x-url subject
+
+source ~/.mutt/aliases
+source ~/.mutt/lists
