@@ -1,8 +1,8 @@
 #!/bin/sh -e
 
-(cd firefox; tar -cf ~/pub/firefox.tar --exclude CVS *)
+(cd firefox; tar -cf ~/pub/firefox.tar *)
 
-mkdir tmp
+mkdir tmp; trap 'rm -rf tmp' EXIT
 for file in $(find default -maxdepth 1 -type f ! -name IGNORE); do
   target=".$(basename $file | tr , /)"
   targetd="tmp/$(dirname $target)"
@@ -10,4 +10,3 @@ for file in $(find default -maxdepth 1 -type f ! -name IGNORE); do
   cp $file tmp/$target
 done
 (cd tmp; tar cf ~/pub/etc.tar .[^.]*)
-rm -rf tmp
