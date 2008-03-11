@@ -36,7 +36,7 @@ let g:is_bash = 1
 if has("gui_running")
     set guicursor+=a:blinkwait0
     set guifont=Consolas:h12
-    set guioptions=agimt
+    set guioptions=aegimt
     set lines=40
     set columns=80
 endif
