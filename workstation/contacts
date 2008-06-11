@@ -471,6 +471,9 @@
   office: 1 408 343 4345
   yim: derekpattonpearcy
   org: Securify
+  address: 1035 Filbert St
+  city: San Francisco
+  state: CA
   dob: 19??-06-20
 
 - fn: Jose
@@ -482,10 +485,6 @@
   mobile: 1 650 400 9721
   office: 1 408 343 4347
   home: 1 415 552 5305
-  address: 700 Illinois St #210
-  city: San Francisco
-  state: CA
-  zip: 94107
   yim: jose_r_caldera
   org: Securify
   desc: has firefly and portishead
