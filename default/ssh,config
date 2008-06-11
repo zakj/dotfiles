@@ -1,3 +1,9 @@
+Host ids
+    Hostname wsburids1.automatedfinancial.com
+
+Host oldids
+    Hostname afsids1.automatedfinancial.com
+
 Host *
     User zakj
     Protocol 2
