@@ -5,7 +5,7 @@ set from=zakj@nox.cx
 set folder=imaps://mail.nox.cx/
 set postponed="=postponed"
 set spoolfile="=INBOX"
-set record="=sent/`date '+%Y/%m'`"
+set record="=sent/`date '+%Y'`"
 set tunnel="ssh -q mail.nox.cx /etc/rimapd"
 
 mailboxes ! =fenris =root =django =djb =freebsd =bugtraq
