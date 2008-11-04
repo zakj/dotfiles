@@ -4,6 +4,24 @@ Host ids
 Host oldids
     Hostname afsids1.automatedfinancial.com
 
+Host mcp
+    Hostname mcp.etsy.com
+
+Host storqueweb1
+    Hostname 10.101.13.21
+    User zak
+
+Host storqueweb2
+    Hostname 10.101.13.22
+    User zak
+
+Host qastorque
+    Hostname 10.101.223.52
+    User etsyman
+
+Host athena
+    Hostname 172.16.85.129
+
 Host *
     User zakj
     Protocol 2
