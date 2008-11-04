@@ -17,7 +17,6 @@ EDITOR=$(alternates vim vi)
 ENV="$HOME/.profile"
 FENRISDOC="$HOME/fenris/doc"
 FTP_PASSIVE_MODE=YES
-HISTFILE=''
 HISTIGNORE='&'
 HOMETEXMF="$HOME/fenris/hometexmf"
 TEXMFHOME="$HOMETEXMF"
@@ -55,6 +54,11 @@ alias mutt-securify='mutt -F ~/.mutt/rc-securify'
 alias sudo=$(alternates tinysu sudo)
 alias term=$(alternates mrxvt terminal rxvt xterm)
 test "$EDITOR" = vi || alias vi="$EDITOR"
+
+# Up and down arrows do prefix matching.
+bind '"\e[A"':history-search-backward
+bind '"\e[B"':history-search-forward
+shopt -s histappend
 
 hgdiff() { vimdiff -c 'map q :qa!<CR>' <(hg cat "$1") "$1"; }
 psg() { ps auxww | egrep $* | fgrep -v grep; }
