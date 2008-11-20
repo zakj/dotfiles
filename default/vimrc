@@ -22,6 +22,8 @@ set viminfo=""
 set whichwrap=""
 set wildmode=list:longest
 
+let mapleader = ","
+
 if has("syntax")
     filetype indent on
     syntax on
@@ -61,6 +63,8 @@ map <silent> <Leader>l :set list!<CR>
 map <silent> <Leader>p :set paste!<CR>
 map <silent> <Leader>s :set spell!<CR>
 map <silent> <Leader>w :call ToggleWrap()<CR>
+map <silent> <Leader>u yypv$r-
+map <silent> <Leader>U yypv$r=
 
 if exists(":function")
     function! ToggleWrap()
