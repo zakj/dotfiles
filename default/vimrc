@@ -62,9 +62,12 @@ map <silent> <C-P> :cprevious<CR>
 map <silent> <Leader>l :set list!<CR>
 map <silent> <Leader>p :set paste!<CR>
 map <silent> <Leader>s :set spell!<CR>
-map <silent> <Leader>w :call ToggleWrap()<CR>
+map <silent> <Leader>t :NERDTreeToggle<CR>
+" Underline current line.
 map <silent> <Leader>u yypv$r-
 map <silent> <Leader>U yypv$r=
+" Unix timestamp.
+iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
 
 if exists(":function")
     function! ToggleWrap()
@@ -76,6 +79,7 @@ if exists(":function")
             let &showbreak = ''
         endif
     endfunction
+    map <silent> <Leader>w :call ToggleWrap()<CR>
 
     " Hitting tab at the beginning of a line indents; elsewhere completes.
     function! InsertTabWrapper()
@@ -86,7 +90,7 @@ if exists(":function")
             return "\<c-n>"
         endif
     endfunction
-    inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+    inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
 endif
 
 " Hooray backslashes.
@@ -94,3 +98,7 @@ set grepprg=find\ .\ \\!\ -path\ '*.svn/*'\ \\!\ -type\ d\ -print0\ \\\|\ xargs\
 if has("user_commands")
     command! -nargs=+ -complete=tag G :grep <args>
 endif
+
+let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeBookmarksFile = $HOME . '/.local/NERDTreeBookmarks'
+let NERDTreeQuitOnOpen = 1
