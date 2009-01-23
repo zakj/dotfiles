@@ -1,5 +1,6 @@
 deflogin off
 defscrollback 1000
+escape ^Nn
 msgwait 2
 setenv SSH_AUTH_SOCK $HOME/.ssh/sock
 shell -bash
