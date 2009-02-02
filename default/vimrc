@@ -50,6 +50,7 @@ if has("autocmd")
     au FileType make setl noexpandtab shiftwidth=8
     au FileType css,html,htmldjango,xhtml setl shiftwidth=2
     au FileType mail setl textwidth=72
+    au FileType nerdtree nmap <buffer> <Enter> o
     au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
     au BufNewFile,BufRead /tmp/mutt-* set notitle
 endif
