@@ -7,7 +7,7 @@ alternates() {
 }
 
 set -a
-PATH="$HOME/bin:/usr/ucb:$HOME/sadm/bin:$HOME/mmake/bin"
+PATH="$HOME/.local/bin:$HOME/bin:/usr/ucb:$HOME/sadm/bin:$HOME/mmake/bin"
 PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 PATH="$PATH:/usr/X11R6/bin:/var/qmail/bin:/usr/games"
 CVS_RSH=ssh
@@ -18,7 +18,7 @@ ENV="$HOME/.profile"
 FENRISDOC="$HOME/fenris/doc"
 FTP_PASSIVE_MODE=YES
 HISTIGNORE='&'
-HOMETEXMF="$HOME/fenris/hometexmf"
+HOMETEXMF="$HOME/doc/texmf:$HOME/fenris/hometexmf"
 TEXMFHOME="$HOMETEXMF"
 LESS=gij5M
 MMAKE_ROOT="$HOME/mmake"
@@ -53,6 +53,7 @@ alias mutt-nox='mutt -F ~/.mutt/rc-nox'
 alias mutt-securify='mutt -F ~/.mutt/rc-securify'
 alias sudo=$(alternates tinysu sudo)
 alias term=$(alternates mrxvt terminal rxvt xterm)
+
 test "$EDITOR" = vi || alias vi="$EDITOR"
 
 # Up and down arrows do prefix matching.
@@ -63,6 +64,10 @@ shopt -s histappend
 hgdiff() { vimdiff -c 'map q :qa!<CR>' <(hg cat "$1") "$1"; }
 psg() { ps auxww | egrep $* | fgrep -v grep; }
 psi() { psg $* | awk '{print $2}'; }
+vv() {
+    vim -R -c 'runtime! macros/less.vim' -c 'let no_plugin_maps = 1' \
+        -c 'set scrolloff=999' -c 'set mouse=h' "${@--}"
+}
 
 if [ "$OSTYPE" = cygwin ]; then
     LESS=r$LESS
