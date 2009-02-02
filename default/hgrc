@@ -1,0 +1,7 @@
+[ui]
+username = Zak Johnson <zakj@nox.cx>
+
+[extensions]
+hgext.fetch=
+hgext.graphlog=
+hgext.record=
