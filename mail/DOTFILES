@@ -1,6 +1,4 @@
 mutt,aliases
 mutt,defaults
 mutt,lists
-mutt,rc-nox
-mutt,rc-nox-local
-mutt,rc-securify
+mutt,rc-gmail
