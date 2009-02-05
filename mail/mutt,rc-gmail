@@ -1,0 +1,20 @@
+# vim:ft=muttrc:
+source ~/.mutt/defaults
+
+set from=zakj@nox.cx
+set folder=imaps://imap.gmail.com/
+set spoolfile="=INBOX"
+set record=""
+
+set imap_user="zakj@nox.cx"
+set imap_pass="`cat ~/.mutt/pw`"
+set smtp_url="smtp://zakj@nox.cx@smtp.gmail.com:587"
+set imap_pass="`cat ~/.mutt/pw`"
+
+set delete=yes
+set header_cache=~/.mutt/cache/headers
+set message_cachedir=~/.mutt/cache/bodies
+
+mailboxes ! =Bently =Fenris =django =djb =freebsd
+folder-hook . unmy_hdr From:
+folder-hook Fenris$ my_hdr From: zakj@fenris.cc

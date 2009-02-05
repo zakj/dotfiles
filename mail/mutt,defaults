@@ -40,6 +40,10 @@ set wrapmargin=2
 
 auto_view text/html
 
+set query_command="/opt/local/bin/lbdbq '%s'"
+set query_format="%t %-25.25n %a"
+bind editor \t complete-query
+
 bind alias d noop
 bind index a noop
 bind index G imap-fetch-mail
@@ -52,10 +56,6 @@ bind pager \Ce next-line
 bind pager \Cy previous-line
 bind pager <down> next-line
 bind pager <up> previous-line
-macro index S <save-message>=spam<enter> "move message to the spam folder"
-macro index <Esc>S <shell-escape>mvspam<enter> "archive spam messages"
-macro index B <bounce-message>zak.johnson@gmail.com<enter><enter> "gmail bounce"
-macro pager B <bounce-message>zak.johnson@gmail.com<enter><enter> "gmail bounce"
 
 color body magenta default "(http|https|ftp|telnet)://[-A-Za-z0-9._/~#%?&=]*"
 color body magenta default "[-a-z_0-9.]+@[-a-z_0-9.]+"
