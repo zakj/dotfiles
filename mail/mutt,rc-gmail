@@ -9,7 +9,7 @@ set record=""
 set imap_user="zakj@nox.cx"
 set imap_pass="`cat ~/.mutt/pw`"
 set smtp_url="smtp://zakj@nox.cx@smtp.gmail.com:587"
-set imap_pass="`cat ~/.mutt/pw`"
+set smtp_pass="`cat ~/.mutt/pw`"
 
 set delete=yes
 set header_cache=~/.mutt/cache/headers
