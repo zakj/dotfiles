@@ -16,6 +16,7 @@ DJBLIB="$MMAKE_ROOT/lib/djb/lib"
 EDITOR=$(alternates vim vi)
 ENV="$HOME/.profile"
 FENRISDOC="$HOME/fenris/doc"
+FIGNORE=".pyc:.DS_Store"
 FTP_PASSIVE_MODE=YES
 HISTIGNORE='&'
 HOMETEXMF="$HOME/doc/texmf:$HOME/fenris/hometexmf"
