@@ -23,6 +23,7 @@ set whichwrap=""
 set wildmode=list:longest
 
 let mapleader = ","
+let g:fuzzy_ignore = "*.pyc"
 
 if has("syntax")
     filetype indent on
@@ -55,20 +56,32 @@ if has("autocmd")
     au BufNewFile,BufRead /tmp/mutt-* set notitle
 endif
 
+" I never want to run man from inside vim.
+map <silent> K k
 map <silent> <C-H> :set hlsearch!<CR>
 map <silent> <C-J> :bnext<CR>
 map <silent> <C-K> :bprevious<CR>
 map <silent> <C-N> :cnext<CR>
 map <silent> <C-P> :cprevious<CR>
+" Bently-style indentation.
+map <silent> <leader>b :setlocal sw=2 ts=2 noet<CR>
+map <silent> <Leader>f :FuzzyFinderTextMate<CR>
 map <silent> <Leader>l :set list!<CR>
 map <silent> <Leader>p :set paste!<CR>
 map <silent> <Leader>s :set spell!<CR>
+" Remove trailing whitespace.
+map <silent> <leader>S mS:%s/\s\s*$//<CR>`S
 map <silent> <Leader>t :NERDTreeToggle<CR>
 " Underline current line.
 map <silent> <Leader>u yypv$r-
 map <silent> <Leader>U yypv$r=
+map <silent> <Leader>v :set columns=161<CR>:vsplit<CR>
+map <silent> <Leader>w :set wrap!<CR>
 " Unix timestamp.
 iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
+" Easily edit the contents of the q register (what I use for macros).
+noremap qp mqGo^]"qp
+noremap qd G0"qd$`q
 
 if exists(":function")
     function! ToggleWrap()
