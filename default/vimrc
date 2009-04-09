@@ -16,7 +16,7 @@ set showbreak=+
 set shiftwidth=4
 set shortmess=fnrxotTI
 set smarttab
-set textwidth=80
+set textwidth=79
 set title
 set viminfo=""
 set whichwrap=""
@@ -76,6 +76,7 @@ map <silent> <Leader>t :NERDTreeToggle<CR>
 map <silent> <Leader>u yypv$r-
 map <silent> <Leader>U yypv$r=
 map <silent> <Leader>v :set columns=161<CR>:vsplit<CR>
+map <silent> <Leader>V :close<CR>:set columns=80<CR>
 map <silent> <Leader>w :set wrap!<CR>
 " Unix timestamp.
 iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
