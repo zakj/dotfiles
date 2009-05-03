@@ -1,0 +1,25 @@
+[auth]
+# store-passwords = no
+# store-auth-creds = no
+
+[helpers]
+# diff-cmd = diff_program (diff, gdiff, etc.)
+# diff3-cmd = diff3_program (diff3, gdiff3, etc.)
+# diff3-has-program-arg = [true | false]
+
+[tunnels]
+
+[miscellany]
+global-ignores = *.pyc .*.swp
+enable-auto-props = yes
+
+[auto-props]
+*.conf = svn:eol-style=native
+*.css = svn:eol-style=native
+*.html = svn:eol-style=native
+*.jpg = svn:mime-type=image/jpeg
+*.js = svn:eol-style=native
+*.png = svn:mime-type=image/png
+*.py = svn:eol-style=native
+*.sh = svn:eol-style=native;svn:executable
+*.txt = svn:eol-style=native
