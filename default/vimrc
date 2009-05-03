@@ -29,6 +29,7 @@ if has("syntax")
     filetype indent on
     syntax on
     "highlight Comment cterm=bold
+    highlight Comment guifg=#666699
     "highlight MatchParen ctermbg=blue guibg=lightblue
     "highlight Search ctermfg=black ctermbg=green guibg=green
     "highlight PmenuSel ctermfg=black ctermbg=white
@@ -39,6 +40,7 @@ if has("syntax")
 endif
 
 if has("gui_running")
+    set bg=dark
     set guicursor+=a:blinkwait0
     set guifont=Consolas:h12
     set guioptions=aegimt
@@ -65,7 +67,8 @@ map <silent> <C-N> :cnext<CR>
 map <silent> <C-P> :cprevious<CR>
 " Bently-style indentation.
 map <silent> <leader>b :setlocal sw=2 ts=2 noet<CR>
-map <silent> <Leader>f :FuzzyFinderTextMate<CR>
+map <silent> <Leader>e :FuzzyFinderTextMate<CR>
+map <silent> <Leader>f :FuzzyFinderBuffer<CR>
 map <silent> <Leader>l :set list!<CR>
 map <silent> <Leader>p :set paste!<CR>
 map <silent> <Leader>s :set spell!<CR>
