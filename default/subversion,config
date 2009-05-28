@@ -10,7 +10,7 @@
 [tunnels]
 
 [miscellany]
-global-ignores = *.pyc .*.swp
+global-ignores = *.pyc .*.swp .DS_Store
 enable-auto-props = yes
 
 [auto-props]
