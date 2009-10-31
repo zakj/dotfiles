@@ -4,12 +4,26 @@ Host bently
 Host ids
     Hostname wsburids1.automatedfinancial.com
 
-Host athena
-    Hostname 172.16.85.129
+Host parapub
+    Hostname 174.129.1.155
+    Port 60666
+    User root
 
-Host parachutes
-    Hostname parachutes.org
-    User parachutes
+Host paraweb1
+    Hostname 75.101.131.97
+    Port 60666
+    User code
+
+Host paraweb2
+    HostName ec2-174-129-114-64.compute-1.amazonaws.com
+    Port 60666
+    User code
+
+Host wopr
+    #HostName ec2-72-44-46-213.compute-1.amazonaws.com
+    HostName 174.129.21.127
+    Port 60666
+    User root
 
 Host *
     User zakj
