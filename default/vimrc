@@ -1,8 +1,10 @@
 set autoindent
 set backspace=2
+set backupdir=~/.vim/backup,.
 set cinoptions=:0
 set confirm
 set diffopt+=iwhite
+set directory=~/.vim/backup//,.
 set expandtab
 set hidden
 set nohlsearch
@@ -26,10 +28,9 @@ let mapleader = ","
 let g:fuzzy_ignore = "*.pyc"
 
 if has("syntax")
-    filetype indent on
+    filetype plugin indent on
     syntax on
     "highlight Comment cterm=bold
-    highlight Comment guifg=#666699
     "highlight MatchParen ctermbg=blue guibg=lightblue
     "highlight Search ctermfg=black ctermbg=green guibg=green
     "highlight PmenuSel ctermfg=black ctermbg=white
@@ -40,7 +41,9 @@ if has("syntax")
 endif
 
 if has("gui_running")
+    colorscheme macvim
     set bg=dark
+    highlight Comment guifg=#666699
     set guicursor+=a:blinkwait0
     set guifont=Consolas:h12
     set guioptions=aegimt
@@ -60,6 +63,12 @@ endif
 
 " I never want to run man from inside vim.
 map <silent> K k
+" Y should act like D or C.
+nmap Y y$
+" And I don't want LeftMouse to reposition the cursor.
+map <LeftMouse> <Nop>
+imap <LeftMouse> <Nop>
+
 map <silent> <C-H> :set hlsearch!<CR>
 map <silent> <C-J> :bnext<CR>
 map <silent> <C-K> :bprevious<CR>
@@ -68,9 +77,16 @@ map <silent> <C-P> :cprevious<CR>
 " Bently-style indentation.
 map <silent> <leader>b :setlocal sw=2 ts=2 noet<CR>
 map <silent> <Leader>e :FuzzyFinderTextMate<CR>
+" Prompt to open a file in the same directory as the current buffer's file.
+map <silent> <Leader>E :e <C-R>=expand("%:p:h") . "/"<CR>
 map <silent> <Leader>f :FuzzyFinderBuffer<CR>
 map <silent> <Leader>l :set list!<CR>
 map <silent> <Leader>p :set paste!<CR>
+" Easily edit the contents of the q register (what I use for macros).
+map <silent> <Leader>qp mqGo<ESC>"qp
+map <silent> <Leader>qd "qdd`q
+" Refresh fuzzyfinder_textmate cache.
+map <silent> <Leader>r :ruby finder.rescan!<CR>
 map <silent> <Leader>s :set spell!<CR>
 " Remove trailing whitespace.
 map <silent> <leader>S mS:%s/\s\s*$//<CR>`S
@@ -83,9 +99,6 @@ map <silent> <Leader>V :close<CR>:set columns=80<CR>
 map <silent> <Leader>w :set wrap!<CR>
 " Unix timestamp.
 iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
-" Easily edit the contents of the q register (what I use for macros).
-noremap qp mqGo^]"qp
-noremap qd G0"qd$`q
 
 if exists(":function")
     function! ToggleWrap()
