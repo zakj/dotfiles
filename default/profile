@@ -21,7 +21,7 @@ FTP_PASSIVE_MODE=YES
 HISTIGNORE='&'
 HOMETEXMF="$HOME/doc/texmf:$HOME/fenris/hometexmf"
 TEXMFHOME="$HOMETEXMF"
-LESS=gij5M
+LESS=gij5MR
 MMAKE_ROOT="$HOME/mmake"
 PAGER=$(alternates less more)
 #POSIXLY_CORRECT=1
@@ -62,12 +62,15 @@ bind '"\e[A"':history-search-backward
 bind '"\e[B"':history-search-forward
 shopt -s histappend
 
-hgdiff() { vimdiff -c 'map q :qa!<CR>' <(hg cat "$1") "$1"; }
+#hgdiff() { vimdiff -c 'map q :qa!<CR>' <(hg cat "$1") "$1"; }
 psg() { ps auxww | egrep $* | fgrep -v grep; }
 psi() { psg $* | awk '{print $2}'; }
 vv() {
     vim -R -c 'runtime! macros/less.vim' -c 'let no_plugin_maps = 1' \
         -c 'set scrolloff=999' -c 'set mouse=h' "${@--}"
+}
+lack() {
+    ack --group --color "$@" | $PAGER
 }
 
 if [ "$OSTYPE" = cygwin ]; then
