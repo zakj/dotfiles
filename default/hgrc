@@ -2,6 +2,19 @@
 username = Zak Johnson <zakj@nox.cx>
 
 [extensions]
-hgext.fetch=
-hgext.graphlog=
-hgext.record=
+hgext.churn =
+hgext.fetch =
+hgext.graphlog =
+hgext.mq =
+hgext.rebase =
+hgext.record =
+shelve = ~/.local/bin/hgshelve.py
+
+[merge-patterns]
+** = mvim
+
+[merge-tools]
+mvim.executable = mvim
+mvim.args = -d $local $other
+mvim.checkchanged = true
+mvim.gui = true
