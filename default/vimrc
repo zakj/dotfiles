@@ -40,23 +40,13 @@ if has("syntax")
     let g:is_bash = 1
 endif
 
-if has("gui_running")
-    colorscheme macvim
-    set bg=dark
-    highlight Comment guifg=#666699
-    set guicursor+=a:blinkwait0
-    set guifont=Consolas:h12
-    set guioptions=aegimt
-    set lines=40
-    set columns=80
-endif
-
 if has("autocmd")
     au FileType hog setl textwidth=0
     au FileType make setl noexpandtab shiftwidth=8
     au FileType css,html,htmldjango,xhtml setl shiftwidth=2
     au FileType mail setl textwidth=72
     au FileType nerdtree nmap <buffer> <Enter> o
+    au BufNewFile,BufRead *.ccss setfiletype clevercss
     au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
     au BufNewFile,BufRead /tmp/mutt-* set notitle
 endif
@@ -76,6 +66,8 @@ map <silent> <C-N> :cnext<CR>
 map <silent> <C-P> :cprevious<CR>
 " Bently-style indentation.
 map <silent> <leader>b :setlocal sw=2 ts=2 noet<CR>
+" Count instances of the word under the cursor.
+map <silent> <leader>c mc"cyiw:%s/\<<C-R>c\>//gn<CR>`c
 map <silent> <Leader>e :FuzzyFinderTextMate<CR>
 " Prompt to open a file in the same directory as the current buffer's file.
 map <silent> <Leader>E :e <C-R>=expand("%:p:h") . "/"<CR>
@@ -86,7 +78,7 @@ map <silent> <Leader>p :set paste!<CR>
 map <silent> <Leader>qp mqGo<ESC>"qp
 map <silent> <Leader>qd "qdd`q
 " Refresh fuzzyfinder_textmate cache.
-map <silent> <Leader>r :ruby finder.rescan!<CR>
+map <silent> <Leader>r :FuzzyFinderTextMateRefreshFiles<CR>
 map <silent> <Leader>s :set spell!<CR>
 " Remove trailing whitespace.
 map <silent> <leader>S mS:%s/\s\s*$//<CR>`S
@@ -103,6 +95,7 @@ iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
 if exists(":function")
     function! ToggleWrap()
         set linebreak!
+        set wrap!
         if &showbreak == ''
             let &showbreak = g:old_showbreak
         else
@@ -122,6 +115,24 @@ if exists(":function")
         endif
     endfunction
     inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
+
+    " GUI setup, to avoid a separate .gvimrc.
+    function! ConfigureGUI()
+        colorscheme macvim
+        set bg=dark
+        highlight Comment guifg=#666699
+        set guicursor+=a:blinkwait0
+        set guifont=Consolas:h12
+        set guioptions=aegimt
+        set lines=40
+        set columns=80
+    endfunction
+    if has('gui_running')
+        call ConfigureGUI()
+    endif
+    " MacVIM tries to be smarter than me and remember some settings from other
+    " windows.
+    autocmd GUIEnter * call ConfigureGUI()
 endif
 
 " Hooray backslashes.
@@ -129,6 +140,17 @@ set grepprg=find\ .\ \\!\ -path\ '*.svn/*'\ \\!\ -type\ d\ -print0\ \\\|\ xargs\
 if has("user_commands")
     command! -nargs=+ -complete=tag G :grep <args>
 endif
+
+augroup Binary
+  au!
+  au BufReadPre  *.sol let &bin=1
+  au BufReadPost *.sol if &bin | %!xxd
+  au BufReadPost *.sol set ft=xxd | endif
+  au BufWritePre *.sol if &bin | %!xxd -r
+  au BufWritePre *.sol endif
+  au BufWritePost *.sol if &bin | %!xxd
+  au BufWritePost *.sol set nomod | endif
+augroup END
 
 let NERDTreeIgnore = ['\.pyc$']
 let NERDTreeBookmarksFile = $HOME . '/.local/NERDTreeBookmarks'
