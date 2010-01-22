@@ -1,0 +1,9 @@
+# vim:ft=muttrc:
+source ~/.mutt/rc-gmail
+
+set folder=~/Mail
+set spoolfile="=INBOX"
+set mbox_type=Maildir
+
+mailboxes ! =Parachutes/ =Bently/ =Fenris/
+mailboxes =django/ =djb/ =freebsd/ =lettersapp/ =sqlalchemy/

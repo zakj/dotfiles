@@ -15,6 +15,7 @@ set delete=yes
 set header_cache=~/.mutt/cache/headers
 set message_cachedir=~/.mutt/cache/bodies
 
-mailboxes ! =Bently =Fenris =django =djb =freebsd
+mailboxes ! =Parachutes =Bently =Fenris
+mailboxes =django =djb =freebsd =lettersapp =sqlalchemy
 folder-hook . unmy_hdr From:
 folder-hook Fenris$ my_hdr From: zakj@fenris.cc
