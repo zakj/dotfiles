@@ -1,6 +1,9 @@
 Host bently
     Hostname base.bentlyenterprises.com
 
+Host bently-dev
+    Hostname developer.bentlyenterprises.com
+
 Host ids
     Hostname wsburids1.automatedfinancial.com
 
@@ -20,10 +23,10 @@ Host paraweb2
     User code
 
 Host wopr
-    #HostName ec2-72-44-46-213.compute-1.amazonaws.com
-    HostName 174.129.21.127
+    HostName wopr.parachutes.org
+    User ubuntu
     Port 60666
-    User root
+    Compression yes
 
 Host *
     User zakj
