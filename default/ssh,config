@@ -4,29 +4,11 @@ Host bently
 Host bently-dev
     Hostname developer.bentlyenterprises.com
 
-Host ids
-    Hostname wsburids1.automatedfinancial.com
+Host silver
+    Hostname 173.203.103.220
 
-Host parapub
-    Hostname 174.129.1.155
-    Port 60666
-    User root
-
-Host paraweb1
-    Hostname 75.101.131.97
-    Port 60666
-    User code
-
-Host paraweb2
-    HostName ec2-174-129-114-64.compute-1.amazonaws.com
-    Port 60666
-    User code
-
-Host wopr
-    HostName wopr.parachutes.org
-    User ubuntu
-    Port 60666
-    Compression yes
+Host wf
+    Hostname 174.133.21.82
 
 Host *
     User zakj
