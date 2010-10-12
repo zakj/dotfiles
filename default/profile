@@ -43,8 +43,6 @@ xterm* | rxvt | screen)
 ;;
 esac
 
-alias hcvs='cvs -d zakj@cvs.nox.cx:/cvs'
-alias pcvs='cvs -d zakj@cvs.peff.net:/cvs/shared'
 alias grep=egrep
 test "$PAGER" = less || alias less="$PAGER"
 alias ls='ls -F'
@@ -57,12 +55,18 @@ alias term=$(alternates mrxvt terminal rxvt xterm)
 
 test "$EDITOR" = vi || alias vi="$EDITOR"
 
+set -o vi
+# Some familiar emacs-style bindings.
+bind '"\C-a"':beginning-of-line
+bind '"\C-e"':end-of-line
+bind '"\C-l"':clear-screen
 # Up and down arrows do prefix matching.
 bind '"\e[A"':history-search-backward
 bind '"\e[B"':history-search-forward
 shopt -s histappend
 
 #hgdiff() { vimdiff -c 'map q :qa!<CR>' <(hg cat "$1") "$1"; }
+cds() { cdsitepackages && test $# -gt 0 && cd "$@"; }
 psg() { ps auxww | egrep $* | fgrep -v grep; }
 psi() { psg $* | awk '{print $2}'; }
 vv() {
