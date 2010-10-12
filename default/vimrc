@@ -76,7 +76,7 @@ map <silent> <C-K> :bprevious<CR>
 map <silent> <C-N> :cnext<CR>
 map <silent> <C-P> :cprevious<CR>
 " Toggle between the previously-used buffer.
-map <silent> <Space> <C-^>
+map <silent> gb <C-^>
 " Count instances of the word under the cursor.
 map <silent> <Leader>c mc"cyiw:%s/\<<C-R>c\>//gn<CR>`c
 " Prompt to open a file in the same directory as the current buffer's file.

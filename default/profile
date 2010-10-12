@@ -73,9 +73,9 @@ vv() {
     vim -R -c 'runtime! macros/less.vim' -c 'let no_plugin_maps = 1' \
         -c 'set scrolloff=999' -c 'set mouse=h' "${@--}"
 }
-lack() {
-    ack --group --color "$@" | $PAGER
-}
+
+lack() { ack --group --color "$@" | $PAGER; }
+mvack() { mvim $(ack -l "$@"); }
 
 if [ "$OSTYPE" = cygwin ]; then
     LESS=r$LESS
