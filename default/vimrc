@@ -1,6 +1,7 @@
 set autoindent
 set backspace=2
 set backupdir=~/.vim/backup,.
+set cedit=  " Prevent default <C-f> from opening the command-line window.
 set cinoptions=:0
 set confirm
 set diffopt+=iwhite
@@ -20,9 +21,11 @@ set shortmess=fnrxotTI
 set smarttab
 set textwidth=79
 set title
+set ttimeoutlen=50  " avoid waiting after O
 set viminfo=""
 set whichwrap=""
 set wildmode=list:longest
+set wildignore=*.o,*.pyc
 
 let mapleader = ","
 let g:fuzzy_ignore = "*.pyc"
@@ -51,6 +54,9 @@ if has("autocmd")
     au BufNewFile,BufRead /tmp/mutt-* set notitle
 endif
 
+cmap <C-a> <Home>
+cmap <C-e> <End>
+
 " I never want to run man from inside vim.
 map <silent> K k
 " Y should act like D or C.
@@ -59,36 +65,40 @@ nmap Y y$
 map <LeftMouse> <Nop>
 imap <LeftMouse> <Nop>
 
+" Bently-style indentation.
+map <silent> <leader>b :setlocal sw=4 ts=4<CR>
+" GOOD-style indentation
+map <silent> <leader>g :setlocal sw=4 ts=4 noet<CR>
+
 map <silent> <C-H> :set hlsearch!<CR>
 map <silent> <C-J> :bnext<CR>
 map <silent> <C-K> :bprevious<CR>
 map <silent> <C-N> :cnext<CR>
 map <silent> <C-P> :cprevious<CR>
-" Bently-style indentation.
-map <silent> <leader>b :setlocal sw=2 ts=2 noet<CR>
+" Toggle between the previously-used buffer.
+map <silent> <Space> <C-^>
 " Count instances of the word under the cursor.
-map <silent> <leader>c mc"cyiw:%s/\<<C-R>c\>//gn<CR>`c
-map <silent> <Leader>e :FuzzyFinderTextMate<CR>
+map <silent> <Leader>c mc"cyiw:%s/\<<C-R>c\>//gn<CR>`c
 " Prompt to open a file in the same directory as the current buffer's file.
 map <silent> <Leader>E :e <C-R>=expand("%:p:h") . "/"<CR>
-map <silent> <Leader>f :FuzzyFinderBuffer<CR>
 map <silent> <Leader>l :set list!<CR>
 map <silent> <Leader>p :set paste!<CR>
 " Easily edit the contents of the q register (what I use for macros).
 map <silent> <Leader>qp mqGo<ESC>"qp
 map <silent> <Leader>qd "qdd`q
 " Refresh fuzzyfinder_textmate cache.
-map <silent> <Leader>r :FuzzyFinderTextMateRefreshFiles<CR>
 map <silent> <Leader>s :set spell!<CR>
 " Remove trailing whitespace.
 map <silent> <leader>S mS:%s/\s\s*$//<CR>`S
-map <silent> <Leader>t :NERDTreeToggle<CR>
 " Underline current line.
-map <silent> <Leader>u yypv$r-
-map <silent> <Leader>U yypv$r=
+map <silent> <Leader>u yypVr-
+map <silent> <Leader>U yypVr=
+" Vertical split/unsplit.
 map <silent> <Leader>v :set columns=161<CR>:vsplit<CR>
 map <silent> <Leader>V :close<CR>:set columns=80<CR>
 map <silent> <Leader>w :set wrap!<CR>
+" Save and close the current buffer.
+map <silent> <leader>x :update<CR>:bwipeout<CR>
 " Unix timestamp.
 iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
 
@@ -121,7 +131,8 @@ if exists(":function")
         colorscheme macvim
         set bg=dark
         highlight Comment guifg=#666699
-        set guicursor+=a:blinkwait0
+        highlight MatchParen guibg=bg guifg=LightGoldenrod
+        set guicursor+=a:blinkon0
         set guifont=Consolas:h12
         set guioptions=aegimt
         set lines=40
@@ -143,15 +154,19 @@ endif
 
 augroup Binary
   au!
-  au BufReadPre  *.sol let &bin=1
-  au BufReadPost *.sol if &bin | %!xxd
-  au BufReadPost *.sol set ft=xxd | endif
-  au BufWritePre *.sol if &bin | %!xxd -r
-  au BufWritePre *.sol endif
-  au BufWritePost *.sol if &bin | %!xxd
-  au BufWritePost *.sol set nomod | endif
+  au BufReadPre  *.sol,*.sav let &bin=1
+  au BufReadPost *.sol,*.sav if &bin | %!xxd
+  au BufReadPost *.sol,*.sav set ft=xxd | endif
+  au BufWritePre *.sol,*.sav if &bin | %!xxd -r
+  au BufWritePre *.sol,*.sav endif
+  au BufWritePost *.sol,*.sav if &bin | %!xxd
+  au BufWritePost *.sol,*.sav set nomod | endif
 augroup END
 
-let NERDTreeIgnore = ['\.pyc$']
-let NERDTreeBookmarksFile = $HOME . '/.local/NERDTreeBookmarks'
-let NERDTreeQuitOnOpen = 1
+map <silent> <Leader>e :CommandT<CR>
+map <silent> <Leader>r :LustyFilesystemExplorerFromHere<CR>
+map <silent> <Leader>f :LustyBufferExplorer<CR>
+
+let g:LustyJugglerSuppressRubyWarning = 1
+let g:CommandTSplitAtTop = 1
+let g:CommandTMatchWindowAtTop = 1
