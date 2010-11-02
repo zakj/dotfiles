@@ -10,6 +10,7 @@ set expandtab
 set hidden
 set nohlsearch
 set incsearch
+set nojoinspaces  " Only once space after a sentence.
 set linebreak
 set listchars=tab:[-,trail:_,extends:>,precedes:<
 set pastetoggle=<F1>
@@ -29,6 +30,10 @@ set wildignore=*.o,*.pyc
 
 let mapleader = ","
 let g:fuzzy_ignore = "*.pyc"
+
+" Pathogen must be initialized before filetype plugin stuff below.
+call pathogen#runtime_append_all_bundles()
+nnoremap <C-u> :GundoToggle<CR>
 
 if has("syntax")
     filetype plugin indent on
@@ -86,7 +91,6 @@ map <silent> <Leader>p :set paste!<CR>
 " Easily edit the contents of the q register (what I use for macros).
 map <silent> <Leader>qp mqGo<ESC>"qp
 map <silent> <Leader>qd "qdd`q
-" Refresh fuzzyfinder_textmate cache.
 map <silent> <Leader>s :set spell!<CR>
 " Remove trailing whitespace.
 map <silent> <leader>S mS:%s/\s\s*$//<CR>`S
