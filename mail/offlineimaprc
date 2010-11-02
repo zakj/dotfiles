@@ -1,0 +1,19 @@
+[general]
+accounts = nox.cx
+ui = Noninteractive.Quiet
+
+[Account nox.cx]
+localrepository = Local
+remoterepository = Remote
+autorefresh = 1
+quick = 5
+
+[Repository Local]
+type = Maildir
+localfolders = ~/Mail
+
+[Repository Remote]
+type = Gmail
+remoteuser = zakj@nox.cx
+remotepassfile = ~/.mutt/pw
+realdelete = no
