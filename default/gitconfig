@@ -9,4 +9,9 @@
     d = diff
     dc = diff --cached
     graph = log --graph --oneline
+    out = log origin/master..HEAD
     st = status --branch --short
+    unstage = reset HEAD --
+
+[core]
+    pager = cat
