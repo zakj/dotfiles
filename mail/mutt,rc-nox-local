@@ -1,3 +1,0 @@
-# vim:ft=muttrc:
-source ~/.mutt/rc-nox
-set tunnel="exec /etc/rimapd"
