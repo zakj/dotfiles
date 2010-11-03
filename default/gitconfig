@@ -1,0 +1,12 @@
+[user]
+    name = Zak Johnson
+    email = zakj@nox.cx
+
+[alias]
+    box = !open -a Gitbox .
+    ci = commit
+    co = checkout
+    d = diff
+    dc = diff --cached
+    graph = log --graph --oneline
+    st = status --branch --short
