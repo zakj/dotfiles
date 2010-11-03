@@ -1,2 +1,0 @@
-./mail/.spam.archive/
-|cat $HOME/.bouncespam; echo "SENDER: $SENDER"; sendok-create 432000 zakj-nospam- $HOME/.sendok @nox.cx; exit 100

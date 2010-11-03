@@ -1,8 +1,0 @@
-XDvi.expert: true
-
-XLock.erasedelay: 0
-XLock.usefirst: true
-XLock.username: Login:  
-XLock.timeelapsed: true
-XLock.random.duration: 3600
-XLock.random.modelist: all-allgl
