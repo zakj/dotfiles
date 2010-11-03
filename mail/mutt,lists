@@ -5,29 +5,29 @@ subscribe dn-contrib@daemonnews.org
 subscribe dns@list.cr.yp.to
 lists firewalls@securityfocus.com
 subscribe freebsd-announce@freebsd.org announce@freebsd.org
-subscribe freebsd-arch@freebsd.org arch@freebsd.org
-subscribe freebsd-audit@freebsd.org audit@freebsd.org
-subscribe freebsd-bugbusters@freebsd.org bugbusters@freebsd.org
-subscribe freebsd-config@freebsd.org config@freebsd.org
-subscribe freebsd-hackers@freebsd.org hackers@freebsd.org
+lists freebsd-arch@freebsd.org arch@freebsd.org
+lists freebsd-audit@freebsd.org audit@freebsd.org
+lists freebsd-bugbusters@freebsd.org bugbusters@freebsd.org
+lists freebsd-config@freebsd.org config@freebsd.org
+lists freebsd-hackers@freebsd.org hackers@freebsd.org
 subscribe freebsd-jobs@freebsd.org jobs@freebsd.org
 subscribe freebsd-security-notifications@freebsd.org
 subscribe freebsd-security@freebsd.org
-subscribe freebsd-small@freebsd.org small@freebsd.org
-subscribe freebsd-standards@freebsd.org standards@freebsd.org
+lists freebsd-small@freebsd.org small@freebsd.org
+lists freebsd-standards@freebsd.org standards@freebsd.org
 subscribe libtai@list.cr.yp.to
 subscribe log@list.cr.yp.to
 subscribe misc@list.cr.yp.to
-subscribe mod-avail@freebsd.org
+lists mod-avail@freebsd.org
 subscribe package@list.cr.yp.to
 subscribe publicfile@list.cr.yp.to
 subscribe securesoftware@list.cr.yp.to
 subscribe supervision@list.skarnet.org
 subscribe tinyldap@fefe.de
-subscribe webappsec@securityfocus.com webappsec@securityfocus.org
+lists webappsec@securityfocus.com webappsec@securityfocus.org
 lists wmii@suckless.org
-subscribe django-users@googlegroups.com
+lists django-users@googlegroups.com
 subscribe django-developers@googlegroups.com
 lists cygwin@cygwin.com
-subscribe sqlalchemy@googlegroups.com
+lists sqlalchemy@googlegroups.com
 subscribe email-init@lists.ranchero.com letters-dev@lists.ranchero.com

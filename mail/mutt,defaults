@@ -76,5 +76,4 @@ ignore *
 unignore date from: to cc reply-to mail-followup-to x-mailer x-url subject
 hdr_order date from to cc reply-to mail-followup-to x-mailer x-url subject
 
-source ~/.mutt/aliases
 source ~/.mutt/lists
