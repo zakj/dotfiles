@@ -1,0 +1,12 @@
+.Trash/
+.dropbox/
+.gem/
+.ipython/db/
+.local/
+.macports/
+.offlineimap/
+.vim/
+.virtualenvs/
+.subversion/auth/
+.mutt/gmail-root.pem
+.mutt/gmail-root.txt
