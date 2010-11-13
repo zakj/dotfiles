@@ -51,12 +51,12 @@ endif
 if has("autocmd")
     au FileType hog setl textwidth=0
     au FileType make setl noexpandtab shiftwidth=8
-    au FileType css,html,htmldjango,xhtml setl shiftwidth=2
     au FileType mail setl textwidth=72
     au FileType nerdtree nmap <buffer> <Enter> o
     au BufNewFile,BufRead *.ccss setfiletype clevercss
     au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
     au BufNewFile,BufRead /tmp/mutt-* set notitle
+    au BufNewFile,BufRead ~/repos/good.is/* setl noexpandtab
 endif
 
 cmap <C-a> <Home>
@@ -69,11 +69,6 @@ nmap Y y$
 " And I don't want LeftMouse to reposition the cursor.
 map <LeftMouse> <Nop>
 imap <LeftMouse> <Nop>
-
-" Bently-style indentation.
-map <silent> <leader>b :setlocal sw=4 ts=4<CR>
-" GOOD-style indentation
-map <silent> <leader>g :setlocal sw=4 ts=4 noet<CR>
 
 map <silent> <C-H> :set hlsearch!<CR>
 map <silent> <C-J> :bnext<CR>
