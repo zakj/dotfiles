@@ -13,6 +13,10 @@
     record = add -p
     st = status --branch --short
     unstage = reset HEAD --
+    unstash = stash pop
 
 [core]
     pager = cat
+
+[push]
+    default = tracking
