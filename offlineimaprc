@@ -1,6 +1,6 @@
 [general]
 accounts = nox.cx
-ui = Noninteractive.Quiet
+#ui = Noninteractive.Quiet
 
 [Account nox.cx]
 localrepository = Local
@@ -17,3 +17,5 @@ type = Gmail
 remoteuser = zakj@nox.cx
 remotepassfile = ~/.mutt/pw
 realdelete = no
+# Always sync INBOX first.
+foldersort = lambda a, b: -1 if a == 'INBOX' else 1 if b == 'INBOX' else cmp(a, b)
