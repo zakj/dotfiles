@@ -1,6 +1,3 @@
-image/*; xli -quiet %s; test=test -n "$DISPLAY"
-video/mpeg; mpeg_play -quiet %s 2>/dev/null; test=test -n "$DISPLAY"
-audio/mpeg; mpg123 -q %s; test=test -n "$DISPLAY"
-text/html; links -force-html %s
-text/html; lynx -force_html -dump %s; copiousoutput; test=which lynx >/dev/null 2>&1
-application/pdf; xpdf %s; test=test -n "$DISPLAY"
+image/*; open %s
+application/pdf; open %s
+text/html; open %s
