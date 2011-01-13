@@ -17,6 +17,7 @@ set pastetoggle=<F1>
 set report=0
 set noruler
 set showbreak=+
+set showcmd
 set shiftwidth=4
 set shortmess=fnrxotTI
 set smarttab
@@ -29,10 +30,12 @@ set wildmode=list:longest
 set wildignore=*.o,*.pyc
 
 let mapleader = ","
+let maplocalleader = ","
 let g:fuzzy_ignore = "*.pyc"
 
 " Pathogen must be initialized before filetype plugin stuff below.
 call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
 nnoremap <C-u> :GundoToggle<CR>
 
 if has("syntax")
@@ -52,11 +55,12 @@ if has("autocmd")
     au FileType hog setl textwidth=0
     au FileType make setl noexpandtab shiftwidth=8
     au FileType mail setl textwidth=72
-    au FileType nerdtree nmap <buffer> <Enter> o
+    au FileType taskpaper setl noexpandtab shiftwidth=2 tabstop=2
     au BufNewFile,BufRead *.ccss setfiletype clevercss
+    au BufNewFile,BufRead *.json setfiletype javascript
     au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
     au BufNewFile,BufRead /tmp/mutt-* set notitle
-    au BufNewFile,BufRead ~/repos/good.is/* setl noexpandtab
+    au BufNewFile,BufRead ~/repos/good.is/* setl noexpandtab tabstop=4
 endif
 
 cmap <C-a> <Home>
@@ -131,6 +135,7 @@ if exists(":function")
         set bg=dark
         highlight Comment guifg=#666699
         highlight MatchParen guibg=bg guifg=LightGoldenrod
+        highlight VertSplit guifg=DarkSlateGray guibg=bg
         set guicursor+=a:blinkon0
         set guifont=Consolas:h12
         set guioptions=aegimt
@@ -165,7 +170,10 @@ augroup END
 map <silent> <Leader>e :CommandT<CR>
 map <silent> <Leader>r :LustyFilesystemExplorerFromHere<CR>
 map <silent> <Leader>f :LustyBufferExplorer<CR>
+map <silent> <Leader>j :LustyJuggler<CR>
+map <silent> <Space> :LustyJugglePrevious<CR>
 
-let g:LustyJugglerSuppressRubyWarning = 1
-let g:CommandTSplitAtTop = 1
 let g:CommandTMatchWindowAtTop = 1
+let g:LustyJugglerSuppressRubyWarning = 1
+
+noremap ; :
