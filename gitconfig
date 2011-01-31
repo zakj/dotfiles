@@ -4,7 +4,7 @@
 
 [alias]
     box = !open -a Gitbox .
-    ci = commit
+    ci = commit -v
     co = checkout
     d = diff
     dc = diff --cached
