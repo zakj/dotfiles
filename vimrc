@@ -168,6 +168,7 @@ augroup Binary
 augroup END
 
 map <silent> <Leader>e :CommandT<CR>
+map <silent> <Leader>F :CommandTFlush<CR>
 map <silent> <Leader>r :LustyFilesystemExplorerFromHere<CR>
 map <silent> <Leader>f :LustyBufferExplorer<CR>
 map <silent> <Leader>j :LustyJuggler<CR>
