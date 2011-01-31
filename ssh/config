@@ -10,6 +10,26 @@ Host silver
 Host wf
     Hostname 174.133.21.82
 
+Host good-monitor
+    Hostname ec2-174-129-19-47.compute-1.amazonaws.com
+    User root
+    IdentityFile ~/.ssh/monitor.pem
+
+Host good-base1
+    Hostname ec2-174-129-252-30.compute-1.amazonaws.com
+    User root
+    IdentityFile ~/.ssh/restricted-access.pem
+
+Host good-base2
+    Hostname ec2-184-73-197-227.compute-1.amazonaws.com
+    User root
+    IdentityFile ~/.ssh/restricted-access.pem
+
+Host good-base3
+    Hostname ec2-184-73-195-231.compute-1.amazonaws.com
+    User root
+    IdentityFile ~/.ssh/restricted-access.pem
+
 Host *
     User zakj
     Protocol 2
