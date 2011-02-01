@@ -18,6 +18,7 @@
 .offlineimap/
 .pip/pip.log
 .psql_history
+.rvm/
 .sh_history
 .ssh/id_rsa
 .ssh/known_hosts
