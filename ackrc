@@ -1,0 +1,9 @@
+--ignore-dir=migrations
+--ignore-dir=backups
+--ignore-dir=cache
+--sort-files
+
+--type-add
+php=.ctp
+--type-add
+css=.scss
