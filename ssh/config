@@ -15,6 +15,11 @@ Host good-monitor
     User root
     IdentityFile ~/.ssh/monitor.pem
 
+Host good-staging
+    Hostname stage.www.good.is
+    User root
+    IdentityFile ~/.ssh/restricted-access.pem
+
 Host good-base1
     Hostname ec2-174-129-252-30.compute-1.amazonaws.com
     User root
