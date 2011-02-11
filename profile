@@ -62,7 +62,7 @@ if [ -n "$PS1" ]; then
   psi() { psg $* | awk '{print $2}'; }
   vv() {
       vim -R -c 'runtime! macros/less.vim' -c 'let no_plugin_maps = 1' \
-          -c 'set scrolloff=999' -c 'set mouse=h' "${@--}"
+          -c 'set scrolloff=999 mouse=h laststatus=0' "${@--}"
   }
 
   lack() { ack --group --color "$@" | $PAGER; }

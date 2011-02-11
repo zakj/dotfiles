@@ -11,6 +11,7 @@ set hidden
 set nohlsearch
 set incsearch
 set nojoinspaces  " Only once space after a sentence.
+set laststatus=2  " Always show the status bar.
 set linebreak
 set listchars=tab:[-,trail:_,extends:>,precedes:<
 set pastetoggle=<F1>
@@ -41,11 +42,6 @@ nnoremap <C-u> :GundoToggle<CR>
 if has("syntax")
     filetype plugin indent on
     syntax on
-    "highlight Comment cterm=bold
-    "highlight MatchParen ctermbg=blue guibg=lightblue
-    "highlight Search ctermfg=black ctermbg=green guibg=green
-    "highlight PmenuSel ctermfg=black ctermbg=white
-
     let g:pyindent_open_paren = '&sw'
     let g:pyindent_continue = '&sw'
     let g:is_bash = 1
@@ -56,11 +52,21 @@ if has("autocmd")
     au FileType make setl noexpandtab shiftwidth=8
     au FileType mail setl textwidth=72
     au FileType taskpaper setl noexpandtab shiftwidth=2 tabstop=2
+    au FileType cucumber setl shiftwidth=2
     au BufNewFile,BufRead *.ccss setfiletype clevercss
     au BufNewFile,BufRead *.json setfiletype javascript
     au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
     au BufNewFile,BufRead /tmp/mutt-* set notitle
     au BufNewFile,BufRead ~/repos/good.is/* setl noexpandtab tabstop=4
+endif
+
+if has("multi_byte")
+    if &termencoding == ""
+        let &termencoding = &encoding
+    endif
+    set encoding=utf-8
+    setglobal fileencoding=utf-8 bomb
+    set fileencodings=ucs-bom,utf-8,latin1
 endif
 
 cmap <C-a> <Home>
@@ -109,7 +115,7 @@ if exists(":function")
     function! ToggleWrap()
         set linebreak!
         set wrap!
-        if &showbreak == ''
+        if exists('g:old_showbreak') && &showbreak == ''
             let &showbreak = g:old_showbreak
         else
             let g:old_showbreak = &showbreak
@@ -130,24 +136,26 @@ if exists(":function")
     inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
 
     " GUI setup, to avoid a separate .gvimrc.
-    function! ConfigureGUI()
+    if has('gui_running')
         colorscheme macvim
         set bg=dark
         highlight Comment guifg=#666699
         highlight MatchParen guibg=bg guifg=LightGoldenrod
         highlight VertSplit guifg=DarkSlateGray guibg=bg
         set guicursor+=a:blinkon0
-        set guifont=Consolas:h12
+        "set guifont=Consolas:h12
         set guioptions=aegimt
         set lines=40
         set columns=80
-    endfunction
-    if has('gui_running')
-        call ConfigureGUI()
+        function! ToggleZoom()
+            if &columns > 80
+                set lines=40 columns=80
+            else
+                set lines=999 columns=124
+            endif
+        endfunction
+        map <silent> <Leader>z :call ToggleZoom()<CR>
     endif
-    " MacVIM tries to be smarter than me and remember some settings from other
-    " windows.
-    autocmd GUIEnter * call ConfigureGUI()
 endif
 
 " Hooray backslashes.
@@ -178,3 +186,7 @@ let g:CommandTMatchWindowAtTop = 1
 let g:LustyJugglerSuppressRubyWarning = 1
 
 noremap ; :
+
+if filereadable(expand('~/.local/vimrc'))
+    source ~/.local/vimrc
+endif
