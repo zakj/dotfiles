@@ -5,5 +5,4 @@ set folder=~/Mail
 set spoolfile="=INBOX"
 set mbox_type=Maildir
 
-mailboxes ! =Parachutes/ =Bently/ =Fenris/
-mailboxes =django/ =djb/ =freebsd/ =lettersapp/ =sqlalchemy/
+mailboxes ! =django =djb =freebsd
