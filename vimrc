@@ -143,7 +143,7 @@ if exists(":function")
         highlight MatchParen guibg=bg guifg=LightGoldenrod
         highlight VertSplit guifg=DarkSlateGray guibg=bg
         set guicursor+=a:blinkon0
-        "set guifont=Consolas:h12
+        set guifont=Menlo:h12
         set guioptions=aegimt
         set lines=40
         set columns=80
