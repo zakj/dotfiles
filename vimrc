@@ -34,6 +34,19 @@ let mapleader = ","
 let maplocalleader = ","
 let g:fuzzy_ignore = "*.pyc"
 
+" Bundles:
+" https://github.com/wincent/Command-T.git
+" https://github.com/mileszs/ack.vim.git
+" https://github.com/tpope/vim-surround.git
+" https://github.com/tpope/vim-repeat.git
+" https://github.com/vim-scripts/Bexec.git
+" https://github.com/tpope/vim-fugitive.git
+"
+" https://github.com/sjbach/lusty.git
+" https://github.com/kchmck/vim-coffee-script.git
+" https://github.com/tpope/vim-endwise.git
+" https://github.com/tpope/vim-rails.git
+
 " Pathogen must be initialized before filetype plugin stuff below.
 silent! call pathogen#runtime_append_all_bundles()
 silent! call pathogen#helptags()
@@ -52,7 +65,7 @@ if has("autocmd")
     au FileType make setl noexpandtab shiftwidth=8
     au FileType mail setl textwidth=72
     au FileType taskpaper setl noexpandtab shiftwidth=2 tabstop=2
-    au FileType cucumber setl shiftwidth=2
+    au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
     au BufNewFile,BufRead *.ccss setfiletype clevercss
     au BufNewFile,BufRead *.json setfiletype javascript
     au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
@@ -177,13 +190,16 @@ augroup END
 
 map <silent> <Leader>e :CommandT<CR>
 map <silent> <Leader>F :CommandTFlush<CR>
-map <silent> <Leader>r :LustyFilesystemExplorerFromHere<CR>
-map <silent> <Leader>f :LustyBufferExplorer<CR>
-map <silent> <Leader>j :LustyJuggler<CR>
-map <silent> <Space> :LustyJugglePrevious<CR>
+"map <silent> <Leader>r :LustyFilesystemExplorerFromHere<CR>
+"map <silent> <Leader>f :LustyBufferExplorer<CR>
+"map <silent> <Leader>j :LustyJuggler<CR>
+"map <silent> <Space> :LustyJugglePrevious<CR>
+nnoremap <CR> :buffers<CR>:buffer<Space>
+nnoremap <Space> :buffer #<CR>
 
 let g:CommandTMatchWindowAtTop = 1
 let g:LustyJugglerSuppressRubyWarning = 1
+let coffee_no_trailing_space_error = 1
 
 noremap ; :
 
