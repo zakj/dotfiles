@@ -35,10 +35,8 @@ let maplocalleader = ","
 let g:fuzzy_ignore = "*.pyc"
 
 " Pathogen must be initialized before filetype plugin stuff below.
-if exists("*pathogen#runtime_append_all_bundles")
-    call pathogen#runtime_append_all_bundles()
-    call pathogen#helptags()
-endif
+silent! call pathogen#runtime_append_all_bundles()
+silent! call pathogen#helptags()
 nnoremap <C-u> :GundoToggle<CR>
 
 if has("syntax")
