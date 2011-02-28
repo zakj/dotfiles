@@ -16,7 +16,7 @@ set linebreak
 set listchars=tab:[-,trail:_,extends:>,precedes:<
 set pastetoggle=<F1>
 set report=0
-set noruler
+set ruler
 set showbreak=+
 set showcmd
 set shiftwidth=4
