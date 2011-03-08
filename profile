@@ -57,7 +57,6 @@ if [ -n "$PS1" ]; then
   shopt -s histappend
 
   #hgdiff() { vimdiff -c 'map q :qa!<CR>' <(hg cat "$1") "$1"; }
-  cds() { cdsitepackages && test $# -gt 0 && cd "$@"; }
   psg() { ps auxww | egrep $* | fgrep -v grep; }
   psi() { psg $* | awk '{print $2}'; }
   vv() {
