@@ -43,7 +43,7 @@ set wrapmargin=2
 
 auto_view text/html
 
-set query_command="/opt/local/bin/lbdbq '%s'"
+set query_command="lbdbq '%s'"
 set query_format="%t %-25.25n %a"
 bind editor \t complete-query
 
