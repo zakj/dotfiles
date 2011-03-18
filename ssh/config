@@ -16,7 +16,7 @@ Host good-monitor
     IdentityFile ~/.ssh/monitor.pem
 
 Host good-staging
-    Hostname stage.www.good.is
+    Hostname origin.stage.www.good.is
     User root
     IdentityFile ~/.ssh/restricted-access.pem
 
@@ -32,6 +32,16 @@ Host good-base2
 
 Host good-base3
     Hostname ec2-184-73-195-231.compute-1.amazonaws.com
+    User root
+    IdentityFile ~/.ssh/restricted-access.pem
+
+Host good-w4
+    Hostname w4.www.good.is
+    User root
+    IdentityFile ~/.ssh/restricted-access.pem
+
+Host good-w5
+    Hostname w5.www.good.is
     User root
     IdentityFile ~/.ssh/restricted-access.pem
 
