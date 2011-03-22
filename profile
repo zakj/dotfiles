@@ -22,6 +22,10 @@ LESS=gij5MR
 PAGER=$(alternates less more)
 QMAILINJECT=i
 RSYNC_RSH=ssh
+WORKON_HOME="$HOME/.virtualenvs"
+PIP_VIRTUALENV_BASE="$WORKON_HOME"
+PIP_RESPECT_VIRTUALENV=1
+VIRTUALENV_USE_DISTRIBUTE=1
 set +a
 
 if [ -n "$PS1" ]; then
@@ -56,7 +60,6 @@ if [ -n "$PS1" ]; then
   bind '"\e[B"':history-search-forward
   shopt -s histappend
 
-  #hgdiff() { vimdiff -c 'map q :qa!<CR>' <(hg cat "$1") "$1"; }
   psg() { ps auxww | egrep $* | fgrep -v grep; }
   psi() { psg $* | awk '{print $2}'; }
   vv() {
