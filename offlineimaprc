@@ -1,11 +1,11 @@
 [general]
 accounts = nox.cx
-#ui = Noninteractive.Quiet
+ui = Noninteractive.Basic
 
 [Account nox.cx]
 localrepository = Local
 remoterepository = Remote
-autorefresh = 1
+#autorefresh = 1
 quick = 5
 
 [Repository Local]
