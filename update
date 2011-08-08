@@ -1,19 +1,16 @@
 #!/bin/sh
 
-warn() {
-  echo "==> $*"
-}
+# Find the absolute path to this script, then make it relative to the current
+# user's home (to make the symlink targets prettier).
+dotfiles=$(cd "$(dirname "$0")" && pwd)
+dotfiles_relative=${dotfiles#$HOME/}
 
-# Create and clean up temporary files.
-trap 'rm $tmp $expected' EXIT
-tmp=$(mktemp /tmp/etcupdate.XXXXXXX) || exit 1
-expected=$(mktemp /tmp/etcupdate.XXXXXXX) || exit 1
-
-unset force quiet verbose
-while getopts fqv opt; do
+# Handle command-line options. -f will overwrite stale files when updating
+# symlinks. -v will display a diff of stale files instead of a simple list.
+unset force verbose
+while getopts fv opt; do
   case "$opt" in
     f) force=1 ;;
-    q) quiet=1 ;;
     v) verbose=1 ;;
     ?) exit ;;
   esac
@@ -22,38 +19,21 @@ done
 # Find all non-directory files whose names (and parent directories' names)
 # don't begin with a dot. Use sed to strip the leading "./". Assumes no spaces
 # in filenames.
-files=$(find . -name '.[^.]*' -prune -o -not -type d -print | sed -e 's}^\./}}')
-for file in $files; do
-  test $file = IGNORE -o $file = $(basename $0) && continue
+cd "$dotfiles"
+for file in *; do
+  test $file = $(basename $0) && continue
   target="$HOME/.$file"
-  echo $target >>"$expected"
 
-  # Ensure the target directory exists.
-  targetd=$(dirname $target)
-  test -d $targetd || mkdir -p $targetd
-
-  # If the target exists and is correctly linked, go on to the next file. If it
-  # exists but doesn't match the source file and -f was not given, display a
-  # warning (and the diff, if -v was given) and go on to the next file.
-  if [ -e $target ]; then
-    test $target -ef $file && continue
-    if [ -z "$force" ] && ! cmp -s $file $target; then
-      warn ".$file is stale"
-      test -n "$verbose" && diff -u $target $file
-      continue
-    fi
+  # If the target does not exist, or -f (force) was given, create the symlink.
+  if [ ! -e "$target" -o -n "$force" ]; then
+    ln -sfv "$dotfiles_relative/$file" "$target" | sed -e "s}^$HOME/}}"
+  # If the target exists and is pointing to the source, do nothing.
+  elif [ "$target" -ef "$file" ]; then
+    continue
+  # Otherwise, the target exists and does not match the source. Emit a warning,
+  # and diff the files if -v (verbose) was given.
+  else
+    echo "==> .$file is stale" >&2
+    test -n "$verbose" && diff -u "$target" "$file"
   fi
-
-  # Create the link.
-  ln -fv $file $target
 done
-
-# Check for extra files in $HOME and display them.
-if [ -z "$quiet" ]; then
-  sort "$expected" >"$tmp" && cp "$tmp" "$expected"
-  find "$HOME"/.[^.]* -not -type d | fgrep -vf IGNORE | sort >"$tmp"
-  if ! cmp -s "$tmp" "$expected"; then
-    warn 'Extra files:'
-    comm -23 "$tmp" "$expected"
-  fi
-fi
