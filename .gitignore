@@ -1,3 +1,4 @@
+js/*.js
 mutt/certificates
 mutt/gmail-root.pem
 mutt/gmail-root.txt
