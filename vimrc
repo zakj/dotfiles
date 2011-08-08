@@ -34,22 +34,7 @@ let mapleader = ","
 let maplocalleader = ","
 let g:fuzzy_ignore = "*.pyc"
 
-" Bundles:
-" https://github.com/wincent/Command-T.git
-" https://github.com/mileszs/ack.vim.git
-" https://github.com/tpope/vim-surround.git
-" https://github.com/tpope/vim-repeat.git
-" https://github.com/vim-scripts/Bexec.git
-" https://github.com/tpope/vim-fugitive.git
-"
-" https://github.com/kchmck/vim-coffee-script.git
-" https://github.com/tpope/vim-endwise.git
-" https://github.com/tpope/vim-rails.git
-
-" Pathogen must be initialized before filetype plugin stuff below.
-silent! call pathogen#runtime_append_all_bundles()
-silent! call pathogen#helptags()
-nnoremap <C-u> :GundoToggle<CR>
+call pathogen#infect()
 
 if has("syntax")
     filetype plugin indent on
@@ -102,8 +87,6 @@ map <silent> <C-J> :bnext<CR>
 map <silent> <C-K> :bprevious<CR>
 map <silent> <C-N> :cnext<CR>
 map <silent> <C-P> :cprevious<CR>
-" Toggle between the previously-used buffer.
-map <silent> gb <C-^>
 " Count instances of the word under the cursor.
 map <silent> <Leader>c mc"cyiw:%s/\<<C-R>c\>//gn<CR>`c
 " Prompt to open a file in the same directory as the current buffer's file.
@@ -175,23 +158,6 @@ if exists(":function")
         map <silent> <Leader>z :call ToggleZoom()<CR>
     endif
 endif
-
-" Hooray backslashes.
-set grepprg=find\ .\ \\!\ -path\ '*.svn/*'\ \\!\ -type\ d\ -print0\ \\\|\ xargs\ -0\ egrep\ -nHI
-if has("user_commands")
-    command! -nargs=+ -complete=tag G :grep <args>
-endif
-
-augroup Binary
-  au!
-  au BufReadPre  *.sol,*.sav let &bin=1
-  au BufReadPost *.sol,*.sav if &bin | %!xxd
-  au BufReadPost *.sol,*.sav set ft=xxd | endif
-  au BufWritePre *.sol,*.sav if &bin | %!xxd -r
-  au BufWritePre *.sol,*.sav endif
-  au BufWritePost *.sol,*.sav if &bin | %!xxd
-  au BufWritePost *.sol,*.sav set nomod | endif
-augroup END
 
 map <silent> <Leader>e :CommandT<CR>
 map <silent> <Leader>f :CommandTBuffer<CR>
