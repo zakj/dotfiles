@@ -42,7 +42,6 @@ let g:fuzzy_ignore = "*.pyc"
 " https://github.com/vim-scripts/Bexec.git
 " https://github.com/tpope/vim-fugitive.git
 "
-" https://github.com/sjbach/lusty.git
 " https://github.com/kchmck/vim-coffee-script.git
 " https://github.com/tpope/vim-endwise.git
 " https://github.com/tpope/vim-rails.git
@@ -193,16 +192,12 @@ augroup Binary
 augroup END
 
 map <silent> <Leader>e :CommandT<CR>
+map <silent> <Leader>f :CommandTBuffer<CR>
 map <silent> <Leader>F :CommandTFlush<CR>
-"map <silent> <Leader>r :LustyFilesystemExplorerFromHere<CR>
-"map <silent> <Leader>f :LustyBufferExplorer<CR>
-"map <silent> <Leader>j :LustyJuggler<CR>
-"map <silent> <Space> :LustyJugglePrevious<CR>
-nnoremap <CR> :buffers<CR>:buffer<Space>
+nnoremap <CR> :CommandTBuffer<CR>
 nnoremap <Space> :buffer #<CR>
 
 let g:CommandTMatchWindowAtTop = 1
-let g:LustyJugglerSuppressRubyWarning = 1
 let coffee_no_trailing_space_error = 1
 
 noremap ; :
