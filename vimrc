@@ -65,6 +65,7 @@ if has("autocmd")
     au FileType mail setl textwidth=72
     au FileType taskpaper setl noexpandtab shiftwidth=2 tabstop=2
     au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
+    au FileType css,html,htmljinja setl shiftwidth=2
     au BufNewFile,BufRead *.ccss setfiletype clevercss
     au BufNewFile,BufRead *.json setfiletype javascript
     au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
@@ -82,7 +83,7 @@ if has("multi_byte")
         setl fileencoding=utf-8 bomb
     endfunction
     " Handle fancy characters in shared notes.
-    au BufNewFile,BufRead ~/Dropbox/Zek/Notes call SetBomb()
+    au BufNewFile,BufRead ~/Dropbox/Zek/Notes/* call SetBomb()
 endif
 
 cmap <C-a> <Home>
@@ -122,8 +123,9 @@ map <silent> <Leader>U yypVr=
 map <silent> <Leader>v :set columns=161<CR>:vsplit<CR>
 map <silent> <Leader>V :close<CR>:set columns=80<CR>
 map <silent> <Leader>w :set wrap!<CR>
-" Save and close the current buffer.
-map <silent> <leader>x :update<CR>:bwipeout<CR>
+" Save and close the current buffer, switching to the previous buffer to avoid
+" closing the window.
+map <silent> <leader>x :update<CR>:bprevious<CR>:bwipeout #<CR>
 " Unix timestamp.
 iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
 
