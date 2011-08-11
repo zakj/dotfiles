@@ -10,3 +10,5 @@ ssh/known_hosts
 subversion/README.txt
 subversion/auth
 subversion/servers
+vim/backup/*
+vim/.netrwhist
