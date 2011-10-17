@@ -1,6 +1,6 @@
 [general]
 accounts = nox.cx
-ui = Noninteractive.Basic
+ui = basic
 
 [Account nox.cx]
 localrepository = Local
