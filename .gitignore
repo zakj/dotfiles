@@ -11,4 +11,5 @@ subversion/README.txt
 subversion/auth
 subversion/servers
 vim/backup/*
+vim/bundle
 vim/.netrwhist

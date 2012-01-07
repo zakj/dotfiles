@@ -1,175 +1,209 @@
+" {{{ Options
 set autoindent
-set backspace=2
+"set autowrite                     " TODO: maybe?
+set backspace=indent,eol,start
 set backupdir=~/.vim/backup,.
-set cedit=  " Prevent default <C-f> from opening the command-line window.
-set cinoptions=:0
-set confirm
+set cedit=                         " Don't use the command-line window.
+set cinoptions=:0                  " `case` should line up with `switch`.
+"set colorcolumn=81                " TODO: maybe, once colorscheme is done
+set confirm                        " Prompt instead of failing to quit.
 set diffopt+=iwhite
-set directory=~/.vim/backup//,.
+set directory=~/.vim/backup//,.    " Keep swap files in one place.
+set encoding=utf-8
 set expandtab
-set hidden
-set nohlsearch
+set fillchars+=vert:│              " Use a proper box bar for vsplits.
+set nofoldenable                   " No folds by default; use `zi` to enable.
+set hidden                         " Don't unload hidden buffers.
+set hlsearch
 set incsearch
-set nojoinspaces  " Only once space after a sentence.
-set laststatus=2  " Always show the status bar.
-set linebreak
-set listchars=tab:[-,trail:_,extends:>,precedes:<
-set pastetoggle=<F1>
-set report=0
-set ruler
-set showbreak=+
-set showcmd
+set nojoinspaces                   " Only once space after a sentence.
+set laststatus=2                   " Always show the status line.
+set linebreak                      " Don't break lines mid-word.
+set listchars=tab:├─,trail:·,extends:❯,precedes:❮
+set mouse=""
+set pastetoggle=<F1>               " TODO: consider removing? changing?
+set report=0                       " Always report how many lines were changed.
+set ruler                          " TODO: remove if I customize statusline
+set shiftround                     " Indent in multiples of 'shiftwidth'.
 set shiftwidth=4
-set shortmess=fnrxotTI
+set shortmess+=I
+set showbreak=+
 set smarttab
+set nostartofline                  " Maintain cursor column on C-f, C-b.
 set textwidth=79
 set title
-set ttimeoutlen=50  " avoid waiting after O
-set viminfo=""
+set ttimeoutlen=50                 " Avoid waiting after `O`.
+set viminfo=""                     " Always start with a clean slate.
 set whichwrap=""
+set wildignore+=compiled,vendor,*.o,*.pyc
 set wildmode=list:longest
-set wildignore=*.o,*.pyc
+" }}}
 
+" {{{ Plugins
+filetype off
+set runtimepath+=~/.vim/bundle/vundle
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'wincent/Command-T'
+Bundle 'mileszs/ack.vim'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-surround'
+Bundle 'indentpython.vim'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'pangloss/vim-javascript'
+Bundle 'uggedal/jinja-vim'
+Bundle 'bbommarito/vim-slim'
+Bundle 'groenewege/vim-less'
+
+" Plugin configuration
+let g:CommandTMatchWindowAtTop = 1
+let coffee_no_trailing_space_error = 1
+
+" Plugin mappings
+map <silent> <Leader>e :CommandT<CR>
+map <silent> <Leader>f :CommandTBuffer<CR>
+map <silent> <Leader>F :CommandTFlush<CR>
+
+filetype plugin indent on
+syntax enable
+" }}}
+
+" {{{ Mappings
 let mapleader = ","
-let maplocalleader = ","
-let g:fuzzy_ignore = "*.pyc"
+let maplocalleader = mapleader
 
-call pathogen#infect()
+noremap ; :
 
-if has("syntax")
-    filetype plugin indent on
-    syntax on
-    let g:pyindent_open_paren = '&sw'
-    let g:pyindent_continue = '&sw'
-    let g:is_bash = 1
-endif
+" Swap to the previous buffer on spacebar.
+nnoremap <Space> :buffer #<CR>
 
-if has("autocmd")
-    au FileType hog setl textwidth=0
-    au FileType make setl noexpandtab shiftwidth=8
-    au FileType mail setl textwidth=72
-    au FileType taskpaper setl noexpandtab shiftwidth=2 tabstop=2
-    au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
-    au FileType css,html,htmljinja setl shiftwidth=2
-    au BufNewFile,BufRead *.ccss setfiletype clevercss
-    au BufNewFile,BufRead *.json setfiletype javascript
-    au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
-    au BufNewFile,BufRead /tmp/mutt-* set notitle
-    au BufNewFile,BufRead ~/repos/good.is/* setl noexpandtab tabstop=4
-endif
+" Save and close the current buffer, first switching to the previous buffer to
+" ensure the window remains open.
+map <silent> <leader>x :update<CR>:bprevious<CR>:bwipeout #<CR>
 
-if has("multi_byte")
-    function! SetBomb()
-        if &termencoding == ""
-            let &termencoding = &encoding
-        endif
-        setl encoding=utf-8
-        setl fileencodings=ucs-bom,utf-8,latin1
-        setl fileencoding=utf-8 bomb
-    endfunction
-    " Handle fancy characters in shared notes.
-    au BufNewFile,BufRead ~/Dropbox/Zek/Notes/* call SetBomb()
-endif
+" Buffer navigation.
+map <silent> <C-J> :bnext<CR>
+map <silent> <C-K> :bprevious<CR>
 
+" Quickfix navigation.
+map <silent> <C-N> :cnext<CR>
+map <silent> <C-P> :cprevious<CR>
+
+" Emacs-style beginning/end navigation in command mode.
 cmap <C-a> <Home>
 cmap <C-e> <End>
 
-" I never want to run man from inside vim.
-map <silent> K k
-" Y should act like D or C.
+" `Y` should act like `D` or `C`.
 nmap Y y$
-" And I don't want LeftMouse to reposition the cursor.
-map <LeftMouse> <Nop>
-imap <LeftMouse> <Nop>
 
-map <silent> <C-H> :set hlsearch!<CR>
-map <silent> <C-J> :bnext<CR>
-map <silent> <C-K> :bprevious<CR>
-map <silent> <C-N> :cnext<CR>
-map <silent> <C-P> :cprevious<CR>
-" Count instances of the word under the cursor.
-map <silent> <Leader>c mc"cyiw:%s/\<<C-R>c\>//gn<CR>`c
-" Prompt to open a file in the same directory as the current buffer's file.
-map <silent> <Leader>E :e <C-R>=expand("%:p:h") . "/"<CR>
+" Common toggles.
 map <silent> <Leader>l :set list!<CR>
 map <silent> <Leader>p :set paste!<CR>
-" Easily edit the contents of the q register (what I use for macros).
-map <silent> <Leader>qp mqGo<ESC>"qp
-map <silent> <Leader>qd "qdd`q
 map <silent> <Leader>s :set spell!<CR>
-" Remove trailing whitespace.
-map <silent> <leader>S mS:%s/\s\s*$//<CR>`S
-" Underline current line.
-map <silent> <Leader>u yypVr-
-map <silent> <Leader>U yypVr=
+map <silent> <C-h> :nohlsearch<CR>
+
 " Vertical split/unsplit.
 map <silent> <Leader>v :set columns=161<CR>:vsplit<CR>
 map <silent> <Leader>V :close<CR>:set columns=80<CR>
 map <silent> <Leader>w :set wrap!<CR>
-" Save and close the current buffer, switching to the previous buffer to avoid
-" closing the window.
-map <silent> <leader>x :update<CR>:bprevious<CR>:bwipeout #<CR>
-" Unix timestamp.
+
+" Prompt to open a file in the same directory as the current buffer's file.
+map <silent> <Leader>E :e <C-R>=expand("%:p:h") . "/"<CR>
+
+" Remove trailing whitespace.
+map <silent> <leader>S mS:%s/\s\s*$//<CR>`S
+
+" Count instances of the word under the cursor.
+map <silent> <Leader>c mc"cyiw:%s/\<<C-R>c\>//gn<CR>`c
+
+" Easily edit the contents of the q register (what I use for macros).
+map <silent> <Leader>qp mqGo<ESC>"qp
+map <silent> <Leader>qd "qdd`q
+
+" Underline current line.
+map <silent> <Leader>u yypVr-
+map <silent> <Leader>U yypVr=
+
+" Insert a Unix timestamp.
 iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
 
-if exists(":function")
-    function! ToggleWrap()
-        set linebreak!
-        set wrap!
-        if exists('g:old_showbreak') && &showbreak == ''
-            let &showbreak = g:old_showbreak
-        else
-            let g:old_showbreak = &showbreak
-            let &showbreak = ''
-        endif
-    endfunction
-    map <silent> <Leader>w :call ToggleWrap()<CR>
+" I never use 'keywordprg'.
+map K k
 
-    " Hitting tab at the beginning of a line indents; elsewhere completes.
-    function! InsertTabWrapper()
-        let col = col('.') - 1
-        if !col || getline('.')[col - 1] !~ '\k'
-            return "\<tab>"
-        else
-            return "\<c-n>"
-        endif
-    endfunction
-    inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
-
-    " GUI setup, to avoid a separate .gvimrc.
-    if has('gui_running')
-        colorscheme macvim
-        set bg=dark
-        highlight Comment guifg=#666699
-        highlight MatchParen guibg=bg guifg=LightGoldenrod
-        highlight VertSplit guifg=DarkSlateGray guibg=bg
-        set guicursor+=a:blinkon0
-        set guifont=Menlo:h12
-        set guioptions=aegimt
-        set lines=40
-        set columns=80
-        function! ToggleZoom()
-            if &columns > 80
-                set lines=40 columns=80
-            else
-                set lines=999 columns=124
-            endif
-        endfunction
-        map <silent> <Leader>z :call ToggleZoom()<CR>
+" Pressing tab at the beginning of a line indents; elsewhere completes.
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-n>"
     endif
+endfunction
+inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
+
+" }}}
+
+" {{{ GUI configuration
+if has('gui_running')
+    colorscheme macvim
+    set bg=dark
+    highlight Comment guifg=#666699
+    highlight MatchParen guibg=bg guifg=LightGoldenrod
+    highlight VertSplit guifg=DarkSlateGray guibg=bg
+    set guicursor+=a:blinkon0
+    set guifont=Menlo:h12
+    set guioptions=aegimt  " TODO: check this
+    set lines=40
+
+    " Swap windows with ⌥`.
+    set macmeta
+    nmap <M-`> <C-w><C-w>
+    imap <M-`> <Esc><C-w><C-w>
+
+    " Shortcuts for some common window sizes.
+    function! ToggleZoom(wide)
+        if a:wide == 0 && &lines == 40
+            set lines=999
+        elseif a:wide == 1 && &columns == 80
+            set lines=999 columns=124
+        else
+            set lines=40 columns=80
+        endif
+    endfunction
+    map <Leader>z :call ToggleZoom(0)<CR>
+    map <Leader>Z :call ToggleZoom(1)<CR>
+endif
+" }}}
+
+" Custom settings by filetype or filename.
+if has("autocmd")
+    au FileType make setl noexpandtab shiftwidth=8
+    au FileType mail setl textwidth=72
+    au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
+    au FileType css,html,htmljinja setl shiftwidth=2
+    au BufNewFile,BufRead *.json setfiletype javascript
+    au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
 endif
 
-map <silent> <Leader>e :CommandT<CR>
-map <silent> <Leader>f :CommandTBuffer<CR>
-map <silent> <Leader>F :CommandTFlush<CR>
-nnoremap <CR> :CommandTBuffer<CR>
-nnoremap <Space> :buffer #<CR>
+" Handle term escape code to set paste mode automatically.
+if &term =~ "xterm.*"
+    let &t_ti = &t_ti . "\e[?2004h"
+    let &t_te = "\e[?2004l" . &t_te
+    function XTermPasteBegin(ret)
+        set pastetoggle=<Esc>[201~
+        set paste
+        return a:ret
+    endfunction
+    map <expr> <Esc>[200~ XTermPasteBegin("i")
+    imap <expr> <Esc>[200~ XTermPasteBegin("")
+endif
 
-let g:CommandTMatchWindowAtTop = 1
-let coffee_no_trailing_space_error = 1
-
-noremap ; :
-
+" Local overrides.
 if filereadable(expand('~/.local/vimrc'))
     source ~/.local/vimrc
 endif
+
+" vim:foldmethod=marker
