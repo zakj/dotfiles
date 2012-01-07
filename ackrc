@@ -1,3 +1,4 @@
+--ignore-dir=coverage
 --ignore-dir=migrations
 --ignore-dir=backups
 --ignore-dir=cache
@@ -7,3 +8,5 @@
 php=.ctp
 --type-add
 css=.scss
+--type-set
+coffee=.coffee
