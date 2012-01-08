@@ -39,38 +39,6 @@ set wildignore+=compiled,vendor,*.o,*.pyc
 set wildmode=list:longest
 " }}}
 
-" {{{ Plugins
-filetype off
-set runtimepath+=~/.vim/bundle/vundle
-call vundle#rc()
-
-Bundle 'gmarik/vundle'
-Bundle 'wincent/Command-T'
-Bundle 'mileszs/ack.vim'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-rails'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-surround'
-Bundle 'indentpython.vim'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'pangloss/vim-javascript'
-Bundle 'uggedal/jinja-vim'
-Bundle 'bbommarito/vim-slim'
-Bundle 'groenewege/vim-less'
-
-" Plugin configuration
-let g:CommandTMatchWindowAtTop = 1
-let coffee_no_trailing_space_error = 1
-
-" Plugin mappings
-map <silent> <Leader>e :CommandT<CR>
-map <silent> <Leader>f :CommandTBuffer<CR>
-map <silent> <Leader>F :CommandTFlush<CR>
-
-filetype plugin indent on
-syntax enable
-" }}}
-
 " {{{ Mappings
 let mapleader = ","
 let maplocalleader = mapleader
@@ -144,6 +112,38 @@ function! InsertTabWrapper()
 endfunction
 inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
 
+" }}}
+
+" {{{ Plugins
+filetype off
+set runtimepath+=~/.vim/bundle/vundle
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'wincent/Command-T'
+Bundle 'mileszs/ack.vim'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-repeat'
+Bundle 'tpope/vim-surround'
+Bundle 'indentpython.vim'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'pangloss/vim-javascript'
+Bundle 'uggedal/jinja-vim'
+Bundle 'bbommarito/vim-slim'
+Bundle 'groenewege/vim-less'
+
+" Plugin configuration
+let g:CommandTMatchWindowAtTop = 1
+let coffee_no_trailing_space_error = 1
+
+" Plugin mappings
+map <silent> <Leader>e :CommandT<CR>
+map <silent> <Leader>f :CommandTBuffer<CR>
+map <silent> <Leader>F :CommandTFlush<CR>
+
+filetype plugin indent on
+syntax enable
 " }}}
 
 " {{{ GUI configuration
