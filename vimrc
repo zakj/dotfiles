@@ -19,7 +19,7 @@ set incsearch
 set nojoinspaces                   " Only once space after a sentence.
 set laststatus=2                   " Always show the status line.
 set linebreak                      " Don't break lines mid-word.
-set listchars=tab:├─,trail:·,extends:❯,precedes:❮
+set listchars=tab:├─,trail:·,extends:…,precedes:…
 set mouse=""
 set pastetoggle=<F1>               " TODO: consider removing? changing?
 set report=0                       " Always report how many lines were changed.
@@ -179,13 +179,16 @@ endif
 " }}}
 
 " Custom settings by filetype or filename.
-if has("autocmd")
-    au FileType make setl noexpandtab shiftwidth=8
-    au FileType mail setl textwidth=72
-    au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
-    au FileType css,html,htmljinja setl shiftwidth=2
-    au BufNewFile,BufRead *.json setfiletype javascript
-    au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
+if has('autocmd')
+    augroup vimrc
+        au!
+        au FileType make setl noexpandtab shiftwidth=8
+        au FileType mail setl textwidth=72
+        au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
+        au FileType css,html,htmljinja setl shiftwidth=2
+        au BufNewFile,BufRead *.json setfiletype javascript
+        au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
+    augroup end
 endif
 
 " Handle term escape code to set paste mode automatically.
