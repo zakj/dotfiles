@@ -5,7 +5,7 @@ set backspace=indent,eol,start
 set backupdir=~/.vim/backup,.
 set cedit=                         " Don't use the command-line window.
 set cinoptions=:0                  " `case` should line up with `switch`.
-"set colorcolumn=81                " TODO: maybe, once colorscheme is done
+set colorcolumn=81
 set confirm                        " Prompt instead of failing to quit.
 set diffopt+=iwhite
 set directory=~/.vim/backup//,.    " Keep swap files in one place.
@@ -37,6 +37,8 @@ set viminfo=""                     " Always start with a clean slate.
 set whichwrap=""
 set wildignore+=compiled,vendor,*.o,*.pyc
 set wildmode=list:longest
+
+colorscheme cabin
 " }}}
 
 " {{{ Mappings
@@ -148,11 +150,6 @@ syntax enable
 
 " {{{ GUI configuration
 if has('gui_running')
-    colorscheme macvim
-    set bg=dark
-    highlight Comment guifg=#666699
-    highlight MatchParen guibg=bg guifg=LightGoldenrod
-    highlight VertSplit guifg=DarkSlateGray guibg=bg
     set guicursor+=a:blinkon0
     set guifont=Menlo:h12
     set guioptions=aegimt  " TODO: check this
