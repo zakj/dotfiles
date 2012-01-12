@@ -153,7 +153,7 @@ if has('gui_running')
     set guicursor+=a:blinkon0
     set guifont=Menlo:h12
     set guioptions=aegimt  " TODO: check this
-    set lines=40
+    set lines=40 columns=80
 
     " Swap windows with ⌥`.
     set macmeta

@@ -47,10 +47,10 @@ hi WildMenu gui=bold guifg=bg guibg=fg
 
 hi Search guibg=yellow  " XXX
 hi IncSearch guifg=yellow  " XXX
-"hi Visual  "XXX
+hi Visual guifg=bg guibg=fg
 
 "hi SpecialKey  "XXX listchars, <C-F> from :map, etc.
-"hi NonText  "XXX ~/@, showbreak, etc.
+hi NonText guifg=#224466
 hi SpecialKey guifg=#333399
 
 " Conceal		placeholder characters substituted for concealed " 		text (see 'conceallevel')
