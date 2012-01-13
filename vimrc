@@ -14,7 +14,6 @@ set expandtab
 set fillchars+=vert:│              " Use a proper box bar for vsplits.
 set nofoldenable                   " No folds by default; use `zi` to enable.
 set hidden                         " Don't unload hidden buffers.
-set hlsearch
 set incsearch
 set nojoinspaces                   " Only once space after a sentence.
 set laststatus=2                   " Always show the status line.
@@ -73,7 +72,7 @@ nmap Y y$
 map <silent> <Leader>l :set list!<CR>
 map <silent> <Leader>p :set paste!<CR>
 map <silent> <Leader>s :set spell!<CR>
-map <silent> <C-h> :nohlsearch<CR>
+map <silent> <C-h> :set hlsearch!<CR>
 
 " Vertical split/unsplit.
 map <silent> <Leader>v :set columns=161<CR>:vsplit<CR>
