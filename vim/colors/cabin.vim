@@ -41,17 +41,18 @@ hi LineNr guifg=#2a2a2a guibg=#111111
 hi SignColumn guifg=#2a2a2a guibg=#111111
 hi MatchParen guifg=yellow guibg=#000000  " XXX
 
-hi Pmenu guifg=fg guibg=#000000
-hi PmenuSel gui=bold guifg=bg guibg=fg
+"hi Pmenu guifg=fg guibg=#000000
+"hi PmenuSel gui=bold guifg=bg guibg=fg
+hi Pmenu guifg=bg guibg=fg
+hi PmenuSel gui=NONE guifg=fg guibg=#224466
 hi WildMenu gui=bold guifg=bg guibg=fg
 
 hi Search guibg=yellow  " XXX
 hi IncSearch guifg=yellow  " XXX
 hi Visual guifg=bg guibg=fg
 
-"hi SpecialKey  "XXX listchars, <C-F> from :map, etc.
 hi NonText guifg=#224466
-hi SpecialKey guifg=#333399
+hi SpecialKey guifg=#224466
 
 " Conceal		placeholder characters substituted for concealed " 		text (see 'conceallevel')
 " Directory	directory names (and other special names in listings)
@@ -78,75 +79,27 @@ hi Identifier gui=NONE guifg=#7065a7 guibg=bg
 hi Statement gui=bold guifg=#7a7aa3 guibg=bg
 hi Type gui=NONE guifg=#6f6f94 guibg=bg
 hi Operator gui=NONE guifg=#636363 guibg=bg
-
-"hi PreProc guifg=#3333cc
 hi PreProc guifg=#666699
-
-"hi Special guifg=#54548d
 hi Special guifg=#454574
-"hi Special guifg=#636363
-"hi Special guifg=#700025
-"hi Special guifg=#990033
-"hi Special guifg=#3d3d67
 
-hi Underlined NONE
-hi Ignore NONE
+hi Underlined NONE  " XXX
+hi Ignore NONE      " XXX
 hi Error gui=NONE guifg=#b5b4b4 guibg=#990033
 hi Todo gui=NONE guifg=#000000 guibg=#7a7aa3
 
 
-" hi Constant guifg=#3b8686
-" hi Identifier guifg=#6c8c6c
-" hi Statement guifg=#cf817e
-" hi Statement guifg=#a26563
-" hi Statement guifg=#b87270
-" "hi PreProc guifg=#9f836f
-" hi Type guifg=#9f836f
-" hi Type guifg=#744847
-" hi Type guifg=#8b5655
-" "hi Type guifg=#7065a7
-" hi Special guifg=#7065a7
-" "hi Comment gui=italic guifg=#7f8379
-" "hi Normal guifg=#c7ccbd
-" hi Error guifg=#000000 guibg=#fe4365
-" hi Todo guifg=#000000 guibg=#f0ea7b
-" " TODO
-" "hi Error guif=#000000 guibg=#fe4365
-
-
-"hi Constant guifg=#cc8888
-"hi Constant guifg=#aa8888
-"hi Constant guifg=#336666
-"hi Identifier guifg=#669966
-"hi Statement guifg=#996699
-"hi PreProc NONE
-"hi Type gui=bold guifg=#8888bb
-"hi Special NONE
-"hi Underlined NONE
-"hi Ignore NONE
-"hi Error NONE
-"hi Todo gui=bold guifg=#505458 guibg=#222222
-"hi Todo guibg=#cccc66 guifg=bg
-
-"hi Comment gui=italic guifg=#3a4685
-"hi Identifier guifg=#545c8b
-"hi Type guifg=#7b6cae
-"hi Constant guifg=#6d77ad
-"
-
-
 " 	*Comment	any comment
-" 
+"
 " 	*Constant	any constant
 " 	 String		a string constant: "this is a string"
 " 	 Character	a character constant: 'c', '\n'
 " 	 Number		a number constant: 234, 0xff
 " 	 Boolean	a boolean constant: TRUE, false
 " 	 Float		a floating point constant: 2.3e10
-" 
+"
 " 	*Identifier	any variable name
 " 	 Function	function name (also: methods for classes)
-" 
+"
 " 	*Statement	any statement
 " 	 Conditional	if, then, else, endif, switch, etc.
 " 	 Repeat		for, do, while, etc.
@@ -154,31 +107,31 @@ hi Todo gui=NONE guifg=#000000 guibg=#7a7aa3
 " 	 Operator	"sizeof", "+", "*", etc.
 " 	 Keyword	any other keyword
 " 	 Exception	try, catch, throw
-" 
+"
 " 	*PreProc	generic Preprocessor
 " 	 Include	preprocessor #include
 " 	 Define		preprocessor #define
 " 	 Macro		same as Define
 " 	 PreCondit	preprocessor #if, #else, #endif, etc.
-" 
+"
 " 	*Type		int, long, char, etc.
 " 	 StorageClass	static, register, volatile, etc.
 " 	 Structure	struct, union, enum, etc.
 " 	 Typedef	A typedef
-" 
+"
 " 	*Special	any special symbol
 " 	 SpecialChar	special character in a constant
 " 	 Tag		you can use CTRL-] on this
 " 	 Delimiter	character that needs attention
 " 	 SpecialComment	special things inside a comment
 " 	 Debug		debugging statements
-" 
+"
 " 	*Underlined	text that stands out, HTML links
-" 
+"
 " 	*Ignore		left blank, hidden  |hl-Ignore|
-" 
+"
 " 	*Error		any erroneous construct
-" 
+"
 " 	*Todo		anything that needs extra attention; mostly the
 " 			keywords TODO FIXME and XXX
 
@@ -191,19 +144,19 @@ hi Todo gui=NONE guifg=#000000 guibg=#7a7aa3
 "    var. 3 = #3a4685 = rgb(58,70,133)
 "    var. 4 = #6772ad = rgb(103,114,173)
 "    var. 5 = #6d77ad = rgb(109,119,173)
-" 
+"
 "    var. 1 = #66569c = rgb(102,86,156)
 "    var. 2 = #60548c = rgb(96,84,140)
 "    var. 3 = #4b3a85 = rgb(75,58,133)
 "    var. 4 = #7767ae = rgb(119,103,174)
 "    var. 5 = #7b6cae = rgb(123,108,174)
-" 
+"
 "    var. 1 = #4d7293 = rgb(77,114,147)
 "    var. 2 = #4c6984 = rgb(76,105,132)
 "    var. 3 = #355b7d = rgb(53,91,125)
 "    var. 4 = #5f84a6 = rgb(95,132,166)
 "    var. 5 = #6487a6 = rgb(100,135,166)
-" 
+"
 "    var. 1 = #e3c170 = rgb(227,193,112)
 "    var. 2 = #cbb16f = rgb(203,177,111)
 "    var. 3 = #c2a04c = rgb(194,160,76)
@@ -228,10 +181,10 @@ hi Todo gui=NONE guifg=#000000 guibg=#7a7aa3
 "hi StatusLine guibg=#b5b4b4 guifg=#424f57
 "hi StatusLine guibg=#1c1c1c guifg=#424f57
 "hi StatusLineNC guibg=#1c1c1c guifg=#1c1c1c
-"hi StatusLine guifg=#3a4685 guibg=#b5b4b4 
+"hi StatusLine guifg=#3a4685 guibg=#b5b4b4
 "hi StatusLineNC guifg=#3a4685 guibg=bg
 "hi VertSplit guifg=bg guibg=#3a4685
-"hi StatusLine guifg=#545c8b guibg=#b5b4b4 
+"hi StatusLine guifg=#545c8b guibg=#b5b4b4
 "hi StatusLineNC guifg=#545c8b guibg=bg
 "hi VertSplit guifg=bg guibg=#545c8b
 " TODO: something fancy (not really a TODO!)
