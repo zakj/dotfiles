@@ -36,8 +36,6 @@ set viminfo=""                     " Always start with a clean slate.
 set whichwrap=""
 set wildignore+=compiled,vendor,*.o,*.pyc
 set wildmode=list:longest
-
-colorscheme cabin
 " }}}
 
 " {{{ Mappings
@@ -121,6 +119,7 @@ set runtimepath+=~/.vim/bundle/vundle
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
+Bundle 'cabin/cabin-colorscheme'
 Bundle 'wincent/Command-T'
 Bundle 'mileszs/ack.vim'
 Bundle 'tpope/vim-endwise'
@@ -135,6 +134,7 @@ Bundle 'bbommarito/vim-slim'
 Bundle 'groenewege/vim-less'
 
 " Plugin configuration
+colorscheme cabin
 let g:CommandTMatchWindowAtTop = 1
 let coffee_no_trailing_space_error = 1
 
