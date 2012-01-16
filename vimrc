@@ -78,7 +78,7 @@ map <silent> <Leader>V :close<CR>:set columns=80<CR>
 map <silent> <Leader>w :set wrap!<CR>
 
 " Prompt to open a file in the same directory as the current buffer's file.
-map <silent> <Leader>E :e <C-R>=expand("%:p:h") . "/"<CR>
+map <Leader>E :e <C-R>=expand("%:p:h") . "/"<CR>
 
 " Remove trailing whitespace.
 map <silent> <leader>S mS:%s/\s\s*$//<CR>`S
