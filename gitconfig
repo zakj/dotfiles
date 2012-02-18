@@ -9,7 +9,7 @@
     d = diff
     dc = diff --cached
     graph = log --graph --oneline
-    hist = log --pretty=format:\"%h %ad | %s%d [%an]\n\" --graph --date=short
+    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
     out = log origin/master..HEAD
     record = add -p
     st = status --branch --short
@@ -19,7 +19,7 @@
 [core]
     autocrlf = input
     safecrlf = true
-    pager = cat
+    pager = less -FSX
 
 [push]
     default = tracking
