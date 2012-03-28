@@ -10,7 +10,7 @@
     dc = diff --cached
     graph = log --graph --oneline
     hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
-    out = log origin/master..HEAD
+    out = log @{upstream}..
     record = add -p
     st = status --branch --short
     unstage = reset HEAD --
@@ -23,6 +23,9 @@
 
 [push]
     default = tracking
+
+[rebase]
+    autosquash = true
 
 [color]
     ui = auto
