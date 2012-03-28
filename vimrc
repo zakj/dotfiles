@@ -132,6 +132,7 @@ Bundle 'pangloss/vim-javascript'
 Bundle 'uggedal/jinja-vim'
 Bundle 'bbommarito/vim-slim'
 Bundle 'groenewege/vim-less'
+Bundle 'michaeljsmith/vim-indent-object'
 
 " Plugin configuration
 colorscheme cabin
