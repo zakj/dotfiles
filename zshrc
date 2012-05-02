@@ -48,7 +48,7 @@ mvack() { mvim $(ack -l $*) }
 git_branch() { print -n ${$(git symbolic-ref HEAD 2>/dev/null)##*/} }
 
 # Display a symbol if the local repository has changes.
-git_dirty() { [[ -n $(git status 2>/dev/null) ]] && print -n '⚡' }
+git_dirty() { [[ -n $(git status --porcelain 2>/dev/null) ]] && print -n '⚡' }
 
 # Manage terminal window titles.
 if [[ $TERM =~ "(rxvt|xterm).*" ]]; then
