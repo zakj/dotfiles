@@ -1,4 +1,5 @@
 --ignore-dir=.bundle
+--ignore-dir=vendor/bundle
 --ignore-dir=coverage
 --ignore-dir=migrations
 --ignore-dir=backups
