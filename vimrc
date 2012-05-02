@@ -182,7 +182,7 @@ if has('autocmd')
         au FileType make setl noexpandtab shiftwidth=8
         au FileType mail setl textwidth=72
         au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
-        au FileType css,html,htmljinja setl shiftwidth=2
+        au FileType css,html,htmldjango,htmljinja setl shiftwidth=2
         au BufNewFile,BufRead *.json setfiletype javascript
         au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
     augroup end
