@@ -19,8 +19,8 @@ SAVEHIST=$HISTSIZE
 PROMPT='%m:%~'
 # "%", or "#" when root, or red "x" if the last command exited non-zero.
 PROMPT+='%(?.%#.%B%F{red}✖%b%f) '
-# Dirtiness flag in green, current branch in dark grey.
-RPROMPT='%F{green}$(git_dirty)%B%F{black}$(git_branch)%b%f'
+# git: flags in green, branch in dark grey.
+RPROMPT='%F{green}$(git_dirty)$(git_ahead)%B%F{black}$(git_branch)%b%f'
 
 # Aliases
 alias ls='ls -F'
@@ -47,8 +47,14 @@ mvack() { mvim $(ack -l $*) }
 # Display the current git branch.
 git_branch() { print -n ${$(git symbolic-ref HEAD 2>/dev/null)##*/} }
 
+# Return whether the given command has output on stdout.
+has_output() { [[ -n $(eval "$* 2>/dev/null") ]] }
+
 # Display a symbol if the local repository has changes.
-git_dirty() { [[ -n $(git status --porcelain 2>/dev/null) ]] && print -n '⚡' }
+git_dirty() { has_output git status --porcelain && print -n '⚡' }
+
+# Display a symbol if the local repository needs to be pushed.
+git_ahead() { has_output git log --max-count=1 @{upstream}.. && print -n '➤' }
 
 # Manage terminal window titles.
 if [[ $TERM =~ "(rxvt|xterm).*" ]]; then
