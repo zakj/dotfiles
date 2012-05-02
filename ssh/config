@@ -1,4 +1,8 @@
-Host *.goodcorps.com
+Host ralph.votegivegrow.com
+    User ubuntu
+    IdentityFile ~/.ssh/ralph.pem
+
+Host *.votegivegrow.com
     User ec2-user
     IdentityFile ~/.ssh/goodcorps.pem
 
