@@ -10,6 +10,12 @@ export EDITOR=vim
 export LESS=gij5MR
 export PAGER=less
 
+export WORKON_HOME=~/.virtualenvs
+export PIP_VIRTUALENV_BASE=$WORKON_HOME
+export PIP_RESPECT_VIRTUALENV=1
+export VIRTUALENV_USE_DISTRIBUTE=1
+
+
 # History
 HISTFILE=~/.history
 HISTSIZE=10000
