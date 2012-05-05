@@ -4,7 +4,6 @@ setopt no_beep           # Shhhh.
 setopt correct           # Spelling correction for commands.
 setopt no_flow_control   # Ignore ^S/^Q.
 setopt hist_ignore_dups  # Don't insert immediate duplicates into history.
-setopt prompt_subst      # Allow shell substitution in prompts.
 
 #}}}
 #{{{ Environment
