@@ -1,0 +1,34 @@
+#!zsh
+
+[[ $(git rev-parse --is-inside-work-tree) = 'true' ]] || return
+
+# Detect staged/unstaged changes.
+# vcs_info does not detect added/removed files, which I like to know about.
+local uniques code
+uniques=$(git status --porcelain | cut -c -2 | sort -u)
+foreach code in ${=uniques// /_}; do
+    case ${code//[^_?\!]/x} in
+        x?) hook_com[staged]=1 ;|
+        ?[x?]) hook_com[unstaged]=1 ;|
+    esac
+done
+
+# Detect whether we have changes to push or merge.
+local ahead behind
+ahead=$(git log --max-count=1 @{upstream}.. 2>/dev/null)
+behind=$(git log --max-count=1 ..@{upstream} 2>/dev/null)
+[[ -n $ahead ]] && hook_com[misc]+='%F{green}▴'
+[[ -n $behind ]] && hook_com[misc]+='%F{red}▾'
+[[ -n $ahead || -n $behind ]] && hook_com[misc]+=' '
+
+# Detect stashes.
+if [[ -n $(git stash list 2>/dev/null) ]]; then
+    hook_com[misc]+='%F{white}⿳'
+fi
+
+# Detect if the remote-tracking branch has a different name from the local one.
+local remote
+remote=${$(git rev-parse --symbolic-full-name @{upstream} 2>/dev/null)##*/}
+if [[ -n $remote && $remote != $hook_com[branch] ]]; then
+    hook_com[branch]+="%b%F{blue}·$remote"
+fi

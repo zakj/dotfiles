@@ -21,11 +21,36 @@ HISTFILE=~/.history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
-# Completion and prompt
-autoload -Uz compinit promptinit
+# Completion
+autoload -U compinit
 compinit -i
-promptinit
-prompt cabin
+
+# Prompt
+
+# Hostname and pwd, then %/# or a red symbol if the last command failed.
+PROMPT='%m:%~'
+PROMPT+='%(?.%#.%B%F{red}✖%b%f) '
+
+# vcs_info output in RPROMPT.
+autoload -U add-zsh-hook vcs_info
+add-zsh-hook -U precmd precmd-prompt
+precmd-prompt() { vcs_info; RPROMPT=$vcs_info_msg_0_ }
+
+() {
+    local format='%m%c%u%B%F{black}%b'
+    zstyle ':vcs_info:*' formats "$format%%b%f"
+    zstyle ':vcs_info:*' actionformats "$format%%b%F{yellow}⚡%a%f"
+    zstyle ':vcs_info:*' enable git hg svn
+    zstyle ':vcs_info:*' check-for-changes true
+    zstyle ':vcs_info:*' stagedstr '%F{green}•'
+    zstyle ':vcs_info:*' unstagedstr '%F{red}•'
+}
+
+# vcs_info doesn't detect added/removed files, so I do it myself.
+autoload -U -- +vi-get-data-git
+zstyle ':vcs_info:git*' check-for-changes false
+zstyle ':vcs_info:git*+post-backend:*' hooks get-data-git
+
 
 # Aliases
 alias ls='ls -F'
@@ -51,9 +76,9 @@ if [[ $TERM =~ "(rxvt|xterm).*" ]]; then
     termtitle() { print -Pn "\e]0;$*\a" }
     precmd-termtitle() { termtitle '%n@%m:%~' }
     preexec-termtitle() { termtitle $1 }
-    autoload -Uz add-zsh-hook
-    add-zsh-hook -Uz precmd precmd-termtitle
-    add-zsh-hook -Uz preexec preexec-termtitle
+    autoload -U add-zsh-hook
+    add-zsh-hook -U precmd precmd-termtitle
+    add-zsh-hook -U preexec preexec-termtitle
 fi
 
 
