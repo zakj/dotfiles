@@ -1,3 +1,4 @@
+#{{{ Options
 setopt auto_pushd        # Use the directory stack more easily.
 setopt no_beep           # Shhhh.
 setopt correct           # Spelling correction for commands.
@@ -5,28 +6,25 @@ setopt no_flow_control   # Ignore ^S/^Q.
 setopt hist_ignore_dups  # Don't insert immediate duplicates into history.
 setopt prompt_subst      # Allow shell substitution in prompts.
 
-# External environment
+#}}}
+#{{{ Environment
 export EDITOR=vim
 export LESS=gij5MR
 export PAGER=less
 
+# Python virtual environments.
 export WORKON_HOME=~/.virtualenvs
 export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=1
 export VIRTUALENV_USE_DISTRIBUTE=1
 
-
-# History
+# zsh history; no need to export this.
 HISTFILE=~/.history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
-# Completion
-autoload -U compinit
-compinit -i
-
-# Prompt
-
+#}}}
+#{{{ Prompt
 # Hostname and pwd, then %/# or a red symbol if the last command failed.
 PROMPT='%m:%~'
 PROMPT+='%(?.%#.%B%F{red}✖%b%f) '
@@ -51,12 +49,15 @@ autoload -U -- +vi-get-data-git
 zstyle ':vcs_info:git*' check-for-changes false
 zstyle ':vcs_info:git*+post-backend:*' hooks get-data-git
 
+# Enable completion.
+autoload -U compinit
+compinit -i
 
-# Aliases
+#}}}
+#{{{ Aliases and functions
 alias ls='ls -F'
 alias ll='ls -laF'
 alias vi=$EDITOR
-
 
 # Give a short name to the given (or current) directory.
 namedir() { eval "$1=${2-$PWD}" && : ~$1 }
@@ -70,19 +71,9 @@ lack() { ack --group --color $* | $PAGER }
 # Open all matching files in mvim.
 mvack() { mvim $(ack -l $*) }
 
-
-# Manage terminal window titles.
-if [[ $TERM =~ "(rxvt|xterm).*" ]]; then
-    termtitle() { print -Pn "\e]0;$*\a" }
-    precmd-termtitle() { termtitle '%n@%m:%~' }
-    preexec-termtitle() { termtitle $1 }
-    autoload -U add-zsh-hook
-    add-zsh-hook -U precmd precmd-termtitle
-    add-zsh-hook -U preexec preexec-termtitle
-fi
-
-
-# zle; vi mode (from $EDITOR), with some familiar Emacs-style friends.
+#}}}
+#{{{ zle
+# vi mode (from $EDITOR), with some familiar Emacs-style friends.
 bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
 bindkey '^R' history-incremental-search-backward
@@ -105,6 +96,19 @@ rationalise-dot() {
 zle -N rationalise-dot
 bindkey . rationalise-dot
 
+#}}}
+
+# Manage terminal window titles.
+if [[ $TERM =~ "(rxvt|xterm).*" ]]; then
+    termtitle() { print -Pn "\e]0;$*\a" }
+    precmd-termtitle() { termtitle '%n@%m:%~' }
+    preexec-termtitle() { termtitle $1 }
+    autoload -U add-zsh-hook
+    add-zsh-hook -U precmd precmd-termtitle
+    add-zsh-hook -U preexec preexec-termtitle
+fi
 
 # Local overrides
 [[ -f ~/.local/zshrc ]] && source ~/.local/zshrc || true
+
+# vim:foldmethod=marker
