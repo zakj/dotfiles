@@ -21,21 +21,16 @@ HISTFILE=~/.history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
-# Prompts
-PROMPT='%m:%~'
-# "%", or "#" when root, or red "x" if the last command exited non-zero.
-PROMPT+='%(?.%#.%B%F{red}✖%b%f) '
-# git: flags in green, branch in dark grey.
-RPROMPT='%F{green}$(git_dirty)$(git_ahead)%B%F{black}$(git_branch)%b%f'
+# Completion and prompt
+autoload -Uz compinit promptinit
+compinit -i
+promptinit
+prompt cabin
 
 # Aliases
 alias ls='ls -F'
 alias ll='ls -laF'
 alias vi=$EDITOR
-
-# Completion
-autoload -U compinit
-compinit -i
 
 
 # Give a short name to the given (or current) directory.
@@ -50,23 +45,15 @@ lack() { ack --group --color $* | $PAGER }
 # Open all matching files in mvim.
 mvack() { mvim $(ack -l $*) }
 
-# Display the current git branch.
-git_branch() { print -n ${$(git symbolic-ref HEAD 2>/dev/null)##*/} }
-
-# Return whether the given command has output on stdout.
-has_output() { [[ -n $(eval "$* 2>/dev/null") ]] }
-
-# Display a symbol if the local repository has changes.
-git_dirty() { has_output git status --porcelain && print -n '⚡' }
-
-# Display a symbol if the local repository needs to be pushed.
-git_ahead() { has_output git log --max-count=1 @{upstream}.. && print -n '➤' }
 
 # Manage terminal window titles.
 if [[ $TERM =~ "(rxvt|xterm).*" ]]; then
     termtitle() { print -Pn "\e]0;$*\a" }
-    precmd() { termtitle '%n@%m:%~' }
-    preexec() { termtitle $1 }
+    precmd-termtitle() { termtitle '%n@%m:%~' }
+    preexec-termtitle() { termtitle $1 }
+    autoload -Uz add-zsh-hook
+    add-zsh-hook -Uz precmd precmd-termtitle
+    add-zsh-hook -Uz preexec preexec-termtitle
 fi
 
 
