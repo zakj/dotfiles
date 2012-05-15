@@ -29,6 +29,6 @@ fi
 # Detect if the remote-tracking branch has a different name from the local one.
 local remote
 remote=${$(git rev-parse --symbolic-full-name @{upstream} 2>/dev/null)##*/}
-if [[ -n $remote && $remote != $hook_com[branch] ]]; then
+if [[ $? -eq 0 && -n $remote && $remote != $hook_com[branch] ]]; then
     hook_com[branch]+="%b%F{blue}·$remote"
 fi
