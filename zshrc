@@ -75,9 +75,13 @@ mvack() { mvim $(ack -l $*) }
 # vi mode (from $EDITOR), with some familiar Emacs-style friends.
 bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
+# History search.
 bindkey '^R' history-incremental-search-backward
-bindkey '\e[A' up-line-or-search
-bindkey '\e[B' down-line-or-search
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey '\e[A' history-beginning-search-backward-end
+bindkey '\e[B' history-beginning-search-forward-end
 # Perform history completion when pressing space.
 bindkey ' ' magic-space
 # ^Y to insert the kill buffer; ctrl-shift-y to rotate through the killring.
