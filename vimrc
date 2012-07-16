@@ -183,7 +183,7 @@ if has('autocmd')
     augroup vimrc
         au!
         au FileType make setl noexpandtab shiftwidth=8
-        au FileType mail setl textwidth=72
+        au FileType gitcommit,mail setl textwidth=72
         au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
         au FileType css,html,htmldjango,htmljinja setl shiftwidth=2
         au BufNewFile,BufRead *.json setfiletype javascript
