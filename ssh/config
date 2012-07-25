@@ -6,6 +6,9 @@ Host *.votegivegrow.com
     User ec2-user
     IdentityFile ~/.ssh/goodcorps.pem
 
+Host katie
+    Hostname 173.45.253.27
+
 Host *
     User zakj
     Protocol 2
