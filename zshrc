@@ -1,5 +1,4 @@
 #{{{ Options
-setopt auto_pushd        # Use the directory stack more easily.
 setopt no_beep           # Shhhh.
 setopt correct           # Spelling correction for commands.
 setopt no_flow_control   # Ignore ^S/^Q.
@@ -57,6 +56,15 @@ compinit -i
 alias ls='ls -F'
 alias ll='ls -laF'
 alias vi=$EDITOR
+
+# cdr provides a selectable list of recently-visited directories.
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+zstyle ':completion:*:*:cdr:*:*' menu selection
+
+# zmv saves writing loops and replacements for common rename tasks.
+# usage: noglob zmv -W prefix-1.* prefix-2.*
+autoload -Uz zmv
 
 # Give a short name to the given (or current) directory.
 namedir() { eval "$1=${2-$PWD}" && : ~$1 }
