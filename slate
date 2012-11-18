@@ -49,5 +49,5 @@ bind [:ctrl nudge -${browserOffset} +0
 bind backslash:ctrl move ${center}
 
 #bind esc:cmd relaunch
-bind 1:ctrl layout ext
-bind 2:ctrl layout mbp
+bind 1:cmd,ctrl layout ext
+bind 2:cmd,ctrl layout mbp
