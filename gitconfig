@@ -1,33 +1,33 @@
 [user]
-    name = Zak Johnson
-    email = zakj@nox.cx
+	name = Zak Johnson
+	email = zakj@nox.cx
 
 [alias]
-    box = !open -a Gitbox .
-    ci = commit -v
-    co = checkout
-    d = diff
-    dc = diff --cached
-    lg = log --graph --pretty=graph
-    out = log @{upstream}..
-    record = add -p
-    st = status --branch --short
-    unstage = reset HEAD --
-    unstash = stash pop
+	box = !open -a Gitbox .
+	ci = commit -v
+	co = checkout
+	d = diff
+	dc = diff --cached
+	lg = log --graph --pretty=graph
+	out = log @{upstream}..
+	record = add -p
+	st = status --branch --short
+	unstage = reset HEAD --
+	unstash = stash pop
 
 [core]
-    autocrlf = input
-    safecrlf = true
-    pager = less -FSX
+	autocrlf = input
+	safecrlf = true
+	pager = less -FSX
 
 [pretty]
-    graph = %C(yellow)%h%Creset %s%d %C(bold black)%an %ar
+	graph = %C(yellow)%h%Creset %s%d %C(bold black)%an %ar
 
 [push]
-    default = tracking
+	default = tracking
 
 [rebase]
-    autosquash = true
+	autosquash = true
 
 [color]
-    ui = auto
+	ui = auto
