@@ -4,6 +4,7 @@
 --ignore-dir=migrations
 --ignore-dir=backups
 --ignore-dir=cache
+--ignore-dir=.webassets-cache
 --sort-files
 
 --type-add
