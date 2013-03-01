@@ -12,6 +12,7 @@ set directory=~/.vim/backup//,.    " Keep swap files in one place.
 set encoding=utf-8
 set expandtab
 set fillchars+=vert:│              " Use a proper box bar for vsplits.
+set formatoptions+=j               " Remove comment leader when joining lines.
 set nofoldenable                   " No folds by default; use `zi` to enable.
 set hidden                         " Don't unload hidden buffers.
 set incsearch
@@ -26,7 +27,7 @@ set ruler                          " TODO: remove if I customize statusline
 set shiftround                     " Indent in multiples of 'shiftwidth'.
 set shiftwidth=4
 set shortmess+=I
-set showbreak=+
+set showbreak=↪
 set smarttab
 set nostartofline                  " Maintain cursor column on C-f, C-b.
 set textwidth=79
@@ -123,19 +124,19 @@ if exists('*vundle#rc')
     Bundle 'cabin/cabin-colorscheme'
     Bundle 'wincent/Command-T'
     Bundle 'mileszs/ack.vim'
-    Bundle 'tpope/vim-fugitive'
     Bundle 'tpope/vim-endwise'
-    Bundle 'tpope/vim-rails'
     Bundle 'tpope/vim-repeat'
     Bundle 'tpope/vim-surround'
     Bundle 'indentpython.vim'
     Bundle 'kchmck/vim-coffee-script'
     Bundle 'pangloss/vim-javascript'
     Bundle 'uggedal/jinja-vim'
-    Bundle 'bbommarito/vim-slim'
+    Bundle 'slim-template/vim-slim'
     Bundle 'groenewege/vim-less'
     Bundle 'michaeljsmith/vim-indent-object'
     Bundle 'wavded/vim-stylus'
+    Bundle 'scrooloose/syntastic'
+    Bundle 'nono/vim-handlebars'
 
     " Plugin configuration
     colorscheme cabin
@@ -186,9 +187,12 @@ if has('autocmd')
         au FileType make setl noexpandtab shiftwidth=8
         au FileType gitcommit,mail setl textwidth=72
         au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
-        au FileType css,html,htmldjango,htmljinja,stylus setl shiftwidth=2
+        au FileType css,html,htmldjango,jinja,stylus setl shiftwidth=2
+        au FileType handlebars setl shiftwidth=2
         au BufNewFile,BufRead *.json setfiletype javascript
         au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
+        au BufNewFile,BufRead */templates/*.html set filetype=jinja
+        au BufNewFile,BufRead */templates/*/*.html set filetype=jinja
     augroup end
 endif
 
