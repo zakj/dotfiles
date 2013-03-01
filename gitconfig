@@ -9,7 +9,7 @@
 	d = diff
 	dc = diff --cached
 	lg = log --graph --pretty=graph
-	out = log @{upstream}..
+	out = log --pretty=graph @{upstream}..
 	record = add -p
 	st = status --branch --short
 	unstage = reset HEAD --
