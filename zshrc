@@ -24,8 +24,11 @@ SAVEHIST=$HISTSIZE
 #}}}
 #{{{ Prompt
 # Hostname and pwd, then %/# or a red symbol if the last command failed.
-PROMPT='%m:%~'
+PROMPT='%~'
 PROMPT+='%(?.%#.%B%F{red}✖%b%f) '
+
+# Include the hostname if this is a remote host.
+test -n "$SSH_CLIENT" && PROMPT="%m:$PROMPT"
 
 # vcs_info output in RPROMPT.
 autoload -U add-zsh-hook vcs_info
