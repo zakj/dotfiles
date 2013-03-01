@@ -20,11 +20,12 @@ alias ext3 ${ext2}+${vimWidth}+${gutter}
 alias center (screenSizeX-windowSizeX)/2;(screenSizeY-windowSizeY)/2 ${currentSize}
 
 alias term-ext    ${ext1};${oy}+${gutter}/2 ${currentSize}
-alias vim-ext     ${ext2};${oy}+${gutter}/2 ${currentSize}
+#alias vim-ext     ${ext2};${oy}+${gutter}/2 ${currentSize}
+alias vim-ext     ${ext2};${oy}+${gutter}/2 ${vimWidth}
 alias browser-ext ${ext3};${oy} ${browserWidth}
 
 layout ext 'iTerm'         move ${term-ext} #;726
-layout ext 'MacVim'        move ${vim-ext} #;1411
+layout ext 'MacVim'        move ${vim-ext};1383
 layout ext 'Google Chrome' move ${browser-ext};1414
 layout ext 'Safari'        move ${browser-ext};1414
 layout ext 'Sparrow'       move ${center}
