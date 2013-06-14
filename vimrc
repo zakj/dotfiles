@@ -197,7 +197,7 @@ if has('autocmd')
 endif
 
 " Handle term escape code to set paste mode automatically.
-if &term =~ "xterm.*"
+if &term =~ '\v^(screen|xterm)'
     let &t_ti = &t_ti . "\e[?2004h"
     let &t_te = "\e[?2004l" . &t_te
     function! XTermPasteBegin(ret)
