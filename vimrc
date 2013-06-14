@@ -79,7 +79,8 @@ map <silent> <Leader>v :set columns=161<CR>:vsplit<CR>
 map <silent> <Leader>V :close<CR>:set columns=80<CR>
 
 " Prompt to open a file in the same directory as the current buffer's file.
-map <Leader>E :e <C-R>=expand("%:p:h") . "/"<CR>
+cnoremap %% <C-R>=expand("%:p:h") . "/"<CR>
+map <Leader>E :edit %%
 
 " Remove trailing whitespace.
 map <silent> <leader>S mS:%s/\s\s*$//<CR>`S
