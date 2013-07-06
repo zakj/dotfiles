@@ -1,6 +1,6 @@
 " {{{ Options
 set autoindent
-"set autowrite                     " TODO: maybe?
+set autoread
 set backspace=indent,eol,start
 set backupdir=~/.vim/backup,.
 set cedit=                         " Don't use the command-line window.
@@ -102,6 +102,9 @@ iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
 " I never use 'keywordprg'.
 map K k
 
+" Sort the selection (primarily useful with CSS).
+vmap <silent> <Leader>s :!sort -d<CR>
+
 " Pressing tab at the beginning of a line indents; elsewhere completes.
 function! InsertTabWrapper()
     let col = col('.') - 1
@@ -124,30 +127,31 @@ if exists('*vundle#rc')
     Bundle 'gmarik/vundle'
     Bundle 'cabin/cabin-colorscheme'
     Bundle 'wincent/Command-T'
-    Bundle 'mileszs/ack.vim'
+    Bundle 'rking/ag.vim'
+    Bundle 'bufmru.vim'
+    Bundle 'tpope/vim-commentary'
     Bundle 'tpope/vim-endwise'
     Bundle 'tpope/vim-repeat'
     Bundle 'tpope/vim-surround'
+    Bundle 'michaeljsmith/vim-indent-object'
+
+    Bundle 'scrooloose/syntastic'
     Bundle 'indentpython.vim'
     Bundle 'kchmck/vim-coffee-script'
     Bundle 'pangloss/vim-javascript'
     Bundle 'uggedal/jinja-vim'
-    Bundle 'slim-template/vim-slim'
-    Bundle 'groenewege/vim-less'
-    Bundle 'michaeljsmith/vim-indent-object'
     Bundle 'wavded/vim-stylus'
-    Bundle 'scrooloose/syntastic'
     Bundle 'nono/vim-handlebars'
 
     " Plugin configuration
     colorscheme cabin
-    let g:CommandTMatchWindowAtTop = 1
+    let g:CommandTMaxHeight = 10
+    let g:CommandTToggleFocusMap = []
     let coffee_no_trailing_space_error = 1
 
     " Plugin mappings
     map <silent> <Leader>e :CommandT<CR>
     map <silent> <Leader>f :CommandTBuffer<CR>
-    map <silent> <Leader>F :CommandTFlush<CR>
 endif
 
 filetype plugin indent on
@@ -190,6 +194,7 @@ if has('autocmd')
         au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
         au FileType css,html,htmldjango,jinja,stylus setl shiftwidth=2
         au FileType handlebars setl shiftwidth=2
+        au FileType html setl indentkeys-=*<Return>
         au BufNewFile,BufRead *.json setfiletype javascript
         au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
         au BufNewFile,BufRead */templates/*.html set filetype=jinja
