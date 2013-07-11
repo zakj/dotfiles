@@ -1,6 +1,5 @@
 #{{{ Options
 setopt no_beep           # Shhhh.
-setopt correct           # Spelling correction for commands.
 setopt no_flow_control   # Ignore ^S/^Q.
 setopt hist_ignore_dups  # Don't insert immediate duplicates into history.
 
@@ -59,6 +58,8 @@ compinit -i
 alias ls='ls -F'
 alias ll='ls -laF'
 alias vi=$EDITOR
+alias psg='pgrep -lf'
+alias lag='ag --pager $PAGER'
 
 # cdr provides a selectable list of recently-visited directories.
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
@@ -72,14 +73,8 @@ autoload -Uz zmv
 # Give a short name to the given (or current) directory.
 namedir() { eval "$1=${2-$PWD}" && : ~$1 }
 
-# Search the output of `ps` for a term, hiding the grep command.
-psg() { ps auxww | egrep $* | fgrep -v "egrep $*" }
-
-# Page ack results without losing groups/colors.
-lack() { ack --group --color $* | $PAGER }
-
 # Open all matching files in mvim.
-mvack() { mvim $(ack -l $*) }
+mvag() { ag -l "$@" | xargs mvim }
 
 #}}}
 #{{{ zle
