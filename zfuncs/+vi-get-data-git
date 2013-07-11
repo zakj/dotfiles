@@ -23,10 +23,11 @@ behind=$(git log --max-count=1 ..@{upstream} 2>/dev/null)
 
 # Detect stashes.
 if [[ -n $(git stash list 2>/dev/null) ]]; then
-    hook_com[misc]+='%F{white}⿳'
+    hook_com[misc]+='%F{white}⋯'
 fi
 
 # Detect if the remote-tracking branch has a different name from the local one.
+# TODO: handle slash characters in branch names :/
 local remote
 remote=${$(git rev-parse --symbolic-full-name @{upstream} 2>/dev/null)##*/}
 if [[ $? -eq 0 && -n $remote && $remote != $hook_com[branch] ]]; then
