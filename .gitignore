@@ -3,7 +3,7 @@ mutt/certificates
 mutt/gmail-root.pem
 mutt/gmail-root.txt
 mutt/muttrc
-mutt/pw
+mutt/pw-*
 ssh/*.pem
 ssh/id_rsa
 ssh/known_hosts

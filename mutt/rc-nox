@@ -1,8 +1,8 @@
 # vim:ft=muttrc:
-source ~/.mutt/rc-gmail
+source ~/.mutt/defaults
 
-set folder=~/Mail
+set from=zakj@nox.cx
+set folder=~/Maildir/nox
 set spoolfile="=INBOX"
-set mbox_type=Maildir
 
 mailboxes ! =django =djb =freebsd

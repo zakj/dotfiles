@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+dir="$(dirname $0)"
+password="$(cat "$dir/pw-$1")"
+
+printf 'password: "%s"\n' $password >&2

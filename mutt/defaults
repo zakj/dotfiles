@@ -10,26 +10,29 @@ set beep=no
 set certificate_file=~/.mutt/certificates
 set confirmappend=no
 set date_format="%Y-%m-%d %H:%M%Z"
+set delete=yes
 set editor="vim -c 'set notitle'"
 set fast_reply=yes
 #set folder_format=" %t %N %F %8s %d %f"
 set forward_format="Fwd: %s"
+set header_cache=~/.mutt/cache/headers
 set help=no
 set hidden_host=yes
-#set imap_servernoise=no
 set include=yes
 #set index_format="%4C %Z %[%b %d] %-15.15F (%4c) %s"
-#set index_format="%Z %-15.15F %?M?+&|? %s%*  %?M?[%M]&%[%b %d]?"
 set index_format="%Z %-15.15F %?M?+ [%M]&|? %s%*  %?[16h?%[%H:%M]&%[%b %d]?"
-set mark_old=no
+#set index_format="%Z %-15.15F %?M?+&|? %s%*  %?M?[%M]&%[%b %d]?"
 set markers=no
+set mark_old=no
+set mbox_type=Maildir
 set mime_forward=ask-yes
 set move=no
 set pager_format="-%S- %C/%m: %-15.15n -- %s%*  (%P)"
 set pager_stop=yes
 set realname="Zak Johnson"
+set record=""
 set reverse_alias=yes
-#set sendmail_wait=-1
+set sendmail="/usr/local/bin/msmtp"
 set sig_dashes=no
 set signature="printf '\n-Zak\n'|"
 set sleep_time=0
@@ -49,14 +52,13 @@ bind editor \t complete-query
 
 bind alias d noop
 bind index a noop
-bind index G imap-fetch-mail
-bind pager G imap-fetch-mail
+macro index,pager G "!mbsync -q inbox &<enter>"
 bind index o collapse-thread
 bind index _ collapse-all
-bind index \Cf next-page
-bind index \Cb previous-page
-bind pager \Cf next-page
-bind pager \Cb previous-page
+bind index,pager \Cf next-page
+bind index,pager \Cb previous-page
+macro pager v "|urlview<enter>"
+bind pager V view-attachments
 bind pager \Ce next-line
 bind pager \Cy previous-line
 bind pager <down> next-line

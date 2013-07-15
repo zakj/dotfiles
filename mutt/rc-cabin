@@ -1,0 +1,6 @@
+# vim:ft=muttrc:
+source ~/.mutt/defaults
+
+set from=zak@madebycabin.com
+set folder=~/Maildir/cabin
+set spoolfile="=INBOX"
