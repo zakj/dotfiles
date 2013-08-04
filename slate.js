@@ -107,7 +107,10 @@ var ext = slate.operation('layout', {name: extLayout})
 // Operations and layout for the MacBook Pro screen.
 function mbpBrowserLayout() {
     return {
-        operations: [S.op('corner', {direction: 'top-right'})],
+        operations: [S.op('corner', {
+            direction: 'top-right',
+            width: browser.width, height: browser.height,
+        })],
         repeat: true,
     }
 }
@@ -143,8 +146,7 @@ slate.bindAll({
     'j:cmd,ctrl': S.op('focus', {direction: 'down'}),
     'k:cmd,ctrl': S.op('focus', {direction: 'up'}),
     'l:cmd,ctrl': S.op('focus', {direction: 'right'}),
-
-    ']:ctrl': S.op('nudge', {x: '+' + windowOffset, y: '+0'}),
-    '[:ctrl': S.op('nudge', {x: '-' + windowOffset, y: '+0'}),
     'backslash:ctrl': moveCenter,
+
+    //'esc:cmd': S.op('relaunch'),
 });
