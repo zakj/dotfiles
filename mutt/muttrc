@@ -1,6 +1,6 @@
 # vim:ft=muttrc:
 
-alternates "zak(j-.*)?@nox.cx"
+alternates "zak(j-.*)?@(nox\.cx|hellocabin\.com|madebycabin\.com)"
 
 #set abort_nosubject=ask-no
 #set abort_unmodified=no
@@ -78,4 +78,20 @@ ignore *
 unignore date from: to cc reply-to mail-followup-to x-mailer x-url subject
 hdr_order date from to cc reply-to mail-followup-to x-mailer x-url subject
 
+# Set up account toggles.
+set my_cabin_folder = "~/Maildir/cabin"
+set my_nox_folder = "~/Maildir/nox"
+
+macro index,pager gi "<change-folder>!<enter>" "go to INBOX"
+macro index,pager gc "<change-folder>$my_cabin_folder/INBOX<enter>" "go to cabin"
+macro index,pager gn "<change-folder>$my_nox_folder/INBOX<enter>" "go to nox"
+macro index,pager a "<group-reply>" "reply to all recipients"
+
+folder-hook $my_cabin_folder source ~/.mutt/rc-cabin
+folder-hook $my_nox_folder source ~/.mutt/rc-nox
+
+# Default to nox.
+source ~/.mutt/rc-nox
+
+# Import list subscription configuration.
 source ~/.mutt/lists

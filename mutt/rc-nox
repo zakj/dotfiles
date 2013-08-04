@@ -1,8 +1,9 @@
 # vim:ft=muttrc:
-source ~/.mutt/defaults
 
 set from=zakj@nox.cx
-set folder=~/Maildir/nox
-set spoolfile="=INBOX"
+set folder=$my_nox_folder
+set spoolfile="+INBOX"
+set postponed="+[Gmail]/Drafts"
 
-mailboxes ! =django =djb =freebsd
+unmailboxes *
+mailboxes ! +django +djb +freebsd
