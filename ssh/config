@@ -1,13 +1,5 @@
-Host ralph.votegivegrow.com
-    User ubuntu
-    IdentityFile ~/.ssh/ralph.pem
-
-Host *.votegivegrow.com
-    User ec2-user
-    IdentityFile ~/.ssh/goodcorps.pem
-
-Host katie
-    Hostname 173.45.253.27
+Host nox.cx
+    User root
 
 Host *
     User zakj
