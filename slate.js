@@ -72,12 +72,34 @@ function extBrowserLayout() {
     };
 }
 
+function iTunesLayout() {
+    var miniPlayer = slate.operation('move', {
+        x: gutter / 2,
+        y: 'screenOriginY + screenSizeY - windowSizeY - ' + (gutter / 2),
+        width: 'windowSizeX',
+        height: 'windowSizeY',
+    });
+
+    function op(win) {
+        if (win.title() === 'MiniPlayer')
+            win.doOperation(miniPlayer);
+        else
+            win.doOperation(moveCenter);
+    }
+
+    return {
+        operations: [op],
+        repeat: true,
+    }
+}
+
 var extLayout = slate.layout('ext', {
     'iTerm': {operations: [extOps.term], repeat: true},
     'MacVim': {operations: [extOps.vim], repeat: true},
     'Google Chrome': extBrowserLayout(),
     'Safari': extBrowserLayout(),
     'Sparrow': {operations: [moveCenter], repeat: true},
+    'iTunes': iTunesLayout(),
 });
 var ext = slate.operation('layout', {name: extLayout})
 
@@ -96,6 +118,7 @@ var mbpLayout = slate.layout('mbp', {
     'Google Chrome': mbpBrowserLayout(),
     'Safari': mbpBrowserLayout(),
     'Sparrow': {operations: [moveCenter], repeat: true},
+    'iTunes': iTunesLayout(),
 });
 var mbp = slate.operation('layout', {name: mbpLayout})
 
