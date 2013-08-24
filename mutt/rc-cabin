@@ -3,7 +3,7 @@
 set from=zak@madebycabin.com
 set folder=$my_cabin_folder
 set spoolfile="+INBOX"
-set postponed="+[Gmail]/Drafts"
+set postponed="+[Gmail].Drafts"
 
 unmailboxes *
 mailboxes !

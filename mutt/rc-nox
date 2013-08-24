@@ -3,7 +3,7 @@
 set from=zakj@nox.cx
 set folder=$my_nox_folder
 set spoolfile="+INBOX"
-set postponed="+[Gmail]/Drafts"
+set postponed="+[Gmail].Drafts"
 
 unmailboxes *
 mailboxes ! +django +djb +freebsd
