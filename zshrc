@@ -22,7 +22,7 @@ SAVEHIST=$HISTSIZE
 
 #}}}
 #{{{ Prompt
-# Hostname and pwd, then %/# or a red symbol if the last command failed.
+# Working directory, then %/# or a red symbol if the last command failed.
 PROMPT='%~'
 PROMPT+='%(?.%#.%B%F{red}✖%b%f) '
 
