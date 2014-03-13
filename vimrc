@@ -45,9 +45,6 @@ let maplocalleader = mapleader
 
 noremap ; :
 
-" Swap to the previous buffer on spacebar.
-nnoremap <Space> :buffer #<CR>
-
 " Save and close the current buffer, first switching to the previous buffer to
 " ensure the window remains open.
 map <silent> <leader>x :update<CR>:bprevious<CR>:bwipeout #<CR>
