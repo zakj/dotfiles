@@ -41,7 +41,6 @@ set wildmode=list:longest
 
 " {{{ Mappings
 let mapleader = ","
-let maplocalleader = mapleader
 
 noremap ; :
 
