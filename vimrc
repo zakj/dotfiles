@@ -23,7 +23,7 @@ set listchars=tab:├─,trail:·,extends:…,precedes:…
 set mouse=""
 set pastetoggle=<F1>               " TODO: consider removing? changing?
 set report=0                       " Always report how many lines were changed.
-set ruler                          " TODO: remove if I customize statusline
+set ruler
 set shiftround                     " Indent in multiples of 'shiftwidth'.
 set shiftwidth=4
 set shortmess+=I
@@ -162,7 +162,7 @@ syntax enable
 if has('gui_running')
     set guicursor+=a:blinkon0
     set guifont=Menlo:h12
-    set guioptions=aegimt  " TODO: check this
+    set guioptions=aegimt
     set lines=40 columns=80
 
     " Swap windows with ⌥`.
