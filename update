@@ -20,8 +20,8 @@ done
 # don't begin with a dot. Use sed to strip the leading "./". Assumes no spaces
 # in filenames.
 cd "$dotfiles"
-for file in *; do
-  test $file = $(basename $0) && continue
+shopt -s extglob
+for file in !($(basename $0)|README.md|Brewfile); do
   target="$HOME/.$file"
 
   # If the target does not exist, or -f (force) was given, create the symlink.
