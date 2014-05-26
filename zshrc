@@ -22,8 +22,9 @@ SAVEHIST=$HISTSIZE
 
 #}}}
 #{{{ Prompt
-# Working directory, then %/# or a red symbol if the last command failed.
-PROMPT='%~'
+# Working directory with truncated long paths, then %/# or a red symbol if the
+# last command failed.
+PROMPT='%5(~:%-1~/…/%2~:%~)'
 PROMPT+='%(?.%#.%B%F{red}✖%b%f) '
 
 # Include the hostname if this is a remote host.
