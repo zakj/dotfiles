@@ -35,7 +35,7 @@ set title
 set ttimeoutlen=50                 " Avoid waiting after `O`.
 set viminfo=""                     " Always start with a clean slate.
 set whichwrap=""
-set wildignore+=compiled,vendor,*.o,*.pyc
+set wildignore+=*.o,*.pyc
 set wildmode=list:longest
 " }}}
 
@@ -117,27 +117,30 @@ inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
 filetype off
 set runtimepath+=~/.vim/bundle/vundle
 call vundle#rc()
+" TODO: investigate https://github.com/junegunn/vim-plug
 
 " Avoid additional errors if vundle is not installed.
 if exists('*vundle#rc')
     Bundle 'gmarik/vundle'
     Bundle 'cabin/cabin-colorscheme'
     Bundle 'wincent/Command-T'
-    Bundle 'rking/ag.vim'
-    Bundle 'bufmru.vim'
     Bundle 'tpope/vim-commentary'
     Bundle 'tpope/vim-endwise'
+    Bundle 'tpope/vim-fugitive'
     Bundle 'tpope/vim-repeat'
+    Bundle 'tpope/vim-sleuth'
     Bundle 'tpope/vim-surround'
     Bundle 'michaeljsmith/vim-indent-object'
+    Bundle 'rking/ag.vim'
+    Bundle 'bufmru.vim'
+    Bundle 'gitignore'
 
     Bundle 'scrooloose/syntastic'
     Bundle 'indentpython.vim'
     Bundle 'kchmck/vim-coffee-script'
     Bundle 'pangloss/vim-javascript'
-    Bundle 'uggedal/jinja-vim'
-    Bundle 'wavded/vim-stylus'
-    Bundle 'nono/vim-handlebars'
+    Bundle 'mitsuhiko/vim-jinja'
+    Bundle 'elzr/vim-json'
 
     " Plugin configuration
     colorscheme cabin
@@ -147,7 +150,7 @@ if exists('*vundle#rc')
 
     " Plugin mappings
     map <silent> <Leader>e :CommandT<CR>
-    map <silent> <Leader>f :CommandTBuffer<CR>
+    map <silent> <Leader>f :CommandTMRU<CR>
 endif
 
 filetype plugin indent on
@@ -180,23 +183,6 @@ if has('gui_running')
     map <Leader>Z :call ToggleZoom(1)<CR>
 endif
 " }}}
-
-" Custom settings by filetype or filename.
-if has('autocmd')
-    augroup vimrc
-        au!
-        au FileType make setl noexpandtab shiftwidth=8
-        au FileType gitcommit,mail setl textwidth=72
-        au FileType coffee,cucumber,ruby,slim setl shiftwidth=2
-        au FileType css,html,htmldjango,jinja,stylus setl shiftwidth=2
-        au FileType handlebars setl shiftwidth=2
-        au FileType html setl indentkeys-=*<Return>
-        au BufNewFile,BufRead *.json setfiletype javascript
-        au BufNewFile,BufRead /tmp/mutt-* setfiletype mail
-        au BufNewFile,BufRead */templates/*.html set filetype=jinja
-        au BufNewFile,BufRead */templates/*/*.html set filetype=jinja
-    augroup end
-endif
 
 " Handle term escape code to set paste mode automatically.
 if &term =~ '\v^(screen|xterm)'
