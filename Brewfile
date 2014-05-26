@@ -29,8 +29,8 @@ cask install imagealpha
 cask install imageoptim
 cask install iterm2
 cask install launchbar
-cask install macvim
 cask install openemu
+# TODO: consider phoenix as a slate replacement
 cask install slate
 cask install steam
 cask install transmission
