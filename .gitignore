@@ -2,7 +2,6 @@ js/*.js
 mutt/certificates
 mutt/gmail-root.pem
 mutt/gmail-root.txt
-mutt/muttrc
 mutt/pw-*
 ssh/*.pem
 ssh/id_rsa
