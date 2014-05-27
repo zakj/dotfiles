@@ -37,6 +37,9 @@ set viminfo=""                     " Always start with a clean slate.
 set whichwrap=""
 set wildignore+=*.o,*.pyc
 set wildmode=list:longest
+
+filetype plugin indent on
+syntax enable
 " }}}
 
 " {{{ Mappings
@@ -114,47 +117,39 @@ inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
 " }}}
 
 " {{{ Plugins
-filetype off
-set runtimepath+=~/.vim/bundle/vundle
-call vundle#rc()
-" TODO: investigate https://github.com/junegunn/vim-plug
+silent! if plug#begin('~/.vim/plugged')
+    Plug 'cabin/cabin-colorscheme'
+    Plug 'wincent/Command-T'
+    Plug 'tpope/vim-commentary'
+    Plug 'tpope/vim-endwise'
+    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-sleuth'
+    Plug 'tpope/vim-surround'
+    Plug 'michaeljsmith/vim-indent-object'
+    Plug 'rking/ag.vim'
+    Plug 'bufmru.vim'
+    Plug 'gitignore'
 
-" Avoid additional errors if vundle is not installed.
-if exists('*vundle#rc')
-    Bundle 'gmarik/vundle'
-    Bundle 'cabin/cabin-colorscheme'
-    Bundle 'wincent/Command-T'
-    Bundle 'tpope/vim-commentary'
-    Bundle 'tpope/vim-endwise'
-    Bundle 'tpope/vim-fugitive'
-    Bundle 'tpope/vim-repeat'
-    Bundle 'tpope/vim-sleuth'
-    Bundle 'tpope/vim-surround'
-    Bundle 'michaeljsmith/vim-indent-object'
-    Bundle 'rking/ag.vim'
-    Bundle 'bufmru.vim'
-    Bundle 'gitignore'
+    Plug 'scrooloose/syntastic'
+    Plug 'indentpython.vim'
+    Plug 'kchmck/vim-coffee-script'
+    Plug 'pangloss/vim-javascript'
+    Plug 'mitsuhiko/vim-jinja'
+    Plug 'elzr/vim-json'
 
-    Bundle 'scrooloose/syntastic'
-    Bundle 'indentpython.vim'
-    Bundle 'kchmck/vim-coffee-script'
-    Bundle 'pangloss/vim-javascript'
-    Bundle 'mitsuhiko/vim-jinja'
-    Bundle 'elzr/vim-json'
-
-    " Plugin configuration
-    colorscheme cabin
-    let g:CommandTMaxHeight = 10
-    let g:CommandTToggleFocusMap = []
-    let coffee_no_trailing_space_error = 1
-
-    " Plugin mappings
-    map <silent> <Leader>e :CommandT<CR>
-    map <silent> <Leader>f :CommandTMRU<CR>
+    call plug#end()
 endif
 
-filetype plugin indent on
-syntax enable
+" Plugin configuration
+silent! colorscheme cabin
+let g:CommandTMaxHeight = 10
+let g:CommandTToggleFocusMap = []
+let coffee_no_trailing_space_error = 1
+
+" Plugin mappings
+map <silent> <Leader>e :CommandT<CR>
+map <silent> <Leader>f :CommandTMRU<CR>
 " }}}
 
 " {{{ GUI configuration

@@ -9,6 +9,7 @@ ssh/known_hosts
 subversion/README.txt
 subversion/auth
 subversion/servers
+vim/autoload/plug.vim
 vim/backup/*
-vim/bundle
+vim/plugged
 vim/.netrwhist
