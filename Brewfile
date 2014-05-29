@@ -1,18 +1,20 @@
 # Standard packages.
-
 install git
 install go
 install hub
-install isync
-install lbdb
 install macvim --override-system-vim --with-lua
-install msmtp
-install mutt
 install nginx
 install node
 install reattach-to-user-namespace
 install the_silver_searcher
 install tmux
+install youtube-dl
+
+# Local mail support.
+install isync
+install lbdb
+install msmtp
+install mutt
 install urlview
 
 # Cask and local apps.
@@ -30,8 +32,7 @@ cask install imageoptim
 cask install iterm2
 cask install launchbar
 cask install openemu
-# TODO: consider phoenix as a slate replacement
-cask install slate
+cask install slate  # TODO: consider phoenix as a slate replacement
 cask install steam
 cask install transmission
 cask install transmit

@@ -16,7 +16,9 @@ Install App Store applications:
 * Acorn
 * Fantastical
 * HTTP Client
+* Lingo
 * Marked
+* Soulver
 * The Unarchiver
 * Tweetbot
 * Xcode
