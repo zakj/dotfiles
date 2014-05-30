@@ -15,11 +15,11 @@ done
 
 # Detect whether we have changes to push or merge.
 local ahead behind
-ahead=$(git log --max-count=1 @{upstream}.. 2>/dev/null)
-behind=$(git log --max-count=1 ..@{upstream} 2>/dev/null)
-[[ -n $ahead ]] && hook_com[misc]+='%F{green}▴'
-[[ -n $behind ]] && hook_com[misc]+='%F{red}▾'
-[[ -n $ahead || -n $behind ]] && hook_com[misc]+=' '
+ahead=$(git rev-list --left-only --count HEAD...@{upstream} 2>/dev/null)
+behind=$(git rev-list --right-only --count HEAD...@{upstream} 2>/dev/null)
+[[ $ahead > 0 ]] && hook_com[misc]+='%F{green}▴'
+[[ $behind > 0 ]] && hook_com[misc]+='%F{red}▾'
+[[ $ahead > 0 || $behind > 0 ]] && hook_com[misc]+=' '
 
 # Detect stashes.
 if [[ -n $(git stash list 2>/dev/null) ]]; then
