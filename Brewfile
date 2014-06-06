@@ -32,7 +32,7 @@ cask install imageoptim
 cask install iterm2
 cask install launchbar
 cask install openemu
-cask install slate  # TODO: consider phoenix as a slate replacement
+cask install phoenix
 cask install steam
 cask install transmission
 cask install transmit
