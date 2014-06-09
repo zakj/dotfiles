@@ -24,7 +24,7 @@
 	graph = %C(yellow)%h%Creset %s%d %C(bold black)%an %ar
 
 [push]
-	default = tracking
+	default = simple
 
 [rebase]
 	autosquash = true
