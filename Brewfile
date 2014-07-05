@@ -1,13 +1,15 @@
 # Standard packages.
+install ag
 install git
 install go
+install httpie
 install hub
 install macvim --override-system-vim --with-lua
-install nginx
 install node
+install pow
 install reattach-to-user-namespace
-install the_silver_searcher
 install tmux
+install trash
 install youtube-dl
 
 # Local mail support.
@@ -27,12 +29,12 @@ cask install dropbox
 cask install firefox
 cask install flux
 cask install google-chrome
-cask install imagealpha
 cask install imageoptim
 cask install iterm2
 cask install launchbar
+cask install nvalt
 cask install openemu
-cask install phoenix
+cask install phoenix  # TODO: hydra
 cask install steam
 cask install transmission
 cask install transmit
