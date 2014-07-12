@@ -5,7 +5,7 @@ Expunge Slave
 IMAPAccount nox
     Host imap.gmail.com
     User zakj@nox.cx
-    PassCommand "~/.mutt/mbsyncpw nox"
+    PassCmd "cat ~/.mutt/pw-nox"
     UseIMAPS yes
     CertificateFile ~/.mutt/certificates
 
@@ -27,7 +27,7 @@ Channel nox
 IMAPStore cabin-remote
     Host imap.gmail.com
     User zak@hellocabin.com
-    PassCommand "~/.mutt/mbsyncpw cabin"
+    PassCmd "cat ~/.mutt/pw-cabin"
     UseIMAPS yes
     CertificateFile ~/.mutt/certificates
 
