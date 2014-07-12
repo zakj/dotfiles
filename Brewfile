@@ -20,7 +20,7 @@ install mutt
 install urlview
 
 # Cask and local apps.
-install phinze/cask/brew-cask
+install caskroom/cask/brew-cask
 
 cask install appcleaner
 cask install bartender
