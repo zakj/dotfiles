@@ -2,15 +2,22 @@
 /* jshint globalstrict: true, unused: true */
 /* global _, api, App, Screen, Window */
 
-// https://github.com/sdegutis/Phoenix/wiki/JavaScript-API-documentation
+// https://github.com/jasonm23/phoenix/wiki/JavaScript-API-documentation
 
 var GUTTER = 15;
 var WINDOW_OFFSET = 22;
 var BROWSER_SIZE = {width: 1110};
+var FINDER_SIZE = {width: 770, height: 460};
 var TERM_SIZE = {width: 570, height: 726};
 var EDITOR_SIZE = {width: 563};
 
 var layouts = {
+    'Finder': function (windows) {
+        windows.each(function (win) {
+            win.setSize(FINDER_SIZE);
+        });
+    },
+
     'iTerm': function (windows) {
         windows.slice(0, 1).each(function (win) {
             var rect = win.screen().cornerNW();
