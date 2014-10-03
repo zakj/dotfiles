@@ -34,7 +34,7 @@ cask install iterm2
 cask install launchbar
 cask install nvalt
 cask install openemu
-cask install phoenix  # TODO: hydra
+cask install phoenix  # TODO: mjolnir
 cask install steam
 cask install transmission
 cask install transmit
