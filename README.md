@@ -1,12 +1,13 @@
 Install homebrew and formulae:
 
-    ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew bundle
 
 Set up vim plugins:
 
     mkdir -p ~/.vim/autoload
-    curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim
+    curl -fLo ~/.vim/autoload/plug.vim \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim +PlugInstall +qall
 
 Install App Store applications:
