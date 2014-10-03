@@ -123,11 +123,13 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-endwise'
     Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-ragtag'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-surround'
+    Plug 'mbbill/undotree'
     Plug 'michaeljsmith/vim-indent-object'
-    Plug 'rking/ag.vim'
+    Plug 'rking/ag.vim', {'on': 'Ag'}
     Plug 'bufmru.vim'
     Plug 'gitignore'
 
@@ -137,15 +139,20 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'pangloss/vim-javascript'
     Plug 'mitsuhiko/vim-jinja'
     Plug 'elzr/vim-json'
+    Plug 'fatih/vim-go'
 
     call plug#end()
 endif
 
 " Plugin configuration
 silent! colorscheme cabin
+let g:CommandTFileScanner = "git"
 let g:CommandTMaxHeight = 10
 let g:CommandTToggleFocusMap = []
-let coffee_no_trailing_space_error = 1
+let g:go_disable_autoinstall = 1
+let g:go_fmt_command = "gofmt"
+let g:syntastic_mode_map = {'passive_filetypes': ['html']}
+hi link coffeeSpaceError NONE
 
 " Plugin mappings
 map <silent> <Leader>e :CommandT<CR>
