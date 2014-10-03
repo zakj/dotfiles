@@ -119,7 +119,7 @@ inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
 " {{{ Plugins
 silent! if plug#begin('~/.vim/plugged')
     Plug 'cabin/cabin-colorscheme'
-    Plug 'wincent/Command-T'
+    Plug 'wincent/Command-T', {'do': '/usr/bin/rake make'}
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-endwise'
     Plug 'tpope/vim-fugitive'

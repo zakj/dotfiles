@@ -8,7 +8,6 @@ Set up vim plugins:
     mkdir -p ~/.vim/autoload
     curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim
     vim +PlugInstall +qall
-    (cd ~/.vim/plugged/Command-T && /usr/bin/rake make)
 
 Install App Store applications:
 
