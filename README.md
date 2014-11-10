@@ -5,9 +5,6 @@ Install homebrew and formulae:
 
 Set up vim plugins:
 
-    mkdir -p ~/.vim/autoload
-    curl -fLo ~/.vim/autoload/plug.vim \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     vim +PlugInstall +qall
 
 Install App Store applications:
