@@ -1,7 +1,7 @@
 Install homebrew and formulae:
 
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew bundle
+    sh Brewfile
 
 Set up vim plugins:
 

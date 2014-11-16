@@ -1,40 +1,40 @@
 # Standard packages.
-install ag
-install git
-install go
-install httpie
-install hub
-install macvim --override-system-vim --with-lua
-install node
-install pow
-install reattach-to-user-namespace
-install tmux
-install trash
-install youtube-dl
+brew install ag
+brew install git
+brew install go
+brew install httpie
+brew install hub
+brew install macvim --override-system-vim --with-lua
+brew install node
+brew install pow
+brew install reattach-to-user-namespace
+brew install tmux
+brew install trash
+brew install youtube-dl
 
 # Local mail support.
-install isync
-install lbdb
-install msmtp
-install mutt
-install urlview
+brew install isync
+brew install lbdb
+brew install msmtp
+brew install mutt
+brew install urlview
 
 # Cask and local apps.
-install caskroom/cask/brew-cask
+brew install caskroom/cask/brew-cask
 
-cask install appcleaner
-cask install bartender
-cask install beamer
-cask install dropbox
-cask install firefox
-cask install flux
-cask install google-chrome
-cask install imageoptim
-cask install iterm2
-cask install launchbar
-cask install nvalt
-cask install openemu
-cask install phoenix  # TODO: mjolnir
-cask install steam
-cask install transmission
-cask install transmit
+brew cask install appcleaner
+brew cask install bartender
+brew cask install beamer
+brew cask install dropbox
+brew cask install firefox
+brew cask install flux
+brew cask install google-chrome
+brew cask install imageoptim
+brew cask install iterm2
+brew cask install launchbar
+brew cask install nvalt
+brew cask install openemu
+brew cask install phoenix  # TODO: mjolnir
+brew cask install steam
+brew cask install transmission
+brew cask install transmit
