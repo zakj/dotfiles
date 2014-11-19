@@ -38,3 +38,4 @@ brew cask install phoenix  # TODO: mjolnir
 brew cask install steam
 brew cask install transmission
 brew cask install transmit
+brew cask install xee

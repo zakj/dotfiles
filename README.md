@@ -19,4 +19,3 @@ Install App Store applications:
 * The Unarchiver
 * Tweetbot
 * Xcode
-* Xee
