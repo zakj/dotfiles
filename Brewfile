@@ -1,9 +1,9 @@
 # Standard packages.
 brew install ag
+brew install gh
 brew install git
 brew install go
 brew install httpie
-brew install hub
 brew install macvim --override-system-vim --with-lua
 brew install node
 brew install pow
