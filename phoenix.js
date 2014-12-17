@@ -65,6 +65,21 @@ var layouts = {
         .each(function (win) { win.toCenter(); });
     },
 
+    'Messages': function (windows) {
+        windows.each(function (win) {
+            var point;
+            if (win.isOnCinemaDisplay()) {
+                point = win.screen().cornerNW();
+                point.y += TERM_SIZE.height + GUTTER * 2;
+            }
+            else {
+                point = win.screen().cornerSW();
+                point.y -= win.size().height;
+            }
+            win.setTopLeft(point);
+        });
+    },
+
     'iTunes': function (windows) {
         windows.each(function (win) {
             if (win.title() === 'MiniPlayer') {
