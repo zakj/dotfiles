@@ -140,6 +140,8 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'mitsuhiko/vim-jinja'
     Plug 'elzr/vim-json'
     Plug 'fatih/vim-go'
+    Plug '5long/pytest-vim-compiler'
+    Plug 'reinh/vim-makegreen'
 
     call plug#end()
 endif
@@ -157,6 +159,8 @@ hi link coffeeSpaceError NONE
 " Plugin mappings
 map <silent> <Leader>e :CommandT<CR>
 map <silent> <Leader>f :CommandTMRU<CR>
+map <silent> <Leader>t :MakeGreen %<CR>
+map <silent> <Leader>T :MakeGreen<CR>
 " }}}
 
 " {{{ GUI configuration
