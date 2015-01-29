@@ -106,6 +106,14 @@ rationalise-dot() {
 zle -N rationalise-dot
 bindkey . rationalise-dot
 
+page-up-within-tmux() {
+    if [[ $TMUX != '' ]]; then
+        tmux copy-mode -u
+    fi
+}
+zle -N page-up-within-tmux
+bindkey "${terminfo[kpp]}" page-up-within-tmux
+
 #}}}
 
 # Manage terminal window titles.
