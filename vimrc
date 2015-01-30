@@ -140,6 +140,8 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'mitsuhiko/vim-jinja'
     Plug 'elzr/vim-json'
     Plug 'fatih/vim-go'
+    Plug 'groenewege/vim-less'
+    Plug 'digitaltoad/vim-jade'
     Plug '5long/pytest-vim-compiler'
     Plug 'reinh/vim-makegreen'
 
