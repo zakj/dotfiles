@@ -77,6 +77,16 @@ namedir() { eval "$1=${2-$PWD}" && : ~$1 }
 # Open all matching files in mvim.
 mvag() { ag -l "$@" | xargs mvim }
 
+# Reconnect ssh socket in an existing tmux session.
+fixssh() {
+    for line in "${(f)$(tmux show-environment)}"; do
+        if [[ $line =~ '^SSH_\w+=' ]]; then
+            echo export $line
+            export $line
+        fi
+    done
+}
+
 #}}}
 #{{{ zle
 # vi mode (from $EDITOR), with some familiar Emacs-style friends.
