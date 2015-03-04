@@ -127,6 +127,7 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-surround'
+    Plug 'airblade/vim-gitgutter'
     Plug 'mbbill/undotree'
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'rking/ag.vim', {'on': 'Ag'}
