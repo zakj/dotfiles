@@ -160,10 +160,11 @@ let g:syntastic_mode_map = {'passive_filetypes': ['html']}
 hi link coffeeSpaceError NONE
 
 " Plugin mappings
-map <silent> <Leader>e :CommandT<CR>
-map <silent> <Leader>f :CommandTMRU<CR>
-map <silent> <Leader>t :MakeGreen %<CR>
-map <silent> <Leader>T :MakeGreen<CR>
+nnoremap <silent> <Leader>e :CommandT<CR>
+nnoremap <silent> <Leader>f :CommandTMRU<CR>
+nnoremap <silent> <Leader>t :MakeGreen %<CR>
+nnoremap <silent> <Leader>T :MakeGreen<CR>
+nnoremap U :UndotreeToggle<CR>
 " }}}
 
 " {{{ GUI configuration
