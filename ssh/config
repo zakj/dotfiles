@@ -1,3 +1,7 @@
+Host dev
+    User zak
+    Hostname zak.dev.mixpanel.org
+
 Host nox.cx
     User root
 
