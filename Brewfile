@@ -25,6 +25,7 @@ brew install caskroom/cask/brew-cask
 brew cask install appcleaner
 brew cask install bartender
 brew cask install beamer
+brew cask install colorpicker-skalacolor
 brew cask install dropbox
 brew cask install firefox
 brew cask install flux
