@@ -2,6 +2,7 @@
 setopt no_beep           # Shhhh.
 setopt no_flow_control   # Ignore ^S/^Q.
 setopt hist_ignore_dups  # Don't insert immediate duplicates into history.
+setopt share_history     # Read/write from the history file immediately.
 
 #}}}
 #{{{ Environment
