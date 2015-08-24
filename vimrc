@@ -170,7 +170,7 @@ nnoremap U :UndotreeToggle<CR>
 " {{{ GUI configuration
 if has('gui_running')
     set guicursor+=a:blinkon0
-    set guifont=Menlo:h12
+    set guifont=Menlo:h14
     set guioptions=aegimt
     set lines=40 columns=80
 
