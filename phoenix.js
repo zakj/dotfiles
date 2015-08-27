@@ -95,7 +95,7 @@ var layouts = {
 };
 
 
-api.bind('space', ['ctrl'], function () {
+api.bind('q', ['cmd', 'alt', 'ctrl'], function () {
     _.each(App.runningApps(), function (app) {
         var title = app.title();
         if (typeof layouts[title] === 'function')
