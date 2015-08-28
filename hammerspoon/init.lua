@@ -1,5 +1,6 @@
 hotkeyPrefix = require 'hotkeyPrefix'
 layout = require 'layout'
+require 'mixpanel'
 require 'reload'
 require 'safari'
 tween = require 'tween'
@@ -14,6 +15,7 @@ local function debugFocusedWindow()
         title = win:title(),
         informativeText = string.format('%s\n(%.0f, %.0f) %.0f⨉%.0f',
             win:application():title(), frame.x, frame.y, frame.w, frame.h),
+        autoWithdraw = false,
     })
     notif:send()
     hs.timer.doAfter(30, function()
