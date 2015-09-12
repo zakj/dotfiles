@@ -5,7 +5,7 @@ set backspace=indent,eol,start
 set backupdir=~/.vim/backup,.
 set cedit=                         " Don't use the command-line window.
 set cinoptions=:0                  " `case` should line up with `switch`.
-set colorcolumn=81
+set colorcolumn=90
 set confirm                        " Prompt instead of failing to quit.
 set diffopt+=iwhite
 set directory=~/.vim/backup//,.    " Keep swap files in one place.
@@ -21,13 +21,13 @@ set laststatus=2                   " Always show the status line.
 set linebreak                      " Don't break lines mid-word.
 set listchars=tab:├─,trail:·,extends:…,precedes:…
 set mouse=""
+set number
 set pastetoggle=<F1>               " TODO: consider removing? changing?
 set report=0                       " Always report how many lines were changed.
 set ruler
 set shiftround                     " Indent in multiples of 'shiftwidth'.
 set shiftwidth=4
 set shortmess+=I
-set showbreak=↪
 set smarttab
 set nostartofline                  " Maintain cursor column on C-f, C-b.
 set textwidth=79
