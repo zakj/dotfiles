@@ -47,9 +47,8 @@ let mapleader = ","
 
 noremap ; :
 
-" Save and close the current buffer, first switching to the previous buffer to
-" ensure the window remains open.
-map <silent> <leader>x :update<CR>:bprevious<CR>:bwipeout #<CR>
+" Optionally save and safely close the current buffer.
+nmap <silent> <leader>x :update<CR>:Bdelete<CR>
 
 " Buffer navigation.
 map <silent> <C-J> :bnext<CR>
@@ -131,6 +130,7 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'mbbill/undotree'
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'rking/ag.vim', {'on': 'Ag'}
+    Plug 'moll/vim-bbye'
     Plug 'bufmru.vim'
     Plug 'gitignore'
 
