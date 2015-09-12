@@ -100,6 +100,9 @@ iabbr <Leader><Leader>s <C-R>=strftime('%s')<CR>
 " I never use 'keywordprg'.
 map K k
 
+" I never use the command-line window.
+nmap q: :q
+
 " Sort the selection (primarily useful with CSS).
 vmap <silent> <Leader>s :!sort -d<CR>
 
@@ -127,7 +130,7 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-surround'
     Plug 'airblade/vim-gitgutter'
-    Plug 'mbbill/undotree'
+    Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'rking/ag.vim', {'on': 'Ag'}
     Plug 'moll/vim-bbye'
@@ -135,7 +138,7 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'gitignore'
 
     Plug 'scrooloose/syntastic'
-    Plug 'indentpython.vim'
+    Plug 'indentpython.vim', {'for': 'python'}
     Plug 'kchmck/vim-coffee-script'
     Plug 'pangloss/vim-javascript'
     Plug 'mitsuhiko/vim-jinja'
