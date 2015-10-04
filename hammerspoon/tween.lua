@@ -4,7 +4,7 @@ end
 
 -- https://en.wikipedia.org/wiki/Smoothstep
 local function smootherstep(edge0, edge1, x)
-    x = clamp(math.abs(x - edge0) / (edge1 - edge0), 0, 1)
+    x = clamp((x - edge0) / (edge1 - edge0), 0, 1)
     return x^3 * (x * (x * 6 - 15) + 10)
 end
 
