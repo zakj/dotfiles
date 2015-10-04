@@ -1,6 +1,6 @@
 [user]
 	name = Zak Johnson
-	email = zakj@nox.cx
+	email = me@zakj.net
 
 [alias]
 	ci = commit -v
