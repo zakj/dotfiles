@@ -6,6 +6,10 @@ setopt share_history     # Read/write from the history file immediately.
 
 #}}}
 #{{{ Environment
+typeset -U path
+path=(~/.local/bin ~/bin /usr/local/bin /usr/local/sbin $path)
+fpath+=~/.zfuncs
+
 export EDITOR=vim
 export LESS=gij5MR
 export PAGER=less
@@ -16,7 +20,8 @@ export PIP_VIRTUALENV_BASE=$WORKON_HOME
 export PIP_RESPECT_VIRTUALENV=1
 export VIRTUALENV_USE_DISTRIBUTE=1
 
-# zsh history; no need to export this.
+# zsh config; no need to export this.
+CORRECT_IGNORE=_*  # don't offer built-in completion commands as corrections
 HISTFILE=~/.history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
