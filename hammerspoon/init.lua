@@ -6,10 +6,16 @@ require 'safari'
 tween = require 'tween'
 
 hs.hints.style = 'vimperator'
+hs.window.animationDuration = 0
 
 
-local function debugFocusedWindow()
-    local win = hs.window.focusedWindow()
+function withFocusedWindow(fn)
+    return function()
+        fn(hs.window.focusedWindow())
+    end
+end
+
+local function debugWindow(win)
     local frame = win:frame()
     local notif = hs.notify.new(nil, {
         title = win:title(),
@@ -30,19 +36,23 @@ end
 
 
 modal = hotkeyPrefix({'ctrl'}, 'space', {
+    {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
     {nil, 'l', lockScreen},
-    {nil, 'd', debugFocusedWindow},
+    {nil, 'd', withFocusedWindow(debugWindow)},
     {nil, 'h', hs.hints.windowHints},
     {nil, '`', hs.toggleConsole},
     {nil, 'space', function()
         -- Send to Phoenix for now.
         hs.eventtap.keyStroke({'ctrl', 'alt', 'cmd'}, 'q')
     end},
+    {nil, 'k', withFocusedWindow(layout.centerWindow)},
+    {nil, 'left', withFocusedWindow(layout.stickWindowLeft)},
+    {nil, 'right', withFocusedWindow(layout.stickWindowRight)},
     {nil, 'c', function()
-        hs.window.focusedWindow():setSize({w = 1003, h = 600})
+        hs.window.focusedWindow():setSize(1003, 600)
     end},
     {nil, 'v', function()
-        hs.window.focusedWindow():setSize({w = 1320, h = 942})
+        hs.window.focusedWindow():setSize(1320, 942)
     end},
 })
 
