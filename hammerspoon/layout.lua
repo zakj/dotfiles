@@ -41,7 +41,7 @@ function exports.staggerWindows(app)
     end)
 end
 
-function exports.centerWindow(win)
+function exports.moveCenter(win)
     local frame = win:frame()
     local screen = win:screen():fullFrame()
     frame.x = screen.w / 2 - frame.w / 2 + screen.x
@@ -49,19 +49,25 @@ function exports.centerWindow(win)
     win:setTopLeft(frame)
 end
 
-function exports.stickWindowLeft(win)
+function exports.moveTL(win)
     local frame = win:frame()
     local screen = win:screen():frame()
     frame.x = screen.x
     frame.y = screen.y
-    frame.h = screen.h
     win:setFrame(frame)
 end
 
-function exports.stickWindowRight(win)
+function exports.moveTR(win)
     local frame = win:frame()
     local screen = win:screen():frame()
     frame.x = screen.x + screen.w - frame.w
+    frame.y = screen.y
+    win:setFrame(frame)
+end
+
+function exports.maximizeV(win)
+    local frame = win:frame()
+    local screen = win:screen():frame()
     frame.y = screen.y
     frame.h = screen.h
     win:setFrame(frame)

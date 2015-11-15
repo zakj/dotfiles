@@ -9,9 +9,12 @@ hs.hints.style = 'vimperator'
 hs.window.animationDuration = 0
 
 
-function withFocusedWindow(fn)
+function withFocusedWindow(...)
+    local varargs = {...}
     return function()
-        fn(hs.window.focusedWindow())
+        for i, fn in ipairs(varargs) do
+            fn(hs.window.focusedWindow())
+        end
     end
 end
 
@@ -45,9 +48,10 @@ modal = hotkeyPrefix({'ctrl'}, 'space', {
         -- Send to Phoenix for now.
         hs.eventtap.keyStroke({'ctrl', 'alt', 'cmd'}, 'q')
     end},
-    {nil, 'k', withFocusedWindow(layout.centerWindow)},
-    {nil, 'left', withFocusedWindow(layout.stickWindowLeft)},
-    {nil, 'right', withFocusedWindow(layout.stickWindowRight)},
+    {nil, 'k', withFocusedWindow(layout.moveCenter)},
+    {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
+    {nil, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
+    {nil, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV)},
     {nil, 'c', function()
         hs.window.focusedWindow():setSize(1003, 600)
     end},
