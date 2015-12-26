@@ -20,7 +20,7 @@ set nojoinspaces                   " Only once space after a sentence.
 set laststatus=2                   " Always show the status line.
 set linebreak                      " Don't break lines mid-word.
 set listchars=tab:├─,trail:·,extends:…,precedes:…
-set mouse=""
+set mouse=a
 set number
 set pastetoggle=<F1>               " TODO: consider removing? changing?
 set report=0                       " Always report how many lines were changed.
