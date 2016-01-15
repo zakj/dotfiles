@@ -5,12 +5,9 @@ Host dev
 Host nox.cx
     User root
 
-Host dev
-    Hostname zak.dev.mixpanel.org
-    User zak
-
 Host *
     User zakj
     Protocol 2
     ForwardAgent yes
     ServerAliveInterval 30
+    UseRoaming no
