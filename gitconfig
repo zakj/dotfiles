@@ -31,3 +31,6 @@
 
 [color]
 	ui = auto
+
+[diff]
+	compactionHeuristic = true
