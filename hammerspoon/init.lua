@@ -3,6 +3,7 @@ layout = require 'layout'
 require 'mixpanel'
 require 'reload'
 require 'safari'
+superClick = require 'superclick'
 tween = require 'tween'
 
 hs.hints.style = 'vimperator'
@@ -58,6 +59,7 @@ modal = hotkeyPrefix({'ctrl'}, 'space', {
     {nil, 'v', function()
         hs.window.focusedWindow():setSize(1320, 942)
     end},
+    {nil, 'x', superClick},
 })
 
 modalIndicator = hs.drawing.circle({w = 100, h = 100}):setFillColor({0, 0, 0})
