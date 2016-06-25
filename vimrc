@@ -132,7 +132,7 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'airblade/vim-gitgutter'
     Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
     Plug 'michaeljsmith/vim-indent-object'
-    Plug 'rking/ag.vim', {'on': 'Ag'}
+    Plug 'wincent/ferret'
     Plug 'moll/vim-bbye'
     Plug 'bufmru.vim'
     Plug 'gitignore'
