@@ -4,10 +4,15 @@ end
 
 hs.wifi.watcher.new(function()
     local badNetworks = {'mixpanel-guest', 'MP-Chromecast'}
-    if hs.fnutils.contains(badNetworks, hs.wifi.currentNetwork()) then
+    local currentNetwork = hs.wifi.currentNetwork()
+    if currentNetwork == nil then
+        -- disconnecting
+        return
+    end
+    if hs.fnutils.contains(badNetworks, currentNetwork) then
         hs.notify.new({
             title = 'Wrong network!',
-            informativeText = 'Connected to ' .. hs.wifi.currentNetwork() .. '.',
+            informativeText = 'Connected to ' .. currentNetwork .. '.',
             alwaysPresent = true,
             autoWithdraw = false,
         }):send()
