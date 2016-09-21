@@ -10,4 +10,3 @@ Host *
     Protocol 2
     ForwardAgent yes
     ServerAliveInterval 30
-    UseRoaming no
