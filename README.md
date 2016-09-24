@@ -26,6 +26,10 @@ Install App Store applications:
 * Tweetbot
 * Xcode
 
+Generate a new SSH key:
+
+    ssh-keygen -o -a 100 -t ed25519
+
 On Yosemite:
 
 * System preferences:

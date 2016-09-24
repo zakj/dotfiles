@@ -4,6 +4,7 @@ mutt/gmail-root.pem
 mutt/gmail-root.txt
 mutt/pw-*
 ssh/*.pem
+ssh/id_ed25519
 ssh/id_rsa
 ssh/known_hosts
 subversion/README.txt
