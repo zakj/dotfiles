@@ -163,6 +163,7 @@ let g:go_fmt_command = "gofmt"
 let g:netrw_banner = 0
 let g:netrw_liststyle = 3  " tree view
 let g:syntastic_mode_map = {'passive_filetypes': ['html']}
+let g:syntastic_javascript_checkers = ['eslint']
 hi link coffeeSpaceError NONE
 
 " Plugin mappings
@@ -178,7 +179,6 @@ if has('gui_running')
     set guicursor+=a:blinkon0
     set guifont=Menlo:h14
     set guioptions=aegimt
-    set lines=40 columns=80
 
     " Swap windows with ⌥`.
     set macmeta
