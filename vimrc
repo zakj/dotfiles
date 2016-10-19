@@ -160,6 +160,8 @@ let g:CommandTMaxHeight = 10
 let g:CommandTToggleFocusMap = []
 let g:go_disable_autoinstall = 1
 let g:go_fmt_command = "gofmt"
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3  " tree view
 let g:syntastic_mode_map = {'passive_filetypes': ['html']}
 hi link coffeeSpaceError NONE
 
