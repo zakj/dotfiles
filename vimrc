@@ -147,6 +147,7 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'groenewege/vim-less'
     Plug 'digitaltoad/vim-jade'
     Plug 'wavded/vim-stylus'
+    Plug 'posva/vim-vue'
     Plug '5long/pytest-vim-compiler'
     Plug 'reinh/vim-makegreen'
 
