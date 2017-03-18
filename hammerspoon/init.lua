@@ -57,7 +57,7 @@ modal = hotkeyPrefix({'ctrl'}, 'space', {
         hs.window.focusedWindow():setSize(1003, 600)
     end},
     {nil, 'v', function()
-        hs.window.focusedWindow():setSize(1320, 942)
+        hs.window.focusedWindow():setSize(1320, 870 + 75)
     end},
     {nil, 'x', superClick},
 })
