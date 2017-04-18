@@ -106,6 +106,13 @@ nmap q: :q
 " Sort the selection (primarily useful with CSS).
 vmap <silent> <Leader>s :!sort -d<CR>
 
+" Show syntax highlighting and linked syntax for cursor position.
+nmap <C-S-P> :echo <SID>SynLinks()<CR>
+function! <SID>SynLinks()
+    let l:synid = synID(line('.'), col('.'), 1)
+    return join(uniq(map([l:synid, synIDtrans(l:synid)], 'synIDattr(v:val, "name")')), '->')
+endfunction
+
 " Pressing tab at the beginning of a line indents; elsewhere completes.
 function! InsertTabWrapper()
     let col = col('.') - 1
