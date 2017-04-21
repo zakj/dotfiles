@@ -1,11 +1,10 @@
-#{{{ Options
+# Options  {{{1
 setopt no_beep           # Shhhh.
 setopt no_flow_control   # Ignore ^S/^Q.
 setopt hist_ignore_dups  # Don't insert immediate duplicates into history.
 setopt share_history     # Read/write from the history file immediately.
 
-#}}}
-#{{{ Environment
+# Environment  {{{1
 typeset -U path
 path=(~/.local/bin ~/bin /usr/local/bin /usr/local/sbin $path)
 fpath+=~/.zfuncs
@@ -26,8 +25,7 @@ HISTFILE=~/.history
 HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
-#}}}
-#{{{ Prompt
+# Prompt  {{{1
 # Working directory with truncated long paths, then %/# or a red symbol if the
 # last command failed.
 PROMPT='%5(~:%-1~/…/%2~:%~)'
@@ -60,8 +58,7 @@ zstyle ':vcs_info:git*+post-backend:*' hooks get-data-git
 autoload -U compinit
 compinit -i
 
-#}}}
-#{{{ Aliases and functions
+# Aliases and functions  {{{1
 alias ls='ls -F'
 alias ll='ls -laF'
 alias vi=$EDITOR
@@ -93,8 +90,7 @@ fixssh() {
     done
 }
 
-#}}}
-#{{{ zle
+# zle  {{{1
 # vi mode (from $EDITOR), with some familiar Emacs-style friends.
 bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
@@ -130,7 +126,7 @@ page-up-within-tmux() {
 zle -N page-up-within-tmux
 bindkey "${terminfo[kpp]}" page-up-within-tmux
 
-#}}}
+# Misc  {{{1
 
 # Manage terminal window titles.
 if [[ $TERM =~ "(rxvt|xterm).*" ]]; then
@@ -144,5 +140,3 @@ fi
 
 # Local overrides
 [[ -f ~/.local/zshrc ]] && source ~/.local/zshrc || true
-
-# vim:foldmethod=marker

@@ -1,4 +1,4 @@
-" {{{ Options
+" Options  {{{1
 set autoindent
 set autoread
 set backspace=indent,eol,start
@@ -7,13 +7,14 @@ set cedit=                         " Don't use the command-line window.
 set cinoptions=:0                  " `case` should line up with `switch`.
 set colorcolumn=90
 set confirm                        " Prompt instead of failing to quit.
-set diffopt+=iwhite
+set diffopt+=iwhite,vertical
 set directory=~/.vim/backup//,.    " Keep swap files in one place.
 set encoding=utf-8
 set expandtab
 set fillchars+=vert:│              " Use a proper box bar for vsplits.
 set formatoptions+=j               " Remove comment leader when joining lines.
 set nofoldenable                   " No folds by default; use `zi` to enable.
+set foldmethod=marker
 set hidden                         " Don't unload hidden buffers.
 set incsearch
 set nojoinspaces                   " Only once space after a sentence.
@@ -40,9 +41,8 @@ set wildmode=list:longest
 
 filetype plugin indent on
 syntax enable
-" }}}
 
-" {{{ Mappings
+" Mappings  {{{1
 let mapleader = ","
 
 noremap ; :
@@ -71,6 +71,7 @@ map <silent> <Leader>p :set paste!<CR>
 map <silent> <Leader>s :set spell!<CR>
 map <silent> <Leader>w :set wrap!<CR>
 map <silent> <C-h> :set hlsearch!<CR>
+map <silent> <C-x> :set number!<CR>:GitGutterSignsToggle<CR>
 
 " Vertical split/unsplit.
 map <silent> <Leader>v :set columns=161<CR>:vsplit<CR>
@@ -123,9 +124,8 @@ function! InsertTabWrapper()
     endif
 endfunction
 inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
-" }}}
 
-" {{{ Plugins
+" Plugins  {{{1
 silent! if plug#begin('~/.vim/plugged')
     Plug 'cabin/cabin-colorscheme'
     Plug 'wincent/Command-T', {'do': '/usr/bin/rake make'}
@@ -180,9 +180,8 @@ nnoremap <silent> <Leader>f :CommandTMRU<CR>
 nnoremap <silent> <Leader>t :MakeGreen %<CR>
 nnoremap <silent> <Leader>T :MakeGreen<CR>
 nnoremap U :UndotreeToggle<CR>
-" }}}
 
-" {{{ GUI configuration
+" GUI configuration  {{{1
 if has('gui_running')
     set guicursor+=a:blinkon0
     set guifont=Menlo:h14
@@ -206,7 +205,8 @@ if has('gui_running')
     map <Leader>z :call ToggleZoom(0)<CR>
     map <Leader>Z :call ToggleZoom(1)<CR>
 endif
-" }}}
+
+" Misc  {{{1
 
 " Handle term escape code to set paste mode automatically.
 if &term =~ '\v^(screen|xterm)'
@@ -225,5 +225,3 @@ endif
 if filereadable(expand('~/.local/vimrc'))
     source ~/.local/vimrc
 endif
-
-" vim:foldmethod=marker
