@@ -37,7 +37,8 @@ set ttimeoutlen=50                 " Avoid waiting after `O`.
 set viminfo=""                     " Always start with a clean slate.
 set whichwrap=""
 set wildignore+=*.o,*.pyc
-set wildmode=list:longest
+set wildmenu
+set wildmode=longest:full
 
 filetype plugin indent on
 syntax enable
@@ -136,6 +137,7 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-vinegar'
     Plug 'airblade/vim-gitgutter'
     Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
     Plug 'michaeljsmith/vim-indent-object'
