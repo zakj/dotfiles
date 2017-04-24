@@ -22,11 +22,11 @@ brew install youtube-dl
 brew install caskroom/cask/brew-cask
 
 brew cask install appcleaner
+# brew cask install beamer
 brew cask install colorpicker-skalacolor
 brew cask install dash
 brew cask install dropbox
 brew cask install firefox
-brew cask install flux
 brew cask install google-chrome
 brew cask install hammerspoon
 brew cask install iina
@@ -35,6 +35,6 @@ brew cask install iterm2
 brew cask install launchbar
 brew cask install slack
 # brew cask install steam
+brew cask install the-unarchiver
 # brew cask install transmission
-# brew cask install transmit
 brew cask install xee

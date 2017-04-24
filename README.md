@@ -4,6 +4,13 @@ Set login shell:
 
     chsh -s $(which zsh)
 
+Install App Store applications:
+
+* 1Password
+* Acorn
+* Tweetbot
+* Xcode
+
 Install homebrew and formulae:
 
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -13,24 +20,11 @@ Set up vim plugins:
 
     vim +PlugInstall +qall
 
-Install App Store applications:
-
-* 1Password
-* Acorn
-* Fantastical
-* HTTP Client
-* Lingo
-* Marked
-* Soulver
-* The Unarchiver
-* Tweetbot
-* Xcode
-
 Generate a new SSH key:
 
     ssh-keygen -o -a 100 -t ed25519
 
-On Yosemite:
+On Sierra:
 
 * System preferences:
     * General: Graphite
