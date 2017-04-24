@@ -128,7 +128,8 @@ inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
 
 " Plugins  {{{1
 silent! if plug#begin('~/.vim/plugged')
-    Plug 'cabin/cabin-colorscheme'
+    Plug 'zakj/vim-mourning'
+
     Plug 'wincent/Command-T', {'do': '/usr/bin/rake make'}
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-endwise'
@@ -164,7 +165,7 @@ silent! if plug#begin('~/.vim/plugged')
 endif
 
 " Plugin configuration
-silent! colorscheme cabin
+silent! colorscheme mourning
 let g:CommandTFileScanner = "git"
 let g:CommandTMaxHeight = 10
 let g:CommandTToggleFocusMap = []
