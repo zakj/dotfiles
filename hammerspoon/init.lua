@@ -45,10 +45,6 @@ modal = hotkeyPrefix({'ctrl'}, 'space', {
     {nil, 'd', withFocusedWindow(debugWindow)},
     {nil, 'h', hs.hints.windowHints},
     {nil, '`', hs.toggleConsole},
-    {nil, 'space', function()
-        -- Send to Phoenix for now.
-        hs.eventtap.keyStroke({'ctrl', 'alt', 'cmd'}, 'q')
-    end},
     {nil, 'k', withFocusedWindow(layout.moveCenter)},
     {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
     {nil, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
