@@ -1,5 +1,6 @@
 hotkeyPrefix = require 'hotkeyPrefix'
 layout = require 'layout'
+require 'bear'
 require 'mixpanel'
 require 'reload'
 require 'safari'
