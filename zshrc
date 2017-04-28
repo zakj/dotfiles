@@ -9,7 +9,7 @@ typeset -U path
 path=(~/.local/bin ~/bin /usr/local/bin /usr/local/sbin $path)
 fpath+=~/.zfuncs
 
-export EDITOR=vim
+export EDITOR=$(basename $(whence nvim || whence vim))
 export LESS=gij5MR
 export PAGER=less
 

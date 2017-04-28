@@ -11,6 +11,7 @@ set diffopt+=iwhite,vertical
 set directory=~/.vim/backup//,.    " Keep swap files in one place.
 set encoding=utf-8
 set expandtab
+set guicursor+=a:blinkon0          " Never blink the cursor.
 set fillchars+=vert:│              " Use a proper box bar for vsplits.
 set formatoptions+=j               " Remove comment leader when joining lines.
 set nofoldenable                   " No folds by default; use `zi` to enable.
@@ -109,7 +110,7 @@ nmap q: :q
 vmap <silent> <Leader>s :!sort -d<CR>
 
 " Show syntax highlighting and linked syntax for cursor position.
-nmap <C-S-P> :echo <SID>SynLinks()<CR>
+nmap <Leader>P :echo <SID>SynLinks()<CR>
 function! <SID>SynLinks()
     let l:synid = synID(line('.'), col('.'), 1)
     return join(uniq(map([l:synid, synIDtrans(l:synid)], 'synIDattr(v:val, "name")')), '->')
@@ -186,7 +187,6 @@ nnoremap U :UndotreeToggle<CR>
 
 " GUI configuration  {{{1
 if has('gui_running')
-    set guicursor+=a:blinkon0
     set guifont=Menlo:h14
     set guioptions=aegimt
 
@@ -212,7 +212,7 @@ endif
 " Misc  {{{1
 
 " Handle term escape code to set paste mode automatically.
-if &term =~ '\v^(screen|xterm)'
+if !has('nvim') && &term =~ '\v^(screen|xterm)'
     let &t_ti = &t_ti . "\e[?2004h"
     let &t_te = "\e[?2004l" . &t_te
     function! XTermPasteBegin(ret)
