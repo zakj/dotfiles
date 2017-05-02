@@ -23,6 +23,9 @@
 [push]
 	default = simple
 
+[pull]
+	ff = only
+
 [rebase]
 	autosquash = true
 
