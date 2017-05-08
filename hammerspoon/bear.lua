@@ -23,7 +23,7 @@ local hotkeys = hs.hotkey.modal.new()
 
 local resizeTimer = {stop = function() end}
 for key, config in pairs(keys) do
-    hotkeys:bind({'cmd, ctrl'}, key, function()
+    hotkeys:bind({'cmd, ctrl'}, tostring(key), function()
         local win = hs.window.focusedWindow()
         local size = win:size()
         local app = hs.application.frontmostApplication()
