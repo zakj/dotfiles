@@ -14,7 +14,7 @@ return function(fn, target, from, to, duration)
         if target then
             fn(target, v)
         else
-            fn(x)
+            fn(v)
         end
     end
     local onComplete = function() end
