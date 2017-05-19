@@ -1,11 +1,12 @@
 # Standard packages.
-brew install ag
 brew install git
 brew install httpie
 brew install hub
 brew install macvim --override-system-vim --with-lua
 brew install node
 brew install pow
+brew install the_silver_searcher
+brew install tig
 brew install tmux
 brew install trash
 brew install yarn
