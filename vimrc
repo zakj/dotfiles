@@ -145,11 +145,11 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'wincent/ferret'
     Plug 'moll/vim-bbye'
-    Plug 'bufmru.vim'
-    Plug 'gitignore'
+    Plug 'vim-scripts/bufmru.vim'
+    Plug 'vim-scripts/gitignore'
 
     Plug 'scrooloose/syntastic'
-    Plug 'indentpython.vim', {'for': 'python'}
+    Plug 'vim-scripts/indentpython.vim', {'for': 'python'}
     Plug 'kchmck/vim-coffee-script'
     Plug 'pangloss/vim-javascript'
     Plug 'mitsuhiko/vim-jinja'
