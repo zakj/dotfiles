@@ -4,17 +4,11 @@ Set login shell:
 
     chsh -s $(which zsh)
 
-Install App Store applications:
-
-* 1Password
-* Acorn
-* Tweetbot
-* Xcode
-
 Install homebrew and formulae:
 
+    xcode-select --install
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    sh Brewfile
+    brew bundle
 
 Set up vim plugins:
 
@@ -39,6 +33,5 @@ On Sierra:
 * Messages: Uncheck "Play sound effects"
 * Tweetbot: Uncheck "Show Menu Bar Icon"
 * Dropbox: Uncheck "Show desktop notifications"
-* AppCleaner: Enable SmartDelete
 * Chrome: Check "Hide Notifications Icon" in Chrome menu
 * Xee: Formats: Select all recommended

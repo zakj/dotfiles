@@ -1,41 +1,50 @@
-# Standard packages.
-brew install git
-brew install httpie
-brew install hub
-brew install macvim --override-system-vim --with-lua
-brew install node
-brew install pow
-brew install the_silver_searcher
-brew install tig
-brew install tmux
-brew install trash
-brew install yarn
-brew install youtube-dl
+tap "caskroom/cask"
+tap "neovim/neovim"
+
+brew "git"
+brew "httpie"
+brew "hub"
+brew "mas"
+brew "neovim"
+brew "node"
+brew "pow"
+brew "the_silver_searcher"
+brew "tig"
+brew "tmux"
+brew "trash"
+brew "yarn"
+brew "youtube-dl"
 
 # Local mail support.
-# brew install isync
-# brew install lbdb
-# brew install msmtp
-# brew install mutt
-# brew install urlview
+# brew "isync"
+# brew "lbdb"
+# brew "msmtp"
+# brew "mutt"
+# brew "urlview"
 
-# Cask and local apps.
-brew install caskroom/cask/brew-cask
+cask "colorpicker-skalacolor"
+cask "dash"
+cask "dropbox"
+cask "firefox"
+cask "google-chrome"
+cask "hammerspoon"
+cask "iina"
+cask "imageoptim"
+cask "iterm2"
+cask "launchbar"
+cask "padbury-clock"
+cask "slack"
+cask "the-unarchiver"
+cask "vimr"
+cask "xee"
 
-brew cask install appcleaner
-# brew cask install beamer
-brew cask install colorpicker-skalacolor
-brew cask install dash
-brew cask install dropbox
-brew cask install firefox
-brew cask install google-chrome
-brew cask install hammerspoon
-brew cask install iina
-brew cask install imageoptim
-brew cask install iterm2
-brew cask install launchbar
-brew cask install slack
-# brew cask install steam
-brew cask install the-unarchiver
-# brew cask install transmission
-brew cask install xee
+# Optional.
+# cask "beamer"
+# cask "steam"
+# cask "transmission"
+
+mas "1Password", id: 443987910
+mas "Acorn", id: 1019272813
+mas "Bear", id: 1091189122
+mas "Deliveries", id: 924726344
+mas "Tweetbot", id: 557168941
