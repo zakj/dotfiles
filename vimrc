@@ -139,8 +139,8 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-vinegar'
     Plug 'airblade/vim-gitgutter'
+    Plug 'justinmk/vim-dirvish'
     Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'wincent/ferret'
@@ -172,8 +172,7 @@ let g:CommandTMaxHeight = 10
 let g:CommandTToggleFocusMap = []
 let g:go_disable_autoinstall = 1
 let g:go_fmt_command = "gofmt"
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3  " tree view
+let g:htmljinja_disable_html_upgrade = 1
 let g:syntastic_mode_map = {'passive_filetypes': ['html']}
 let g:syntastic_javascript_checkers = ['eslint']
 hi link coffeeSpaceError NONE
