@@ -60,23 +60,29 @@ modal = hotkeyPrefix({'ctrl'}, 'space', {
     {nil, 'x', superClick},
 })
 
-modalIndicator = hs.drawing.circle({w = 100, h = 100}):setFillColor({0, 0, 0})
+local modalCfg = {
+    size = {w = 100, h = 100},
+    duration = 2,
+    fadeIn = .25,
+    fadeOut = .1,
+}
+local modalIndicator = hs.drawing.circle(modalCfg.size):setFillColor({0, 0, 0})
 local modalExitTimer
 local tweener = {cancel = function() end}
 function modal:entered()
-    modalExitTimer = hs.timer.doAfter(2, function() modal:exit() end)
+    modalExitTimer = hs.timer.doAfter(modalCfg.duration, function() modal:exit() end)
     local topLeft = hs.geometry.rectMidPoint(hs.screen.mainScreen():frame())
-    topLeft.x = topLeft.x - 50
-    topLeft.y = topLeft.y - 50
+    topLeft.x = topLeft.x - modalCfg.size.w / 2
+    topLeft.y = topLeft.y - modalCfg.size.h / 2
     modalIndicator:setTopLeft(topLeft)
     modalIndicator:show()
     tweener.cancel()
-    tweener = tween(modalIndicator.setAlpha, modalIndicator, 0, .3, .25)
+    tweener = tween(modalIndicator.setAlpha, modalIndicator, 0, .3, modalCfg.fadeIn)
 end
 function modal:exited()
     modalExitTimer:stop()
     tweener.cancel()
-    tweener = tween(modalIndicator.setAlpha, modalIndicator, .3, 0, .1)
+    tweener = tween(modalIndicator.setAlpha, modalIndicator, .3, 0, modalCfg.fadeOut)
     tweener.onComplete(function() modalIndicator:hide() end)
 end
 
