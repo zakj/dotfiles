@@ -17,6 +17,7 @@ set formatoptions+=j               " Remove comment leader when joining lines.
 set nofoldenable                   " No folds by default; use `zi` to enable.
 set foldmethod=marker
 set hidden                         " Don't unload hidden buffers.
+set nohlsearch
 set incsearch
 set nojoinspaces                   " Only once space after a sentence.
 set laststatus=2                   " Always show the status line.
@@ -148,7 +149,13 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'vim-scripts/bufmru.vim'
     Plug 'vim-scripts/gitignore'
 
-    Plug 'scrooloose/syntastic'
+    if has('nvim')
+        Plug 'w0rp/ale'
+    else
+        Plug 'scrooloose/syntastic'
+    endif
+
+    " Syntax
     Plug 'vim-scripts/indentpython.vim', {'for': 'python'}
     Plug 'kchmck/vim-coffee-script'
     Plug 'pangloss/vim-javascript'
@@ -176,6 +183,7 @@ let g:htmljinja_disable_html_upgrade = 1
 let g:syntastic_mode_map = {'passive_filetypes': ['html']}
 let g:syntastic_javascript_checkers = ['eslint']
 hi link coffeeSpaceError NONE
+let g:ale_linters = {'javascript': ['eslint']}
 
 " Plugin mappings
 nnoremap <silent> <Leader>e :CommandT<CR>
