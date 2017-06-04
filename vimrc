@@ -130,9 +130,17 @@ inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
 
 " Plugins  {{{1
 silent! if plug#begin('~/.vim/plugged')
+    " Appearance
     Plug 'zakj/vim-mourning'
+    Plug 'zakj/vim-statusline'
 
-    Plug 'wincent/Command-T', {'do': '/usr/bin/rake make'}
+    " Functionality
+    Plug 'airblade/vim-gitgutter'
+    Plug 'junegunn/vim-easy-align'
+    Plug 'justinmk/vim-dirvish'
+    Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+    Plug 'michaeljsmith/vim-indent-object'
+    Plug 'moll/vim-bbye'
     Plug 'tpope/vim-commentary'
     Plug 'tpope/vim-endwise'
     Plug 'tpope/vim-fugitive'
@@ -140,14 +148,10 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-surround'
-    Plug 'airblade/vim-gitgutter'
-    Plug 'justinmk/vim-dirvish'
-    Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
-    Plug 'michaeljsmith/vim-indent-object'
-    Plug 'wincent/ferret'
-    Plug 'moll/vim-bbye'
     Plug 'vim-scripts/bufmru.vim'
     Plug 'vim-scripts/gitignore'
+    Plug 'wincent/Command-T', {'do': '/usr/bin/rake make'}
+    Plug 'wincent/ferret'
 
     if has('nvim')
         Plug 'w0rp/ale'
@@ -166,8 +170,6 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'digitaltoad/vim-jade'
     Plug 'wavded/vim-stylus'
     Plug 'posva/vim-vue'
-    Plug '5long/pytest-vim-compiler'
-    Plug 'reinh/vim-makegreen'
 
     call plug#end()
 endif
@@ -188,9 +190,9 @@ let g:ale_linters = {'javascript': ['eslint']}
 " Plugin mappings
 nnoremap <silent> <Leader>e :CommandT<CR>
 nnoremap <silent> <Leader>f :CommandTMRU<CR>
-nnoremap <silent> <Leader>t :MakeGreen %<CR>
-nnoremap <silent> <Leader>T :MakeGreen<CR>
 nnoremap U :UndotreeToggle<CR>
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " GUI configuration  {{{1
 if has('gui_running')
