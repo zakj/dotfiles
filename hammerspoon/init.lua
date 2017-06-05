@@ -12,7 +12,7 @@ hs.hints.style = 'vimperator'
 hs.window.animationDuration = 0
 
 
-function withFocusedWindow(...)
+local function withFocusedWindow(...)
     local varargs = {...}
     return function()
         for i, fn in ipairs(varargs) do
@@ -86,6 +86,9 @@ function modal:exited()
     tweener.onComplete(function() modalIndicator:hide() end)
 end
 
+
+-- Make sure garbage collection doesn't break new functionality.
+hs.timer.doAfter(2, collectgarbage)
 
 -- Maybe I want an interface more like this?
 -- new(set function)

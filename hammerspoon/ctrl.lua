@@ -10,7 +10,7 @@ function len(t)
     return l
 end
 
-hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
+flagsTap = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
     local flags = e:getFlags()
     local nflags = len(flags)
 
@@ -36,6 +36,6 @@ hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
 end):start()
 
 -- Pressing any other key cancels the ESC.
-hs.eventtap.new({hs.eventtap.event.types.keyDown}, function()
+keyDownTap = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function()
     wantsEscape = false
 end):start()

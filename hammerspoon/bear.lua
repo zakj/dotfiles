@@ -41,7 +41,7 @@ local eventHandlers = {
     [hs.application.watcher.terminated] = hotkeys.exit,
 }
 
-hs.application.watcher.new(function(appName, eventType, app)
+watcher = hs.application.watcher.new(function(appName, eventType, app)
     handler = eventHandlers[eventType]
     if handler and appName == 'Bear' then
         handler(hotkeys)
