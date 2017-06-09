@@ -177,6 +177,7 @@ endif
 " Plugin configuration
 silent! colorscheme mourning
 let g:CommandTFileScanner = "git"
+let g:CommandTGitIncludeUntracked = 1
 let g:CommandTMaxHeight = 10
 let g:CommandTToggleFocusMap = []
 let g:go_disable_autoinstall = 1
