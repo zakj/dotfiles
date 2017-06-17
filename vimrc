@@ -118,7 +118,7 @@ function! <SID>SynLinks()
 endfunction
 
 " Pressing tab at the beginning of a line indents; elsewhere completes.
-function! InsertTabWrapper()
+function! <SID>InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'
         return "\<tab>"
@@ -126,7 +126,7 @@ function! InsertTabWrapper()
         return "\<c-n>"
     endif
 endfunction
-inoremap <Tab> <C-R>=InsertTabWrapper()<CR>
+inoremap <expr> <Tab> <SID>InsertTabWrapper()
 
 " Plugins  {{{1
 silent! if plug#begin('~/.vim/plugged')
@@ -148,7 +148,6 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-surround'
-    Plug 'vim-scripts/bufmru.vim'
     Plug 'vim-scripts/gitignore'
     Plug 'wincent/Command-T', {'do': '/usr/bin/rake make'}
     Plug 'wincent/ferret'
@@ -189,11 +188,20 @@ hi link coffeeSpaceError NONE
 let g:ale_linters = {'javascript': ['eslint']}
 
 " Plugin mappings
-nnoremap <silent> <Leader>e :CommandT<CR>
-nnoremap <silent> <Leader>f :CommandTMRU<CR>
+nmap <silent> <Leader>e <Plug>(CommandT)
+nmap <silent> <Leader>f <Plug>(CommandTMRU)
 nnoremap U :UndotreeToggle<CR>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+call commandt#Load()
+function! <SID>MRUBuffer()
+    ruby <<
+    stack = CommandT::MRU.stack
+    VIM::command('b %d' % stack[-2].number) if stack.length > 1
+.
+endfunction
+nnoremap <silent> <Space> :call <SID>MRUBuffer()<CR>
 
 " GUI configuration  {{{1
 if has('gui_running')
