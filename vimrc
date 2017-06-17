@@ -27,7 +27,7 @@ set mouse=a
 set number
 set pastetoggle=<F1>               " TODO: consider removing? changing?
 set report=0                       " Always report how many lines were changed.
-set ruler
+set noruler                        " More verbose ^G output.
 set shiftround                     " Indent in multiples of 'shiftwidth'.
 set shiftwidth=4
 set shortmess+=I
