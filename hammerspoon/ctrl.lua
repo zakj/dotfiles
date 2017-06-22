@@ -14,20 +14,17 @@ flagsTap = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
     local flags = e:getFlags()
     local nflags = len(flags)
 
-    -- If control is present, is the only modifier present, and wasn't present
-    -- last time a modifier was pressed, consider this a possible ESC. If
-    -- another modifier is also present, cancel the ESC.
-    if flags.ctrl then
-        if ctrl ~= flags.ctrl and nflags == 1 then
-            wantsEscape = true
-            timer:start()
-        else
-            wantsEscape = false
-        end
+    -- If control is present and wasn't present last time a modifier was
+    -- pressed, consider this a possible ESC.
+    if flags.ctrl and not ctrl then
+        wantsEscape = true
+        timer:start()
     end
     ctrl = flags.ctrl
 
-    if nflags == 0 and wantsEscape then
+    if wantsEscape and not flags.ctrl then
+        wantsEscape = false
+        timer:stop()
         return true, {
             hs.eventtap.event.newKeyEvent({}, 'escape', true),
             hs.eventtap.event.newKeyEvent({}, 'escape', false),
