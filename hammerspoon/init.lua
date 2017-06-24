@@ -69,24 +69,25 @@ local modalCfg = {
     fadeIn = .25,
     fadeOut = .1,
 }
-local modalIndicator = hs.drawing.circle(modalCfg.size):setFillColor({0, 0, 0})
-local modalExitTimer
-local tweener = {cancel = function() end}
+local modalIndicator = hs.canvas.new(modalCfg.size):appendElements({
+    action = 'fill', type = 'circle',
+    fillColor = { alpha = 0.3 },
+    padding = 1,
+})
+local modalExitTimer = hs.timer.delayed.new(modalCfg.duration, function()
+    modal:exit()
+end)
 function modal:entered()
-    modalExitTimer = hs.timer.doAfter(modalCfg.duration, function() modal:exit() end)
-    local topLeft = hs.geometry.rectMidPoint(hs.screen.mainScreen():frame())
-    topLeft.x = topLeft.x - modalCfg.size.w / 2
-    topLeft.y = topLeft.y - modalCfg.size.h / 2
-    modalIndicator:setTopLeft(topLeft)
-    modalIndicator:show()
-    tweener.cancel()
-    tweener = tween(modalIndicator.setAlpha, modalIndicator, 0, .3, modalCfg.fadeIn)
+    modalExitTimer:start()
+    local rect = hs.geometry.rectMidPoint(hs.screen.mainScreen():frame())
+    rect.x = rect.x - modalCfg.size.w / 2
+    rect.y = rect.y - modalCfg.size.h / 2
+    modalIndicator:topLeft(rect)
+    modalIndicator:show(modalCfg.fadeIn)
 end
 function modal:exited()
     modalExitTimer:stop()
-    tweener.cancel()
-    tweener = tween(modalIndicator.setAlpha, modalIndicator, .3, 0, modalCfg.fadeOut)
-    tweener.onComplete(function() modalIndicator:hide() end)
+    modalIndicator:hide(modalCfg.fadeOut)
 end
 
 
