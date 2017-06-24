@@ -4,13 +4,13 @@ local timer = hs.timer.delayed.new(0.15, function()
     wantsEscape = false
 end)
 
-function len(t)
+local function len(t)
     local l = 0
     for _ in pairs(t) do l = l + 1 end
     return l
 end
 
-flagsTap = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
+local function handleFlagsChanged(e)
     local flags = e:getFlags()
     local nflags = len(flags)
 
@@ -30,9 +30,20 @@ flagsTap = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
             hs.eventtap.event.newKeyEvent({}, 'escape', false),
         }
     end
-end):start()
+end
 
 -- Pressing any other key cancels the ESC.
-keyDownTap = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function()
+local function handleKeyDown()
     wantsEscape = false
-end):start()
+end
+
+local types = hs.eventtap.event.types
+
+local handlers = {
+    [types.flagsChanged] = handleFlagsChanged,
+    [types.keyDown]      = handleKeyDown,
+}
+
+return hs.eventtap.new({types.flagsChanged, types.keyDown}, function(e)
+    return handlers[e:getType()](e)
+end)

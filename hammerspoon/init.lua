@@ -1,11 +1,14 @@
+bear         = require 'bear'
+ctrl         = require 'ctrl'
 hotkeyPrefix = require 'hotkeyPrefix'
-layout = require 'layout'
-require 'bear'
-require 'ctrl'
--- require 'mixpanel'
-require 'reload'
-superClick = require 'superclick'
-tween = require 'tween'
+layout       = require 'layout'
+reload       = require 'reload'
+superClick   = require 'superclick'
+tween        = require 'tween'
+
+bear:start()
+ctrl:start()
+reload:start()
 
 hs.hints.style = 'vimperator'
 hs.window.animationDuration = 0
