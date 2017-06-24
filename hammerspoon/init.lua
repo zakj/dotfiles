@@ -11,6 +11,7 @@ ctrl:start()
 reload:start()
 
 hs.hints.style = 'vimperator'
+hs.hotkey.setLogLevel('warning')
 hs.window.animationDuration = 0
 
 
