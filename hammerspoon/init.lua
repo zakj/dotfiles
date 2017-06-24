@@ -4,7 +4,6 @@ require 'bear'
 require 'ctrl'
 -- require 'mixpanel'
 require 'reload'
-require 'safari'
 superClick = require 'superclick'
 tween = require 'tween'
 
