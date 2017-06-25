@@ -73,12 +73,23 @@ local modalIndicator = hs.canvas.new(modalCfg.size):appendElements({
     action = 'fill', type = 'circle',
     fillColor = { alpha = 0.3 },
     padding = 1,
+}, {
+    action = 'stroke', type = 'arc', arcRadii = false,
+    startAngle = 0, endAngle = 360,
+    strokeColor = { red = 1, green = 1, blue = 1 },
+    strokeWidth = 3,
+    padding = 2,
 })
 local modalExitTimer = hs.timer.delayed.new(modalCfg.duration, function()
     modal:exit()
 end)
+local modalTween = tween.new(360, 0, modalCfg.duration, function(v)
+    modalIndicator[2].endAngle = v
+end)
+
 function modal:entered()
     modalExitTimer:start()
+    modalTween:start()
     local rect = hs.geometry.rectMidPoint(hs.screen.mainScreen():frame())
     rect.x = rect.x - modalCfg.size.w / 2
     rect.y = rect.y - modalCfg.size.h / 2
@@ -87,16 +98,10 @@ function modal:entered()
 end
 function modal:exited()
     modalExitTimer:stop()
+    modalTween:cancel()
     modalIndicator:hide(modalCfg.fadeOut)
 end
 
 
 -- Make sure garbage collection doesn't break new functionality.
 hs.timer.doAfter(2, collectgarbage)
-
--- Maybe I want an interface more like this?
--- new(set function)
--- :start(from, to, interval, onComplete)
--- tweener = tween.new(function(v) modalIndicator:setAlpha(v) end)
--- tweener:start(0, .3, .25)
--- tweener:start(modalIndicator:alpha(), 0, .1, function() modalIndicator:hide() end)
