@@ -8,32 +8,31 @@ local function smootherstep(edge0, edge1, x)
     return x^3 * (x * (x * 6 - 15) + 10)
 end
 
-return function(fn, target, from, to, duration)
-    local delta = to - from
-    local function set(v)
-        if target then
-            fn(target, v)
-        else
-            fn(v)
-        end
+return {
+    new = function(from, to, duration, fn)
+        local delta = to - from
+        local onComplete = function() end
+        local start
+
+        timer = hs.timer.new(.001, function()
+            local elapsed = hs.timer.secondsSinceEpoch() - start
+            if elapsed >= duration then
+                timer:stop()
+                fn(to)
+                onComplete()
+            else
+                fn(smootherstep(0, duration, elapsed) * delta + from)
+            end
+        end)
+
+        return {
+            start = function(self)
+                start = hs.timer.secondsSinceEpoch()
+                fn(from)
+                timer:start()
+            end,
+            cancel = function(self) timer:stop() end,
+            onComplete = function(self, fn) onComplete = fn end,
+        }
     end
-    local onComplete = function() end
-
-    set(from)
-    local start = hs.timer.secondsSinceEpoch()
-    timer = hs.timer.doEvery(.001, function()
-        local elapsed = hs.timer.secondsSinceEpoch() - start
-        if elapsed >= duration then
-            timer:stop()
-            set(to)
-            onComplete()
-        else
-            set(smootherstep(0, duration, elapsed) * delta + from)
-        end
-    end)
-
-    return {
-        cancel = function() timer:stop() end,
-        onComplete = function(fn) onComplete = fn end,
-    }
-end
+}
