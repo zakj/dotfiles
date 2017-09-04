@@ -47,4 +47,5 @@ mas "1Password", id: 443987910
 mas "Acorn", id: 1019272813
 mas "Bear", id: 1091189122
 mas "Deliveries", id: 924726344
+mas "Things 3", id: 904280696
 mas "Tweetbot", id: 557168941
