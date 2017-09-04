@@ -63,13 +63,13 @@ modal = hotkeyPrefix({'ctrl'}, 'space', {
     {nil, 'x', superClick},
 })
 
-local modalCfg = {
+modalCfg = {
     size = {w = 100, h = 100},
     duration = 2,
     fadeIn = .25,
     fadeOut = .1,
 }
-local modalIndicator = hs.canvas.new(modalCfg.size):appendElements({
+modalIndicator = hs.canvas.new(modalCfg.size):appendElements({
     action = 'fill', type = 'circle',
     fillColor = { alpha = 0.3 },
     padding = 1,
@@ -77,14 +77,20 @@ local modalIndicator = hs.canvas.new(modalCfg.size):appendElements({
     action = 'stroke', type = 'arc', arcRadii = false,
     startAngle = 0, endAngle = 360,
     strokeColor = { red = 1, green = 1, blue = 1 },
-    strokeWidth = 3,
+    strokeWidth = 1,
     padding = 2,
+}, {
+    action = 'stroke', type = 'arc', arcRadii = false,
+    startAngle = 0, endAngle = 360,
+    strokeColor = { red = 1, green = 1, blue = 1 },
+    strokeWidth = 3,
+    padding = 3,
 })
-local modalExitTimer = hs.timer.delayed.new(modalCfg.duration, function()
+modalExitTimer = hs.timer.delayed.new(modalCfg.duration, function()
     modal:exit()
 end)
-local modalTween = tween.new(360, 0, modalCfg.duration, function(v)
-    modalIndicator[2].endAngle = v
+modalTween = tween.new(360, 0, modalCfg.duration, function(v)
+    modalIndicator[3].endAngle = v
 end)
 
 function modal:entered()
