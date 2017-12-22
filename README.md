@@ -9,6 +9,8 @@ Install homebrew and formulae:
     xcode-select --install
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew bundle
+    sudo puma-dev -d test -setup
+    puma-dev -d test -install
 
 Set up vim plugins:
 

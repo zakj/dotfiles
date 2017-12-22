@@ -1,13 +1,13 @@
 tap "caskroom/cask"
 tap "neovim/neovim"
+tap "puma/puma"
 
 brew "git"
 brew "httpie"
 brew "hub"
 brew "mas"
-brew "neovim"
 brew "node"
-brew "pow"
+brew "puma-dev"
 brew "the_silver_searcher"
 brew "tig"
 brew "tmux"
@@ -39,7 +39,6 @@ cask "vimr"
 cask "xee"
 
 # Optional.
-# cask "beamer"
 # cask "steam"
 # cask "transmission"
 
