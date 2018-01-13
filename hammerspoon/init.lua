@@ -40,7 +40,12 @@ local function debugWindow(win)
 end
 
 local function lockScreen()
-    os.execute('"/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession" -suspend')
+    version = hs.host.operatingSystemVersion()
+    if version.major > 10 or (version.major == 10 and version.minor >= 13) then
+        hs.eventtap.keyStroke({'cmd', 'ctrl'}, 'q')
+    else
+        os.execute('"/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession" -suspend')
+    end
 end
 
 
