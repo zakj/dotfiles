@@ -83,7 +83,7 @@ modalIndicator = hs.canvas.new(modalCfg.size):appendElements({
     startAngle = 0, endAngle = 360,
     strokeColor = { red = 1, green = 1, blue = 1 },
     strokeWidth = 1,
-    padding = 2,
+    padding = 1.5,
 }, {
     action = 'stroke', type = 'arc', arcRadii = false,
     startAngle = 0, endAngle = 360,
@@ -111,6 +111,10 @@ function modal:exited()
     modalExitTimer:stop()
     modalTween:cancel()
     modalIndicator:hide(modalCfg.fadeOut)
+    -- Calling hide while show is still animating can cause alpha to get stuck.
+    hs.timer.doAfter(modalCfg.fadeIn + modalCfg.fadeOut, function()
+        modalIndicator:alpha(1)
+    end)
 end
 
 
