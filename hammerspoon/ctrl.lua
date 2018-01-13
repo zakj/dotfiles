@@ -1,6 +1,6 @@
 local ctrl = hs.eventtap.checkKeyboardModifiers().ctrl
 local wantsEscape = false
-local timer = hs.timer.delayed.new(0.15, function()
+local timer = hs.timer.delayed.new(0.3, function()
     wantsEscape = false
 end)
 
