@@ -18,7 +18,7 @@ Set up vim plugins:
 
 Generate a new SSH key:
 
-    ssh-keygen -o -a 100 -t ed25519
+    ssh-keygen -a 64 -t ed25519
 
 On Sierra:
 
