@@ -48,11 +48,26 @@ local function lockScreen()
     end
 end
 
+local function toggleDesktopIcons()
+    t = hs.task.new('/usr/bin/defaults', nil, {'read', 'com.apple.finder', 'CreateDesktop'})
+    t:setCallback(function(exitCode, stdOut, stdErr)
+        local hidden = exitCode == 0 or stdOut:gsub('%s+', '') == '0'
+        if hidden then
+            os.execute('defaults delete com.apple.finder CreateDesktop')
+        else
+            os.execute('defaults write com.apple.finder CreateDesktop -bool false')
+        end
+        os.execute('killall Finder')
+    end)
+    t:start()
+end
+
 
 modal = hotkeyPrefix({'ctrl'}, 'space', {
     {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
     {nil, 'l', lockScreen},
-    {nil, 'd', withFocusedWindow(debugWindow)},
+    {nil, 'd', toggleDesktopIcons},
+    {{'shift'}, 'd', withFocusedWindow(debugWindow)},
     {nil, 'h', hs.hints.windowHints},
     {nil, '`', hs.toggleConsole},
     {nil, 'k', withFocusedWindow(layout.moveCenter)},
