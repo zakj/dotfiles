@@ -62,6 +62,15 @@ local function toggleDesktopIcons()
     t:start()
 end
 
+local function undock()
+    for path, volume in pairs(hs.fs.volume.allVolumes()) do
+        if volume.NSURLVolumeIsEjectableKey then
+            hs.fs.volume.eject(path)
+        end
+    end
+    hs.caffeinate.systemSleep()
+end
+
 
 modal = hotkeyPrefix({'ctrl'}, 'space', {
     {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
@@ -74,6 +83,7 @@ modal = hotkeyPrefix({'ctrl'}, 'space', {
     {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
     {nil, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
     {nil, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV)},
+    {nil, 'u', undock},
     {nil, 'c', function()
         hs.window.focusedWindow():setSize(1003, 600)
     end},
