@@ -63,7 +63,6 @@ alias ls='ls -F'
 alias ll='ls -laF'
 alias vi=$EDITOR
 alias psg='pgrep -lf'
-alias lag='ag --pager $PAGER'
 
 # cdr provides a selectable list of recently-visited directories.
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
@@ -77,8 +76,23 @@ autoload -Uz zmv
 # Give a short name to the given (or current) directory.
 namedir() { eval "$1=${2-$PWD}" && : ~$1 }
 
-# Open all matching files in mvim.
-mvag() { ag -l "$@" | xargs mvim }
+# Normalize recursive grep tools.
+g() {
+  if whence rg &>/dev/null; then
+    rg -p \
+      --colors match:none --colors match:fg:black --colors match:bg:yellow \
+      --colors path:fg:green --colors path:style:bold \
+      --colors line:fg:yellow --colors line:style:intense --colors line:style:bold \
+      "$@" | less -FX
+  elif whence ag &>/dev/null; then
+    ag --pager 'less -FX' "$@"
+  elif git rev-parse --is-inside-work-tree &>/dev/null; then
+    git grep "$@" | less -FX
+  else
+    autoload colors && colors && echo "$fg_bold[red]falling back to grep -R$reset_color" >&2
+    grep -R "$@" . | less -FX
+  fi
+}
 
 # Reconnect ssh socket in an existing tmux session.
 fixssh() {
