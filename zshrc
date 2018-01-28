@@ -87,7 +87,7 @@ g() {
   elif whence ag &>/dev/null; then
     ag --pager 'less -FX' "$@"
   elif git rev-parse --is-inside-work-tree &>/dev/null; then
-    git grep "$@" | less -FX
+    git grep --color --heading --break "$@" | less -FX
   else
     autoload colors && colors && echo "$fg_bold[red]falling back to grep -R$reset_color" >&2
     grep -R "$@" . | less -FX
