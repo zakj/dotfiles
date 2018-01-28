@@ -196,30 +196,6 @@ function! <SID>MRUBuffer()
 endfunction
 nnoremap <silent> <Space> :call <SID>MRUBuffer()<CR>
 
-" GUI configuration  {{{1
-if has('gui_running')
-    set guifont=Menlo:h14
-    set guioptions=aegimt
-
-    " Swap windows with ⌥`.
-    set macmeta
-    nmap <M-`> <C-w><C-w>
-    imap <M-`> <Esc><C-w><C-w>
-
-    " Shortcuts for some common window sizes.
-    function! ToggleZoom(wide)
-        if a:wide == 0 && &lines == 40
-            set lines=999
-        elseif a:wide == 1 && &columns == 80
-            set lines=999 columns=124
-        else
-            set lines=40 columns=80
-        endif
-    endfunction
-    map <Leader>z :call ToggleZoom(0)<CR>
-    map <Leader>Z :call ToggleZoom(1)<CR>
-endif
-
 " Misc  {{{1
 
 " Handle term escape code to set paste mode automatically.
