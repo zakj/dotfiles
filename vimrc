@@ -141,7 +141,7 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
     Plug 'michaeljsmith/vim-indent-object'
     Plug 'moll/vim-bbye'
-    Plug 'tpope/vim-commentary'
+    Plug 'tomtom/tcomment_vim'
     Plug 'tpope/vim-endwise'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-ragtag'
@@ -149,10 +149,10 @@ silent! if plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-sleuth'
     Plug 'tpope/vim-surround'
     Plug 'vim-scripts/gitignore'
-    Plug 'wincent/Command-T', {'do': '/usr/bin/rake make'}
+    Plug 'wincent/Command-T', {'do': 'rake make'}
     Plug 'wincent/ferret'
 
-    if has('nvim')
+    if has('nvim') || has('job')
         Plug 'w0rp/ale'
     else
         Plug 'scrooloose/syntastic'
@@ -160,11 +160,8 @@ silent! if plug#begin('~/.vim/plugged')
 
     " Syntax
     Plug 'vim-scripts/indentpython.vim', {'for': 'python'}
-    Plug 'kchmck/vim-coffee-script'
     Plug 'pangloss/vim-javascript'
-    Plug 'mitsuhiko/vim-jinja'
     Plug 'elzr/vim-json'
-    Plug 'fatih/vim-go'
     Plug 'groenewege/vim-less'
     Plug 'digitaltoad/vim-jade'
     Plug 'wavded/vim-stylus'
@@ -179,13 +176,9 @@ let g:CommandTFileScanner = "git"
 let g:CommandTGitIncludeUntracked = 1
 let g:CommandTMaxHeight = 10
 let g:CommandTToggleFocusMap = []
-let g:go_disable_autoinstall = 1
-let g:go_fmt_command = "gofmt"
-let g:htmljinja_disable_html_upgrade = 1
 let g:syntastic_mode_map = {'passive_filetypes': ['html']}
 let g:syntastic_javascript_checkers = ['eslint']
-hi link coffeeSpaceError NONE
-let g:ale_linters = {'javascript': ['eslint']}
+let g:ale_linters = {'html': [], 'javascript': ['eslint']}
 
 " Plugin mappings
 nmap <silent> <Leader>e <Plug>(CommandT)
@@ -194,7 +187,7 @@ nnoremap U :UndotreeToggle<CR>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-call commandt#Load()
+silent! call commandt#Load()
 function! <SID>MRUBuffer()
     ruby <<
     stack = CommandT::MRU.stack
