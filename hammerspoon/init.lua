@@ -62,6 +62,18 @@ local function toggleDesktopIcons()
     t:start()
 end
 
+local function openFinderSelectionWithCurrentApp()
+    local app = hs.application.frontmostApplication():name()
+    hs.osascript.applescript(string.format([[
+      tell application "Finder"
+        set finderSelection to the selection as text
+      end tell
+      tell application "%s"
+        open finderSelection
+      end tell
+    ]], app))
+end
+
 local function undock()
     for path, volume in pairs(hs.fs.volume.allVolumes()) do
         if volume.NSURLVolumeIsEjectableKey then
@@ -83,6 +95,7 @@ modal = hotkeyPrefix({'ctrl'}, 'space', {
     {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
     {nil, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
     {nil, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV)},
+    {nil, 'o', openFinderSelectionWithCurrentApp},
     {nil, 'u', undock},
     {nil, 'c', function()
         hs.window.focusedWindow():setSize(1003, 600)
