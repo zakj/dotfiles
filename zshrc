@@ -93,6 +93,11 @@ g() {
   fi
 }
 
+# Open all recursive-grep results in an editor.
+eg() {
+  "$EDITOR" $(g -l "$@")
+}
+
 # Reconnect ssh socket in an existing tmux session.
 fixssh() {
     for line in "${(f)$(tmux show-environment)}"; do
