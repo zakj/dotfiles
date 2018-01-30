@@ -26,13 +26,12 @@ HISTSIZE=10000
 SAVEHIST=$HISTSIZE
 
 # Prompt  {{{1
-# Working directory with truncated long paths, then %/# or a red symbol if the
-# last command failed.
-PROMPT='%5(~:%-1~/…/%2~:%~)'
-PROMPT+='%(?.%#.%B%F{red}✖%b%f) '
-
-# Include the hostname if this is a remote host.
+# Working directory with truncated long paths.
+PROMPT='%5(~.%-1~/…/%2~.%~)%# '
+# Prepend the hostname if this is a remote host.
 test -n "$SSH_CLIENT" && PROMPT="%m:$PROMPT"
+# Prepend a marker whose color reflects last command exit status.
+PROMPT="%B%(?..%F{red})➜%f%b $PROMPT"
 
 # vcs_info output in RPROMPT.
 autoload -U add-zsh-hook vcs_info
