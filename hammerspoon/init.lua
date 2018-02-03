@@ -76,7 +76,7 @@ end
 
 local function undock()
     for path, volume in pairs(hs.fs.volume.allVolumes()) do
-        if volume.NSURLVolumeIsEjectableKey then
+        if not volume.NSURLVolumeIsInternalKey then
             hs.fs.volume.eject(path)
         end
     end
