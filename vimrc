@@ -186,6 +186,7 @@ nmap <silent> <Leader>f <Plug>(CommandTMRU)
 nnoremap U :UndotreeToggle<CR>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+nmap g% <Plug>(FerretAckWord)
 
 silent! call commandt#Load()
 function! <SID>MRUBuffer()
