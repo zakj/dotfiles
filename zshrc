@@ -62,6 +62,7 @@ alias ls='ls -F'
 alias ll='ls -laF'
 alias vi=$EDITOR
 alias psg='pgrep -lf'
+alias youtube-dl='noglob youtube-dl'
 
 # cdr provides a selectable list of recently-visited directories.
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
