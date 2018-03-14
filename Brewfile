@@ -14,13 +14,6 @@ brew "trash"
 brew "yarn"
 brew "youtube-dl"
 
-# Local mail support.
-# brew "isync"
-# brew "lbdb"
-# brew "msmtp"
-# brew "mutt"
-# brew "urlview"
-
 cask "colorpicker-skalacolor"
 cask "dash"
 cask "dropbox"

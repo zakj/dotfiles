@@ -1,3 +1,0 @@
-image/*; open %s
-application/pdf; ~/.mutt/attachment %s pdf
-text/html; ~/.mutt/attachment %s html
