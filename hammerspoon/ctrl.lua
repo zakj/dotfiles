@@ -4,15 +4,8 @@ local timer = hs.timer.delayed.new(0.3, function()
     wantsEscape = false
 end)
 
-local function len(t)
-    local l = 0
-    for _ in pairs(t) do l = l + 1 end
-    return l
-end
-
 local function handleFlagsChanged(e)
     local flags = e:getFlags()
-    local nflags = len(flags)
 
     -- If control is present and wasn't present last time a modifier was
     -- pressed, consider this a possible ESC.
