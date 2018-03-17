@@ -16,4 +16,4 @@ test:
 	$(if $(UNLINKED),$(error unlinked files: $(UNLINKED)))
 
 clean:
-	@find $$HOME -maxdepth 1 -type l -exec test ! -e {} \; -delete
+	@find $$HOME -maxdepth 1 -type l -exec test ! -e {} \; -print -delete
