@@ -29,6 +29,7 @@ cask "padbury-clock"
 cask "slack"
 cask "the-unarchiver"
 cask "vimr"
+cask "visual-studio-code"
 cask "xee"
 
 # Optional.

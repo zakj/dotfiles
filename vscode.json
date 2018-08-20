@@ -1,0 +1,65 @@
+{
+  "editor.cursorBlinking": "solid",
+  "editor.renderLineHighlight": "none",
+  "emmet.showExpandedAbbreviation": "never",
+  "explorer.confirmDelete": false,
+  "files.insertFinalNewline": true,
+
+  "git.autofetch": true,
+  "gitlens.advanced.messages": {
+    "suppressShowKeyBindingsNotice": true
+  },
+  "gitlens.codeLens.enabled": false,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.historyExplorer.enabled": true,
+
+  "html.format.extraLiners": "",
+  "html.format.wrapLineLength": 80,
+
+  "languageStylus.useSeparator": false,
+
+  "python.venvPath": "~/.virtualenvs",
+
+  "search.location": "panel",
+
+  "workbench.colorCustomizations": {
+    "editorIndentGuide.activeBackground": "#ffffff22",
+    "editorIndentGuide.background": "#00000000",
+  },
+  "workbench.colorTheme": "Mourning",
+  "workbench.statusBar.feedback.visible": false,
+
+  "vim.hlsearch": true,
+  "vim.leader": ",",
+  "vim.searchHighlightColor": "#afff5f",
+  "vim.useSystemClipboard": true,
+  "vim.otherModesKeyBindingsNonRecursive": [
+    {
+      "before": ["<C-h>"],
+      "after": [],
+      "commands": [{
+        "command": ":nohl",
+        "args": [],
+      }],
+    }, {
+      "before": [";"],
+      "after": [],
+      "commands": [{
+        "command": "workbench.action.showCommands",
+        "args": [],
+      }],
+    }, {
+      "before": ["<leader>", "s"],
+      "after": [],
+      "commands": [{
+        "command": "editor.action.sortLinesAscending",
+        "args": [],
+      }, {
+        // exit visual mode
+        "command": "extension.vim_escape",
+        "args": [],
+      }],
+    },
+  ],
+
+}
