@@ -8,6 +8,7 @@ VSCODE_EXT = vscode.ext
 
 all: links test vscode
 
+.PHONY: links
 links: $(DOTFILES)
 
 $(HOME)/.%: %
