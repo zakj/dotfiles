@@ -25,7 +25,6 @@ cask "iina"
 cask "imageoptim"
 cask "iterm2"
 cask "launchbar"
-cask "kap"
 cask "padbury-clock"
 cask "slack"
 cask "the-unarchiver"
@@ -36,6 +35,7 @@ cask "xee"
 # Optional.
 # cask "steam"
 # cask "transmission"
+# mas "Next Meeting", id: 1017470484
 
 mas "Acorn", id: 1019272813
 mas "Bear", id: 1091189122
