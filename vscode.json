@@ -22,14 +22,15 @@
 
   "search.location": "panel",
 
+  "sync-rsync.onSave": true,
+  "sync-rsync.onSaveIndividual": true,
+
   "workbench.colorCustomizations": {
     "editorIndentGuide.activeBackground": "#ffffff22",
     "editorIndentGuide.background": "#00000000",
   },
   "workbench.colorTheme": "Mourning",
   "workbench.statusBar.feedback.visible": false,
-
-  "vim.hlsearch": true,
   "vim.leader": ",",
   "vim.searchHighlightColor": "#afff5f",
   "vim.useSystemClipboard": true,
@@ -39,7 +40,7 @@
       "before": ["<C-h>"],
       "after": [],
       "commands": [{
-        "command": ":nohl",
+        "command": ":set hlsearch!",
         "args": [],
       }],
     }, {
