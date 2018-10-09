@@ -1,6 +1,5 @@
 ssh/*.pem
-ssh/id_ed25519
-ssh/id_rsa
+ssh/id_*
 ssh/known_hosts
 vim/autoload/plug.vim.old
 vim/backup/*
