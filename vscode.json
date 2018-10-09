@@ -1,5 +1,6 @@
 {
   "editor.cursorBlinking": "solid",
+  "editor.minimap.enabled": false,
   "editor.renderLineHighlight": "none",
   "emmet.showExpandedAbbreviation": "never",
   "explorer.confirmDelete": false,
@@ -22,9 +23,6 @@
 
   "search.location": "panel",
 
-  "sync-rsync.onSave": true,
-  "sync-rsync.onSaveIndividual": true,
-
   "workbench.colorCustomizations": {
     "editorIndentGuide.activeBackground": "#ffffff22",
     "editorIndentGuide.background": "#00000000",
@@ -33,7 +31,6 @@
   "workbench.statusBar.feedback.visible": false,
   "vim.leader": ",",
   "vim.searchHighlightColor": "#afff5f",
-  "vim.useSystemClipboard": true,
 
   "vim.normalModeKeyBindingsNonRecursive": [
     {

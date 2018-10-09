@@ -16,6 +16,10 @@ Set up vim plugins:
 
     vim +PlugInstall +qall
 
+Fix key repeat in vscode:
+
+    defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+
 Generate a new SSH key:
 
     ssh-keygen -a 64 -t ed25519
