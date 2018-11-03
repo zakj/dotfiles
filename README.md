@@ -24,13 +24,15 @@ Generate a new SSH key:
 
     ssh-keygen -a 64 -t ed25519
 
-On Sierra:
+On Mojave:
 
 * System preferences:
     * General: Graphite
     * Dock: Automatically hide and show the Dock
+    * Dock: Uncheck "Show recent applications in Dock"
     * Keyboard: Modifier Keys... Caps-Lock → Ctrl
     * Keyboard: Text: Uncheck "Correct spelling automatically"
+    * Keyboard: Text: Uncheck "Capitalize words automatically"
     * Trackpad: Tap to click
     * Sharing: Computer Name
 * iTerm
@@ -38,6 +40,4 @@ On Sierra:
     * Set font to Menlo
 * Messages: Uncheck "Play sound effects"
 * Tweetbot: Uncheck "Show Menu Bar Icon"
-* Dropbox: Uncheck "Show desktop notifications"
-* Chrome: Check "Hide Notifications Icon" in Chrome menu
 * Xee: Formats: Select all recommended
