@@ -33,6 +33,7 @@ On Mojave:
     * Keyboard: Modifier Keys... Caps-Lock → Ctrl
     * Keyboard: Text: Uncheck "Correct spelling automatically"
     * Keyboard: Text: Uncheck "Capitalize words automatically"
+    * Notifications: Do Not Disturb: Check "When the display is sleeping"
     * Trackpad: Tap to click
     * Sharing: Computer Name
 * iTerm
