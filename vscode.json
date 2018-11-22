@@ -1,6 +1,8 @@
 {
+  "breadcrumbs.enabled": true,
   "editor.cursorBlinking": "solid",
   "editor.minimap.enabled": false,
+  "editor.occurrencesHighlight": false,
   "editor.renderLineHighlight": "none",
   "emmet.showExpandedAbbreviation": "never",
   "explorer.confirmDelete": false,
@@ -31,6 +33,7 @@
   "workbench.statusBar.feedback.visible": false,
   "vim.leader": ",",
   "vim.searchHighlightColor": "#afff5f",
+  "vim.showmodename": false,
 
   "vim.normalModeKeyBindingsNonRecursive": [
     {
