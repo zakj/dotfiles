@@ -1,5 +1,6 @@
 {
   "breadcrumbs.enabled": true,
+  "editor.acceptSuggestionOnEnter": "off",
   "editor.cursorBlinking": "solid",
   "editor.minimap.enabled": false,
   "editor.occurrencesHighlight": false,
