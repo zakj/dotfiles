@@ -16,7 +16,6 @@ brew "youtube-dl"
 
 cask "1password"
 cask "colorpicker-skalacolor"
-cask "dash"
 cask "dropbox"
 cask "firefox"
 cask "google-chrome"
@@ -38,7 +37,6 @@ cask "xee"
 # mas "Next Meeting", id: 1017470484
 
 mas "Acorn", id: 1019272813
-mas "Bear", id: 1091189122
 mas "Deliveries", id: 924726344
 mas "Things 3", id: 904280696
 mas "Tweetbot", id: 1384080005
