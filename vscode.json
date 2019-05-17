@@ -15,7 +15,7 @@
   },
   "gitlens.codeLens.enabled": false,
   "gitlens.currentLine.enabled": false,
-  "gitlens.historyExplorer.enabled": true,
+  "gitlens.views.lineHistory.enabled": true,
 
   "html.format.extraLiners": "",
   "html.format.wrapLineLength": 80,
@@ -68,6 +68,11 @@
     },
   ],
 
+  "workbench.tips.enabled": false,
+
+  "[html]": {
+    "editor.tabSize": 2
+  },
   "[javascript]": {
     "editor.tabSize": 2
   },
