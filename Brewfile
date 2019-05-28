@@ -38,5 +38,6 @@ cask "xee"
 
 mas "Acorn", id: 1019272813
 mas "Deliveries", id: 924726344
+mas "iA Writer", id: 775737590
 mas "Things 3", id: 904280696
 mas "Tweetbot", id: 1384080005
