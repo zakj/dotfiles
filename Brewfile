@@ -1,6 +1,7 @@
 tap "caskroom/cask"
 tap "puma/puma"
 
+brew "fd"
 brew "git"
 brew "httpie"
 brew "hub"
