@@ -22,6 +22,7 @@ vscode-ext: $(VSCODE_EXT)
 	done
 
 $(VSCODE_DST): $(VSCODE_SRC)
+	mkdir -p "$$(dirname "$@")"
 	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
 
 .PHONY: test
