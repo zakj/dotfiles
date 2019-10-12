@@ -31,7 +31,7 @@ PROMPT='%5(~.%-1~/…/%2~.%~)%# '
 # Prepend the hostname if this is a remote host.
 test -n "$SSH_CLIENT" && PROMPT="%m:$PROMPT"
 # Prepend a marker whose color reflects last command exit status.
-PROMPT="%B%(?..%F{red})➜%f%b $PROMPT"
+PROMPT="%B%F{white}%(?..%F{red})➜%f%b $PROMPT"
 
 # vcs_info output in RPROMPT.
 autoload -U add-zsh-hook vcs_info
