@@ -1,7 +1,9 @@
-IGNORED = Brewfile Makefile README.md $(VSCODE_EXT) $(VSCODE_SRC)
+IGNORED = Brewfile Makefile README.md $(FIREFOX_SRC) $(VSCODE_EXT) $(VSCODE_SRC)
 FILES = $(filter-out $(IGNORED),$(wildcard *))
 DOTFILES = $(addprefix $(HOME)/.,$(FILES))
 RELDIR = $(subst $(HOME)/,,$(shell pwd -L))
+FIREFOX_SRC = firefox-user.js
+FIREFOX_PROFILE = $(HOME)/Library/Application\ Support/Firefox/Profiles/*default*
 VSCODE_SRC = vscode.json
 VSCODE_DST = $(HOME)/Library/Application\ Support/Code/User/settings.json
 VSCODE_EXT = vscode.ext
@@ -13,6 +15,12 @@ links: $(DOTFILES)
 
 $(HOME)/.%: %
 	@ln -sv$(if $(FORCE),f) "$(RELDIR)/$<" "$@"
+
+.PHONY: firefox
+firefox: $(FIREFOX_PROFILE)/user.js
+
+$(FIREFOX_PROFILE)/user.js: $(FIREFOX_SRC)
+	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
 
 .PHONY: vscode vscode-ext
 vscode: $(VSCODE_DST) vscode-ext
