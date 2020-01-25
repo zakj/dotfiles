@@ -2,9 +2,11 @@
   "breadcrumbs.enabled": true,
   "editor.acceptSuggestionOnEnter": "off",
   "editor.cursorBlinking": "solid",
+  "editor.matchBrackets": "near",
   "editor.minimap.enabled": false,
   "editor.occurrencesHighlight": false,
   "editor.renderLineHighlight": "none",
+  "editor.tabSize": 2,
   "emmet.showExpandedAbbreviation": "never",
   "explorer.confirmDelete": false,
   "files.insertFinalNewline": true,
@@ -26,13 +28,18 @@
 
   "search.location": "panel",
 
+  // TODO: move into theme?
   "workbench.colorCustomizations": {
+    "editorBracketMatch.background": "#333",
+    "editorBracketMatch.border": "#00000000",
     "editorIndentGuide.activeBackground": "#ffffff22",
     "editorIndentGuide.background": "#00000000",
   },
   "workbench.colorTheme": "Mourning",
   "workbench.startupEditor": "newUntitledFile",
   "workbench.statusBar.feedback.visible": false,
+  "workbench.tips.enabled": false,
+  "workbench.tree.renderIndentGuides": "none",
   "vim.leader": ",",
   "vim.searchHighlightColor": "#afff5f",
   "vim.showmodename": false,
@@ -69,27 +76,22 @@
     },
   ],
 
-  "workbench.tips.enabled": false,
-  "workbench.tree.renderIndentGuides": "none",
-
-  "[css]": {
-    "editor.tabSize": 2
-  },
-  "[html]": {
-    "editor.tabSize": 2
-  },
   "[javascript]": {
-    "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "[python]": {
+    "editor.tabSize": 4,
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.tabSize": 2
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[vue]": {
-    "editor.tabSize": 2
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
 }
