@@ -1,4 +1,6 @@
+tap "homebrew/bundle"
 tap "homebrew/cask"
+tap "homebrew/core"
 tap "puma/puma"
 
 brew "fd"
@@ -16,25 +18,25 @@ brew "yarn"
 brew "youtube-dl"
 
 cask "1password"
-cask "colorpicker-skalacolor"
-cask "dropbox"
 cask "firefox"
-cask "google-chrome"
 cask "hammerspoon"
 cask "iina"
 cask "imageoptim"
 cask "iterm2"
 cask "launchbar"
-cask "padbury-clock"
 cask "slack"
+cask "spotify"
 cask "the-unarchiver"
 cask "vimr"
 cask "visual-studio-code"
 cask "xee"
 
 # Optional.
+# cask "google-chrome"
+# cask "dropbox"
+# cask "padbury-clock"
 # cask "steam"
-# cask "transmission"
+# cask "zoomus"
 # mas "Next Meeting", id: 1017470484
 
 mas "Acorn", id: 1019272813
