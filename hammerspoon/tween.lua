@@ -13,6 +13,7 @@ return {
         local delta = to - from
         local onComplete = function() end
         local start
+        local timer
 
         timer = hs.timer.new(.001, function()
             local elapsed = hs.timer.secondsSinceEpoch() - start
@@ -33,6 +34,7 @@ return {
             end,
             cancel = function(self) timer:stop() end,
             onComplete = function(self, fn) onComplete = fn end,
+            running = function(self) return timer:running() end,
         }
     end
 }

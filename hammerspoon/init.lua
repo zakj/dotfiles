@@ -1,12 +1,11 @@
-bear         = require 'bear'
 ctrl         = require 'ctrl'
 hotkeyPrefix = require 'hotkeyPrefix'
 layout       = require 'layout'
+message      = require 'message'
 reload       = require 'reload'
 superClick   = require 'superclick'
 tween        = require 'tween'
 
-bear:start()
 ctrl:start()
 reload:start()
 
@@ -158,3 +157,5 @@ end
 
 -- Make sure garbage collection doesn't break new functionality.
 hs.timer.doAfter(2, collectgarbage)
+
+message.show('Hammerspoon loaded.', 1.5)

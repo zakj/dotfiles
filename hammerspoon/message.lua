@@ -1,0 +1,68 @@
+exports = {}
+
+local tween = require 'tween'
+
+local timer = nil
+local margin = 20
+local paddingX = 15
+local paddingY = 10
+
+local text = hs.styledtext.new('.', {
+  color = {white = 1},
+  font = {name = hs.styledtext.defaultFonts.label, size = 20},
+})
+local canvas = hs.canvas.new({x = 0, y = 0, w = 100, h = 100}):appendElements({
+  type = 'rectangle',
+  action = 'fill',
+  fillColor = {black = 1, alpha = 2/3},
+  roundedRectRadii = {xRadius = 7, yRadius = 7}
+}, {
+  type = 'text', text = text
+})
+local canvasText = canvas[2]
+
+local fadeTime = .2
+local fadeInTween = tween.new(0, 1, fadeTime, function(v) canvas:alpha(v) end)
+local fadeOutTween = tween.new(1, 0, fadeTime, function(v) canvas:alpha(v) end)
+
+
+local function reFrame()
+  local size = canvas:minimumTextSize(text)
+  local frame = {w = size.w + paddingX * 2, h = size.h + paddingY * 2}
+  local screen = hs.screen.mainScreen():fullFrame()
+  frame.x = screen.w - frame.w - margin
+  frame.y = screen.h - frame.h - margin
+  canvas:frame(frame)
+  canvasText.frame.x = paddingX
+  canvasText.frame.y = paddingY
+end
+
+function exports.set(msg)
+  text = text:setString(msg)
+  canvasText.text = text
+  reFrame()
+end
+
+function exports.show(msg, n)
+  if msg then exports.set(msg) end
+  canvas:show()
+
+  if timer then timer:stop() end
+  if fadeInTween:running() then
+    fadeInTween:onComplete(function() end)
+  else
+    fadeInTween:start()
+  end
+
+  if not fadeInTween:running() then fadeInTween:start() end
+  if n then
+    fadeInTween:onComplete(function() timer = hs.timer.doAfter(n, exports.hide) end)
+  end
+end
+
+function exports.hide()
+  fadeOutTween:start()
+  fadeOutTween:onComplete(function() canvas:hide() end)
+end
+
+return exports
