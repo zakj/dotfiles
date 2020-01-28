@@ -7,7 +7,7 @@ local margin = 20
 local paddingX = 15
 local paddingY = 10
 
-local text = hs.styledtext.new('.', {
+local text = hs.styledtext.new(' ', {
   color = {white = 1},
   font = {name = hs.styledtext.defaultFonts.label, size = 20},
 })
@@ -38,29 +38,34 @@ local function reFrame()
 end
 
 function exports.set(msg)
+  msg = msg and #msg > 0 and msg or ' '
   text = text:setString(msg)
   canvasText.text = text
   reFrame()
 end
 
 function exports.show(msg, n)
-  if msg then exports.set(msg) end
-  canvas:show()
+  exports.set(msg)
 
-  if timer then timer:stop() end
-  if fadeInTween:running() then
-    fadeInTween:onComplete(function() end)
-  else
+  if fadeOutTween:running() then
+    fadeOutTween:onComplete(function() end)
+    fadeOutTween:cancel()
+  end
+  if not canvas:isShowing() then
+    canvas:show()
     fadeInTween:start()
   end
 
-  if not fadeInTween:running() then fadeInTween:start() end
-  if n then
+  if timer then timer:stop() end
+  if n and n > 0 then
     fadeInTween:onComplete(function() timer = hs.timer.doAfter(n, exports.hide) end)
+  else
+    fadeInTween:onComplete(function() end)
   end
 end
 
 function exports.hide()
+  if fadeOutTween:running() then return end
   fadeOutTween:start()
   fadeOutTween:onComplete(function() canvas:hide() end)
 end
