@@ -1,5 +1,6 @@
 ctrl         = require 'ctrl'
 hotkeyPrefix = require 'hotkeyPrefix'
+hyper        = require 'hyper'
 layout       = require 'layout'
 message      = require 'message'
 reload       = require 'reload'
@@ -153,6 +154,30 @@ function modal:exited()
         modalIndicator:alpha(1)
     end)
 end
+
+--[[
+    {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
+    {nil, 'd', toggleDesktopIcons},
+    {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
+    {nil, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
+    {nil, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV)},
+    {nil, 'c', function() hs.window.focusedWindow():setSize(1003, 600) end},
+    {nil, 'v', function() hs.window.focusedWindow():setSize(1320, 870 + 75) end},
+]]
+
+hyperMode = hyper.new({
+  {';', lockScreen},
+  {'f', function() hs.application.open('Firefox') end},
+  {'i', function() hs.application.open('iA Writer') end},
+  {'k', withFocusedWindow(layout.moveCenter)},
+  {'l', function() hs.application.open('Slack') end},
+  {'m', function() hs.application.open('Messages') end},
+  {'t', function() hs.application.open('iTerm') end},
+  {'u', undock},
+  {'v', function() hs.application.open('Visual Studio Code') end},
+  {'x', superClick},
+})
+hyperMode:start()
 
 
 -- Make sure garbage collection doesn't break new functionality.
