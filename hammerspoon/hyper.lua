@@ -33,6 +33,12 @@ function hyper.new(bindings)
     hs.eventtap.keyStroke(nil, chr, 0)
   end
 
+  local function releaseAllKeys()
+    for chr, _ in pairs(keyPresses) do
+      releaseKey(chr)
+    end
+  end
+
   local function setHyperMode()
     prev = hyperMode
     hyperMode = len(keyPresses) >= len(hyperKeys)
@@ -53,8 +59,10 @@ function hyper.new(bindings)
       passthroughKeyPresses[chr] = nil
       return false
     end
-    local flags = e:getFlags()
-    if not flags:containExactly({}) or not hyperKeys[chr] then return false end
+    if not e:getFlags():containExactly({}) or not hyperKeys[chr] then
+      releaseAllKeys()  -- if we see a non-hyper before the release window, probably just typing fast
+      return false
+    end
     if hyperMode then return true end  -- down events continue to emit while holding
     keyPresses[chr] = true
     hs.timer.doAfter(releaseWindow, function() releaseKey(chr) end)
