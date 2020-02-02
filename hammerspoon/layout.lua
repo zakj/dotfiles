@@ -57,6 +57,14 @@ function exports.moveTL(win)
     win:setFrame(frame)
 end
 
+function exports.moveBL(win)
+    local frame = win:frame()
+    local screen = win:screen():frame()
+    frame.x = screen.x
+    frame.y = screen.y + screen.h - frame.h
+    win:setFrame(frame)
+end
+
 function exports.moveTR(win)
     local frame = win:frame()
     local screen = win:screen():frame()
@@ -65,11 +73,27 @@ function exports.moveTR(win)
     win:setFrame(frame)
 end
 
+function exports.moveBR(win)
+    local frame = win:frame()
+    local screen = win:screen():frame()
+    frame.x = screen.x + screen.w - frame.w
+    frame.y = screen.y + screen.h - frame.h
+    win:setFrame(frame)
+end
+
 function exports.maximizeV(win)
     local frame = win:frame()
     local screen = win:screen():frame()
     frame.y = screen.y
     frame.h = screen.h
+    win:setFrame(frame)
+end
+
+function exports.sizeQuarter(win)
+    local frame = win:frame()
+    local screen = win:screen():frame()
+    frame.w = screen.w / 2
+    frame.h = screen.h / 2
     win:setFrame(frame)
 end
 

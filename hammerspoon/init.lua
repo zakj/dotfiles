@@ -155,16 +155,6 @@ function modal:exited()
     end)
 end
 
---[[
-    {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
-    {nil, 'd', toggleDesktopIcons},
-    {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
-    {nil, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
-    {nil, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV)},
-    {nil, 'c', function() hs.window.focusedWindow():setSize(1003, 600) end},
-    {nil, 'v', function() hs.window.focusedWindow():setSize(1320, 870 + 75) end},
-]]
-
 hyperMode = hyper.new({
   {';', lockScreen},
   {'f', function() hs.application.open('Firefox') end},
@@ -176,6 +166,17 @@ hyperMode = hyper.new({
   {'u', undock},
   {'v', function() hs.application.open('Visual Studio Code') end},
   {'x', superClick},
+
+  -- {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
+  -- {nil, 'd', toggleDesktopIcons},
+  -- {nil, 'v', function() hs.window.focusedWindow():setSize(1320, 870 + 75) end},
+  -- {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
+  {'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
+  {'right', withFocusedWindow(layout.moveTR, layout.maximizeV)},
+  {'1', withFocusedWindow(layout.sizeQuarter, layout.moveTL)},
+  {'2', withFocusedWindow(layout.sizeQuarter, layout.moveBL)},
+  {'3', withFocusedWindow(layout.sizeQuarter, layout.moveTR)},
+  {'4', withFocusedWindow(layout.sizeQuarter, layout.moveBR)},
 })
 hyperMode:start()
 
