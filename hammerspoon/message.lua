@@ -3,6 +3,7 @@ exports = {}
 local tween = require 'tween'
 
 local timer = nil
+local fadeTime = .1
 local margin = 20
 local paddingX = 15
 local paddingY = 10
@@ -21,7 +22,6 @@ local canvas = hs.canvas.new({x = 0, y = 0, w = 100, h = 100}):appendElements({
 })
 local canvasText = canvas[2]
 
-local fadeTime = .2
 local fadeInTween = tween.new(0, 1, fadeTime, function(v) canvas:alpha(v) end)
 local fadeOutTween = tween.new(1, 0, fadeTime, function(v) canvas:alpha(v) end)
 
@@ -45,6 +45,7 @@ function exports.set(msg)
 end
 
 function exports.show(msg, n)
+  n = n or 0
   exports.set(msg)
 
   if fadeOutTween:running() then
@@ -53,14 +54,12 @@ function exports.show(msg, n)
   end
   if not canvas:isShowing() then
     canvas:show()
+    n = n > 0 and n + fadeTime or 0
     fadeInTween:start()
   end
-
   if timer then timer:stop() end
-  if n and n > 0 then
-    fadeInTween:onComplete(function() timer = hs.timer.doAfter(n, exports.hide) end)
-  else
-    fadeInTween:onComplete(function() end)
+  if n > 0 then
+    timer = hs.timer.doAfter(n, exports.hide)
   end
 end
 
