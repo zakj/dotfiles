@@ -84,77 +84,6 @@ local function undock()
 end
 
 
-modal = hotkeyPrefix({'ctrl'}, 'space', {
-    {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
-    {nil, 'l', lockScreen},
-    {nil, 'd', toggleDesktopIcons},
-    {{'shift'}, 'd', withFocusedWindow(debugWindow)},
-    {nil, 'h', hs.hints.windowHints},
-    {nil, '`', hs.toggleConsole},
-    {nil, 'k', withFocusedWindow(layout.moveCenter)},
-    {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
-    {nil, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
-    {nil, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV)},
-    {nil, 'o', openFinderSelectionWithCurrentApp},
-    {nil, 'u', undock},
-    {nil, 'c', function()
-        hs.window.focusedWindow():setSize(1003, 600)
-    end},
-    {nil, 'v', function()
-        hs.window.focusedWindow():setSize(1320, 870 + 75)
-    end},
-    {nil, 'x', superClick},
-})
-
-modalCfg = {
-    size = {w = 100, h = 100},
-    duration = 2,
-    fadeIn = .25,
-    fadeOut = .1,
-}
-modalIndicator = hs.canvas.new(modalCfg.size):appendElements({
-    action = 'fill', type = 'circle',
-    fillColor = { alpha = 0.3 },
-    padding = 1,
-}, {
-    action = 'stroke', type = 'arc', arcRadii = false,
-    startAngle = 0, endAngle = 360,
-    strokeColor = { red = 1, green = 1, blue = 1 },
-    strokeWidth = 1,
-    padding = 1.5,
-}, {
-    action = 'stroke', type = 'arc', arcRadii = false,
-    startAngle = 0, endAngle = 360,
-    strokeColor = { red = 1, green = 1, blue = 1 },
-    strokeWidth = 3,
-    padding = 3,
-})
-modalExitTimer = hs.timer.delayed.new(modalCfg.duration, function()
-    modal:exit()
-end)
-modalTween = tween.new(360, 0, modalCfg.duration, function(v)
-    modalIndicator[3].endAngle = v
-end)
-
-function modal:entered()
-    modalExitTimer:start()
-    modalTween:start()
-    local rect = hs.geometry.rectMidPoint(hs.screen.mainScreen():frame())
-    rect.x = rect.x - modalCfg.size.w / 2
-    rect.y = rect.y - modalCfg.size.h / 2
-    modalIndicator:topLeft(rect)
-    modalIndicator:show(modalCfg.fadeIn)
-end
-function modal:exited()
-    modalExitTimer:stop()
-    modalTween:cancel()
-    modalIndicator:hide(modalCfg.fadeOut)
-    -- Calling hide while show is still animating can cause alpha to get stuck.
-    hs.timer.doAfter(modalCfg.fadeIn + modalCfg.fadeOut, function()
-        modalIndicator:alpha(1)
-    end)
-end
-
 hyperMode = hyper.new({
   {';', lockScreen},
   {'f', function() hs.application.open('Firefox') end},
@@ -169,7 +98,6 @@ hyperMode = hyper.new({
 
   -- {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
   -- {nil, 'd', toggleDesktopIcons},
-  -- {nil, 'v', function() hs.window.focusedWindow():setSize(1320, 870 + 75) end},
   -- {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
   {'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
   {'right', withFocusedWindow(layout.moveTR, layout.maximizeV)},
@@ -177,6 +105,7 @@ hyperMode = hyper.new({
   {'2', withFocusedWindow(layout.sizeQuarter, layout.moveBL)},
   {'3', withFocusedWindow(layout.sizeQuarter, layout.moveTR)},
   {'4', withFocusedWindow(layout.sizeQuarter, layout.moveBR)},
+  {'5', function() hs.window.focusedWindow():setSize(1320, 870 + 75) end},
 })
 hyperMode:start()
 
