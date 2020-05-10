@@ -83,17 +83,21 @@ local function undock()
     hs.caffeinate.systemSleep()
 end
 
+function open(name)
+  return function() hs.application.open(name) end
+end
+
 
 hyperMode = hyper.new({
   {';', lockScreen},
-  {'f', function() hs.application.open('Firefox') end},
-  {'i', function() hs.application.open('iA Writer') end},
+  {'f', open('Firefox')},
+  {'i', open('iA Writer')},
   {'k', withFocusedWindow(layout.moveCenter)},
-  {'l', function() hs.application.open('Slack') end},
-  {'m', function() hs.application.open('Messages') end},
-  {'t', function() hs.application.open('iTerm') end},
+  {'l', open('Slack')},
+  {'m', open('Messages')},
+  {'t', open('iTerm')},
   {'u', undock},
-  {'v', function() hs.application.open('Visual Studio Code') end},
+  {'v', open('Visual Studio Code')},
   {'x', superClick},
 
   -- {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
