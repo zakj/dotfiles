@@ -26,8 +26,6 @@
 
   "python.venvPath": "~/.virtualenvs",
 
-  "search.location": "panel",
-
   // TODO: move into theme?
   "workbench.colorCustomizations": {
     "editorBracketMatch.background": "#333",
@@ -42,7 +40,7 @@
   "workbench.tree.renderIndentGuides": "none",
   "vim.leader": ",",
   "vim.searchHighlightColor": "#afff5f",
-  "vim.showmodename": false,
+  "vim.showmodename": true,
 
   "vim.normalModeKeyBindingsNonRecursive": [
     {
