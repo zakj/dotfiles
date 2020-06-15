@@ -111,6 +111,7 @@ fixssh() {
 
 # zle  {{{1
 # vi mode (from $EDITOR), with some familiar Emacs-style friends.
+bindkey -v
 bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
 # History search.
