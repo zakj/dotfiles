@@ -1,11 +1,10 @@
 ctrl         = require 'ctrl'
-hotkeyPrefix = require 'hotkeyPrefix'
+emoji        = require 'emoji'
 hyper        = require 'hyper'
 layout       = require 'layout'
 message      = require 'message'
 reload       = require 'reload'
 superClick   = require 'superclick'
-tween        = require 'tween'
 
 ctrl:start()
 reload:start()
@@ -83,7 +82,7 @@ local function undock()
     hs.caffeinate.systemSleep()
 end
 
-function open(name)
+local function open(name)
   return function() hs.application.open(name) end
 end
 
@@ -95,6 +94,7 @@ hyperMode = hyper.new({
   {'k', withFocusedWindow(layout.moveCenter)},
   {'l', open('Slack')},
   {'m', open('Messages')},
+  {'n', emoji.chooser},
   {'t', open('iTerm')},
   {'u', undock},
   {'v', open('Visual Studio Code')},
