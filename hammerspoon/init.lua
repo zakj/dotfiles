@@ -38,15 +38,6 @@ local function debugWindow(win)
     end)
 end
 
-local function lockScreen()
-    version = hs.host.operatingSystemVersion()
-    if version.major > 10 or (version.major == 10 and version.minor >= 13) then
-        hs.eventtap.keyStroke({'cmd', 'ctrl'}, 'q')
-    else
-        os.execute('"/System/Library/CoreServices/Menu Extras/User.menu/Contents/Resources/CGSession" -suspend')
-    end
-end
-
 local function toggleDesktopIcons()
     t = hs.task.new('/usr/bin/defaults', nil, {'read', 'com.apple.finder', 'CreateDesktop'})
     t:setCallback(function(exitCode, stdOut, stdErr)
@@ -59,18 +50,6 @@ local function toggleDesktopIcons()
         os.execute('killall Finder')
     end)
     t:start()
-end
-
-local function openFinderSelectionWithCurrentApp()
-    local app = hs.application.frontmostApplication():name()
-    hs.osascript.applescript(string.format([[
-      tell application "Finder"
-        set finderSelection to the selection as text
-      end tell
-      tell application "%s"
-        open finderSelection
-      end tell
-    ]], app))
 end
 
 local function undock()
@@ -88,7 +67,7 @@ end
 
 
 hyperMode = hyper.new({
-  {';', lockScreen},
+  {';', function() hs.caffeinate.lockScreen() end},
   {'f', open('Firefox')},
   {'i', open('iA Writer')},
   {'k', withFocusedWindow(layout.moveCenter)},
