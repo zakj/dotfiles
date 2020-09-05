@@ -1,4 +1,4 @@
-exports = {}
+local exports = {}
 
 function exports.filter(tbl, fn)
   local rv = {}

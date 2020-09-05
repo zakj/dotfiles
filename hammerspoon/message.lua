@@ -1,4 +1,4 @@
-exports = {}
+local exports = {}
 
 local tween = require 'tween'
 

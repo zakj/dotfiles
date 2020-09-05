@@ -1,6 +1,6 @@
 local u = require 'util'
 
-exports = {}
+local exports = {}
 
 local function imageFromEmoji(emoji)
   local canvas = hs.canvas.new({x = 0, y = 0, w = 100, h = 100}):appendElements({

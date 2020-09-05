@@ -1,5 +1,5 @@
-message = require 'message'
-u = require 'util'
+local message = require 'message'
+local u = require 'util'
 
 local hyperKeys = {s = true, d = true}
 local hyperMsg = '⌘'
@@ -9,7 +9,7 @@ local releaseWindow = 0.04  -- allowed delay between presses
 local SUPPRESS_EVENT = true
 local PASSTHROUGH_EVENT = false
 
-hyper = {}
+local hyper = {}
 
 function hyper.new(bindings)
   local self = {}
@@ -40,7 +40,7 @@ function hyper.new(bindings)
   end
 
   local function updateHyperMode()
-    prev = hyperMode
+    local prev = hyperMode
     hyperMode = u.len(keyPresses) >= u.len(hyperKeys)
     if prev == hyperMode then return end
     if hyperMode then
