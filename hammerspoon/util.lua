@@ -1,5 +1,10 @@
 local exports = {}
 
+-- Poor substitute for ternary operator or if-as-expression.
+function exports.fif(condition, if_true, if_false)
+  if condition then return if_true else return if_false end
+end
+
 function exports.filter(tbl, fn)
   local rv = {}
   for i, x in pairs(tbl) do

@@ -72,11 +72,12 @@ function hyper.new(bindings)
     local chr = e:getCharacters()
     local hasFlags = u.len(e:getFlags()) > 0
 
-    -- Also check keyPresses, since you can get a "shift-s" keydown followed by a raw "s" keyup.
-    if keyPresses[chr] and hyperKeys[chr] and not hasFlags then
+    if hyperKeys[chr] and not hasFlags then
+      -- We can see a "shift-s" keydown followed by a raw "s" keyup.
+      local suppressedKeydown = keyPresses[chr]
       releaseAllKeys()
       updateHyperMode()
-      return SUPPRESS_EVENT
+      return u.fif(suppressedKeydown, SUPPRESS_EVENT, PASSTHROUGH_EVENT)
     end
 
     return PASSTHROUGH_EVENT
