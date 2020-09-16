@@ -1,6 +1,7 @@
 ctrl         = require 'ctrl'
 emoji        = require 'emoji'
 hyper        = require 'hyper'
+launcher     = require('launcher')
 layout       = require 'layout'
 message      = require 'message'
 reload       = require 'reload'
@@ -65,6 +66,8 @@ local function open(name)
   return function() hs.application.open(name) end
 end
 
+
+hs.hotkey.bind('cmd', 'space', nil, launcher())
 
 hyperMode = hyper.new({
   {';', function() hs.caffeinate.lockScreen() end},

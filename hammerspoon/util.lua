@@ -1,5 +1,8 @@
 local exports = {}
 
+-- TODO hs.fnutils
+-- https://www.hammerspoon.org/docs/hs.fnutils.html
+
 -- Poor substitute for ternary operator or if-as-expression.
 function exports.fif(condition, if_true, if_false)
   if condition then return if_true else return if_false end
@@ -45,6 +48,14 @@ function exports.split(str, sep)
   local rv = {}
   for chunk in string.gmatch(str, '([^' .. sep .. ']+)') do
     table.insert(rv, chunk)
+  end
+  return rv
+end
+
+function exports.values(tbl)
+  local rv = {}
+  for k, v in pairs(tbl) do
+    table.insert(rv, v)
   end
   return rv
 end
