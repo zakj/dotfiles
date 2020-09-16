@@ -2,7 +2,9 @@ local u = require 'util'
 
 local exports = {}
 
-local function imageFromEmoji(emoji)
+local cache = {}
+
+function exports.imageFromEmoji(emoji)
   local canvas = hs.canvas.new({x = 0, y = 0, w = 100, h = 100}):appendElements({
     frame = {x = 0, y = 5, w = 100, h = 100},
     text = emoji,
@@ -22,20 +24,24 @@ local function resultToChoice(item)
   return {
     text = string.lower(item.Name),
     emoji = emoji,
-    image = imageFromEmoji(emoji),
+    image = exports.imageFromEmoji(emoji),
   }
 end
 
 local function emojiFinder(query, onSuccess)
   local url = 'https://emojifinder.com/*/ajax.php?action=search&query=' .. hs.http.encodeForQuery(query)
-  hs.http.asyncGet(url, nil, function(status, body, headers)
-    local data = hs.json.decode(body)
-    if data.status == 'error' then return end
-    local results = u.filter(data.results, function(x) return not (x.Code == nil or x.Name == "") end)
-    onSuccess(u.map(results, resultToChoice))
-  end)
+  if not cache[query] then
+    hs.http.asyncGet(url, nil, function(status, body, headers)
+      local data = hs.json.decode(body)
+      if data.status == 'error' then return end
+      local results = u.filter(data.results, function(x) return not (x.Code == nil or x.Name == "") end)
+      cache[query] = u.map(results, resultToChoice)
+      onSuccess(cache[query])
+    end)
+  else
+    onSuccess(cache[query])
+  end
 end
-
 
 function exports.chooser()
   local ch = hs.chooser.new(function(item)
