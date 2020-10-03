@@ -5,9 +5,9 @@ local u = require('util')
 
 local HITS_KEY = 'launcher-hits'
 local modal = hs.hotkey.modal.new()
+local spotlight = hs.spotlight.new()
 
 local function asyncGetInstalledApplications(callback)
-  local spotlight = hs.spotlight.new()
   spotlight:queryString([[
     kMDItemContentType == "com.apple.application-bundle" &&
     kMDItemCFBundleIdentifier like "*" &&
@@ -33,6 +33,21 @@ local function finderSelection()
   local success, output = hs.osascript.javascript("Application('Finder').selection().map(x => x.url()).join(' ');")
   if not success then return '' end
   return output
+end
+
+local function openFinderSelectionInApp(ch)
+  local item = ch:selectedRowContents()
+  if not item.bundleID then
+    message.show('No application selected.', 2)
+  else
+    io.popen('open -b "' .. item.bundleID .. '" ' .. finderSelection())
+    ch:hide()
+  end
+end
+
+local function lookupQueryInDictionary(ch)
+  io.popen('open dict://' .. hs.http.encodeForQuery(ch:query()))
+  ch:hide()
 end
 
 local function completionFn(item)
@@ -61,17 +76,10 @@ return function()
   local ch = hs.chooser.new(completionFn)
   hs.settings.watchKey('launcher', HITS_KEY, function() ch:refreshChoicesCallback() end)
 
+  local withChooser = function(func) return hs.fnutils.partial(func, ch) end
+  modal:bind('cmd', 'd', nil, withChooser(openFinderSelectionInApp))
+  modal:bind('cmd', 'l', nil, withChooser(lookupQueryInDictionary))
   ch:showCallback(function() modal:enter() end)
-  modal:bind('cmd', 'd', nil, function()
-    local item = ch:selectedRowContents()
-    if not item.bundleID then
-      message.show('No application selected.', 2)
-    else
-      print(hs.inspect(item))
-      io.popen('open -b "' .. item.bundleID .. '" ' .. finderSelection())
-      ch:hide()
-    end
-  end)
 
   local installedApplications = {}
   asyncGetInstalledApplications(function(choices)
