@@ -31,7 +31,7 @@ PROMPT='%5(~.%-1~/…/%2~.%~)%# '
 # Prepend the hostname if this is a remote host.
 test -n "$SSH_CLIENT" && PROMPT="%m:$PROMPT"
 # Prepend a marker whose color reflects last command exit status.
-PROMPT="%B%F{white}%(?..%F{red})➜%f%b $PROMPT"
+PROMPT="%F{15}%(?..%F{9})➜%f $PROMPT"
 
 # vcs_info output in RPROMPT.
 autoload -U add-zsh-hook vcs_info
@@ -39,9 +39,9 @@ add-zsh-hook -U precmd precmd-prompt
 precmd-prompt() { vcs_info; RPROMPT=$vcs_info_msg_0_ }
 
 () {
-    local format='%m%c%u%B%F{black}%b'
-    zstyle ':vcs_info:*' formats "$format%%b%f"
-    zstyle ':vcs_info:*' actionformats "$format%%b%F{yellow}⚡%a%f"
+    local format='%m%c%u%F{8}%b'
+    zstyle ':vcs_info:*' formats "$format%f"
+    zstyle ':vcs_info:*' actionformats "$format%F{yellow}⚡%a%f"
     zstyle ':vcs_info:*' enable git hg svn
     zstyle ':vcs_info:*' check-for-changes true
     zstyle ':vcs_info:*' stagedstr '%F{green}•'

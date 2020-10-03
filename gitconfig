@@ -18,7 +18,7 @@
 	safecrlf = true
 
 [pretty]
-	graph = %C(yellow)%h%Creset %s%d %C(bold black)%an %ar
+	graph = %C(yellow)%h%Creset %s%d %C(brightblack)%an %ar
 
 [push]
 	default = simple
