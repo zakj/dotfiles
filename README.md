@@ -36,9 +36,6 @@ On Mojave:
     * Notifications: Do Not Disturb: Check "When the display is sleeping"
     * Trackpad: Tap to click
     * Sharing: Computer Name
-* iTerm
-    * Load my color scheme
-    * Set font to Menlo
 * Messages: Uncheck "Play sound effects"
 * Tweetbot: Uncheck "Show Menu Bar Icon"
 * Xee: Formats: Select all recommended
