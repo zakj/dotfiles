@@ -77,7 +77,7 @@ hyperMode = hyper.new({
   {'l', open('Slack')},
   {'m', open('Messages')},
   {'n', emoji.chooser},
-  {'t', open('iTerm')},
+  {'t', open('kitty')},
   {'u', undock},
   {'v', open('Visual Studio Code')},
   {'x', superClick},
