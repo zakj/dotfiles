@@ -45,6 +45,12 @@ local function openFinderSelectionInApp(ch)
   end
 end
 
+local function computeEquation(ch)
+  local eq = load('return ' .. ch:query())
+  local success, result = pcall(eq)
+  if success then message.show(hs.inspect(result), 2) end
+end
+
 local function lookupQueryInDictionary(ch)
   io.popen('open dict://' .. hs.http.encodeForQuery(ch:query()))
   ch:hide()
@@ -71,13 +77,13 @@ local function completionFn(item)
 end
 
 -- TODO sleep
--- TODO simple calculator (if query matches arithmetic regex)
 return function()
   local ch = hs.chooser.new(completionFn)
   hs.settings.watchKey('launcher', HITS_KEY, function() ch:refreshChoicesCallback() end)
 
   local withChooser = function(func) return hs.fnutils.partial(func, ch) end
   modal:bind('cmd', 'd', nil, withChooser(openFinderSelectionInApp))
+  modal:bind('cmd', 'e', nil, withChooser(computeEquation))
   modal:bind('cmd', 'l', nil, withChooser(lookupQueryInDictionary))
   ch:showCallback(function() modal:enter() end)
 
