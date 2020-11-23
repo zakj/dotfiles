@@ -83,6 +83,13 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
+  "[markdown]": {
+    "editor.fontSize": 16,
+    "editor.lineNumbers": "off",
+    "editor.quickSuggestions": false,
+    "editor.wordWrap": "bounded",
+    "editor.wordWrapColumn": 76,
+  },
   "[python]": {
     "editor.tabSize": 4,
   },
