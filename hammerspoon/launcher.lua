@@ -79,6 +79,8 @@ end
 -- TODO sleep
 return function()
   local ch = hs.chooser.new(completionFn)
+  local screenWidth = hs.screen.primaryScreen():frame().w
+  ch:width(475 / screenWidth * 100)  -- width takes a percentage
   hs.settings.watchKey('launcher', HITS_KEY, function() ch:refreshChoicesCallback() end)
 
   local withChooser = function(func) return hs.fnutils.partial(func, ch) end
