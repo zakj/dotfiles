@@ -1,13 +1,9 @@
 # Configuring a new machine
 
-Set login shell:
-
-    chsh -s $(which zsh)
-
 Install homebrew and formulae:
 
     xcode-select --install
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     brew bundle
     sudo puma-dev -setup
     puma-dev -install
@@ -22,9 +18,9 @@ Fix key repeat in vscode:
 
 Generate a new SSH key:
 
-    ssh-keygen -a 64 -t ed25519
+    ssh-keygen -t ed25519 -a 100
 
-On Mojave:
+## Big Sur
 
 * System preferences:
     * General: Graphite
@@ -33,7 +29,6 @@ On Mojave:
     * Keyboard: Modifier Keys... Caps-Lock → Ctrl
     * Keyboard: Text: Uncheck "Correct spelling automatically"
     * Keyboard: Text: Uncheck "Capitalize words automatically"
-    * Notifications: Do Not Disturb: Check "When the display is sleeping"
     * Trackpad: Tap to click
     * Sharing: Computer Name
 * Messages: Uncheck "Play sound effects"
