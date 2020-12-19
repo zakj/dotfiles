@@ -7,7 +7,13 @@ set cedit=                         " Don't use the command-line window.
 set cinoptions=:0                  " `case` should line up with `switch`.
 set colorcolumn=90
 set confirm                        " Prompt instead of failing to quit.
-set diffopt+=iwhite,vertical
+try
+    set diffopt+=iwhite,vertical
+catch
+    " MacOS ships with a vim version that doesn't support "internal".
+    set diffopt-=internal
+    set diffopt+=iwhite,vertical
+endtry
 set directory=~/.vim/backup//,.    " Keep swap files in one place.
 set encoding=utf-8
 set expandtab
