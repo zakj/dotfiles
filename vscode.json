@@ -89,6 +89,7 @@
     "editor.quickSuggestions": false,
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 76,
+    "editor.wrappingIndent": "indent",
   },
   "[python]": {
     "editor.tabSize": 4,
