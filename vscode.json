@@ -50,13 +50,6 @@
         "command": ":set hlsearch!",
         "args": [],
       }],
-    }, {
-      "before": [";"],
-      "after": [],
-      "commands": [{
-        "command": "workbench.action.showCommands",
-        "args": [],
-      }],
     },
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
