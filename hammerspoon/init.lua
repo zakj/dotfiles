@@ -1,11 +1,10 @@
-ctrl         = require 'ctrl'
-emoji        = require 'emoji'
-hyper        = require 'hyper'
-launcher     = require('launcher')
-layout       = require 'layout'
-message      = require 'message'
-reload       = require 'reload'
-superClick   = require 'superclick'
+local ctrl         = require 'ctrl'
+local hyper        = require 'hyper'
+local launcher     = require 'launcher'
+local layout       = require 'layout'
+local message      = require 'message'
+local reload       = require 'reload'
+local superClick   = require 'superclick'
 
 ctrl:start()
 reload:start()
@@ -14,6 +13,7 @@ hs.hints.style = 'vimperator'
 hs.hotkey.setLogLevel('warning')
 hs.window.animationDuration = 0
 
+local notesPath = '/Users/zakj/Library/Mobile Documents/27N4MQEA55~pro~writer/Documents'
 
 local function withFocusedWindow(...)
     local varargs = {...}
@@ -40,17 +40,15 @@ local function debugWindow(win)
 end
 
 local function toggleDesktopIcons()
-    t = hs.task.new('/usr/bin/defaults', nil, {'read', 'com.apple.finder', 'CreateDesktop'})
-    t:setCallback(function(exitCode, stdOut, stdErr)
+    hs.task.new('/usr/bin/defaults', function(exitCode, stdOut, stdErr)
         local hidden = exitCode == 0 or stdOut:gsub('%s+', '') == '0'
-        if hidden then
-            os.execute('defaults delete com.apple.finder CreateDesktop')
-        else
-            os.execute('defaults write com.apple.finder CreateDesktop -bool false')
-        end
-        os.execute('killall Finder')
-    end)
-    t:start()
+            if hidden then
+                os.execute('defaults delete com.apple.finder CreateDesktop')
+            else
+                os.execute('defaults write com.apple.finder CreateDesktop -bool false')
+            end
+            os.execute('killall Finder')
+        end, {'read', 'com.apple.finder', 'CreateDesktop'}):start()
 end
 
 local function undock()
@@ -69,14 +67,13 @@ end
 
 hs.hotkey.bind('cmd', 'space', nil, launcher())
 
-hyperMode = hyper.new({
+local hyperMode = hyper.new({
   {';', function() hs.caffeinate.lockScreen() end},
-  {'f', open('Firefox')},
-  {'i', open('iA Writer')},
+  {'f', function() hs.application.open(hs.settings.get('default-browser') or 'Firefox') end},
   {'k', withFocusedWindow(layout.moveCenter)},
   {'l', open('Slack')},
   {'m', open('Messages')},
-  {'n', emoji.chooser},
+  {'n', function() hs.task.new('/usr/local/bin/code', nil, {notesPath}):start() end},
   {'t', open('kitty')},
   {'u', undock},
   {'v', open('Visual Studio Code')},
