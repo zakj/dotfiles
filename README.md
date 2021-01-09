@@ -23,7 +23,6 @@ Generate a new SSH key:
 ## Big Sur
 
 * System preferences:
-    * General: Graphite
     * Dock: Automatically hide and show the Dock
     * Dock: Uncheck "Show recent applications in Dock"
     * Keyboard: Modifier Keys... Caps-Lock → Ctrl
