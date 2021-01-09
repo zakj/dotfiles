@@ -94,6 +94,14 @@ g() {
   fi
 }
 
+# Normalize node package management.
+np() {
+  if [ -f "package-lock.json" ]; then npm "$@"
+  elif [ -f "yarn.lock" ]; then yarn "$@"
+  else pnpm "$@"
+  fi
+}
+
 # Open all recursive-grep results in an editor.
 eg() {
   "$EDITOR" $(g -l "$@")
