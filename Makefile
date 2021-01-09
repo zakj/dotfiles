@@ -22,7 +22,7 @@ $(CONFIG_DIR)/kitty/$(KITTY_CONF): $(KITTY_CONF)
 	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
 
 .PHONY: vscode vscode/extensions
-vscode: $(VSCODE_DIR)/*.json vscode/extensions
+vscode: $(VSCODE_DIR)/keybindings.json $(VSCODE_DIR)/settings.json vscode/extensions
 $(VSCODE_DIR)/%.json: vscode/%.json
 	@mkdir -p "$$(dirname "$@")"
 	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
