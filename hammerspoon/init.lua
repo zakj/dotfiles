@@ -66,9 +66,8 @@ local function open(name)
 end
 
 
-hs.hotkey.bind('cmd', 'space', nil, launcher())
-
 local hyperMode = hyper.new({
+  {'space', launcher()},
   {';', function() hs.caffeinate.lockScreen() end},
   {'f', function() hs.application.open(hs.settings.get('default-browser') or 'Firefox') end},
   {'k', withFocusedWindow(layout.moveCenter)},

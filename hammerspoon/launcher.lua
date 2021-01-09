@@ -1,10 +1,8 @@
-local emoji = require('emoji')
 local fn = hs.fnutils
 local message = require('message')
 local u = require('util')
 
 local HITS_KEY = 'launcher-hits'
-local modal = hs.hotkey.modal.new()
 local spotlight = hs.spotlight.new()
 
 local function asyncGetInstalledApplications(callback)
@@ -35,90 +33,40 @@ local function finderSelection()
   return output
 end
 
-local function openFinderSelectionInApp(ch)
-  local item = ch:selectedRowContents()
+local function completionFn(item)
+  if not item then return end
+  local selection = finderSelection()
+  print(selection)
   if not item.bundleID then
     message.show('No application selected.', 2)
+  elseif selection == '' then
+    message.show('No file selected.', 2)
   else
-    io.popen('open -b "' .. item.bundleID .. '" ' .. finderSelection())
-    ch:hide()
+    io.popen('open -b "' .. item.bundleID .. '" ' .. selection)
   end
-end
-
-local function computeEquation(ch)
-  local eq = load('return ' .. ch:query())
-  local success, result = pcall(eq)
-  if success then message.show(hs.inspect(result), 2) end
-end
-
-local function lookupQueryInDictionary(ch)
-  io.popen('open dict://' .. hs.http.encodeForQuery(ch:query()))
-  ch:hide()
-end
-
-local function completionFn(item)
-  modal:exit()
-  if not item then return end
-
-  -- TODO: This is horrible, but functions can't be passed as choices. Maybe explicit types?
-  if item.bundleID then  -- application
-    hs.application.open(item.bundleID)
-  elseif item.path then  -- folder
-    hs.open(item.path)
-  elseif item.text == 'Emoji' then
-    emoji.chooser()
-  else
-    message.show('Unknown item type:\n' .. hs.inspect(item))
-  end
-
   local hits = hs.settings.get(HITS_KEY) or {}
   hits[item.text] = (hits[item.text] or 0) + 1
   hs.settings.set(HITS_KEY, hits)
 end
 
--- TODO sleep
 return function()
   local ch = hs.chooser.new(completionFn)
   hs.settings.watchKey('launcher', HITS_KEY, function() ch:refreshChoicesCallback() end)
 
-  local withChooser = function(func) return hs.fnutils.partial(func, ch) end
-  modal:bind('cmd', 'd', nil, withChooser(openFinderSelectionInApp))
-  modal:bind('cmd', 'e', nil, withChooser(computeEquation))
-  modal:bind('cmd', 'l', nil, withChooser(lookupQueryInDictionary))
-  ch:showCallback(function() modal:enter() end)
-
   local installedApplications = {}
-  asyncGetInstalledApplications(function(choices)
-    installedApplications = choices
+  asyncGetInstalledApplications(function(apps)
+    installedApplications = apps
     ch:refreshChoicesCallback()
   end)
 
-  local home = os.getenv('HOME')
-  local folders = fn.imap({'Desktop', 'Documents', 'Downloads'}, function(name)
-    local path = home .. '/' .. name
-    return {
-      image = hs.image.iconForFile(path),
-      path = path,
-      text = name,
-    }
-  end)
-
   ch:choices(function(query)
-    local choices = {}
-    choices = fn.concat(choices, folders)
-    choices = fn.concat(choices, installedApplications)
-    choices = fn.concat(choices, {
-      {text = 'Emoji', image = emoji.imageFromEmoji('😃')},
-    })
-
     local hits = hs.settings.get(HITS_KEY) or {}
-    table.sort(choices, function(a, b)
+    table.sort(installedApplications, function(a, b)
       local aHits = hits[a.text] or 0
       local bHits = hits[b.text] or 0
       return aHits > bHits or (aHits == bHits and a.text < b.text)
     end)
-
-    return choices
+    return installedApplications
   end)
 
   return function()
