@@ -9,12 +9,10 @@ brew "httpie"
 brew "hub"
 brew "mas"
 brew "node"
+brew "pnpm"
 brew "puma-dev"
 brew "ripgrep"
-brew "tig"
-brew "tmux"
 brew "trash"
-brew "yarn"
 brew "youtube-dl"
 
 cask "1password"
@@ -37,7 +35,6 @@ cask "xee"
 # mas "Next Meeting", id: 1017470484
 
 mas "Acorn", id: 1019272813
-mas "Deliveries", id: 924726344
-mas "iA Writer", id: 775737590
+mas "Deliveries", id: 290986013
 mas "Things 3", id: 904280696
 mas "Tweetbot", id: 1384080005
