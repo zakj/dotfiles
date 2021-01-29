@@ -2,6 +2,7 @@
   "breadcrumbs.enabled": true,
   "editor.acceptSuggestionOnEnter": "off",
   "editor.cursorBlinking": "solid",
+  "editor.formatOnSave": true,
   "editor.matchBrackets": "near",
   "editor.minimap.enabled": false,
   "editor.occurrencesHighlight": false,
@@ -21,6 +22,8 @@
 
   "html.format.extraLiners": "",
   "html.format.wrapLineLength": 80,
+
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
 
   "languageStylus.useSeparator": false,
 
