@@ -1,6 +1,9 @@
 {
   "breadcrumbs.enabled": true,
   "editor.acceptSuggestionOnEnter": "off",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+  },
   "editor.cursorBlinking": "solid",
   "editor.formatOnSave": true,
   "editor.matchBrackets": "near",
@@ -22,8 +25,6 @@
 
   "html.format.extraLiners": "",
   "html.format.wrapLineLength": 80,
-
-  "importSorter.generalConfiguration.sortOnBeforeSave": true,
 
   "languageStylus.useSeparator": false,
 
