@@ -5,7 +5,7 @@ tap "puma/puma"
 
 brew "fd"
 brew "git"
-brew "httpie"
+brew "ht-rust"
 brew "hub"
 brew "mas"
 brew "node"
