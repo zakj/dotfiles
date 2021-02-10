@@ -15,5 +15,10 @@
     "key": "cmd+m",
     "command": "-markdown.extension.editing.toggleMath",
     "when": "editorTextFocus && !editorReadonly && editorLangId == 'markdown'"
+  },
+  {
+    "key": "shift+cmd+j",
+    "command": "workbench.action.toggleMaximizedPanel",
+    "when": "!(inSearchEditor || searchViewletFocus)"
   }
 ]

@@ -55,6 +55,11 @@
         "args": [],
       }],
     },
+    {
+      "before": ["g", "r"],
+      "after": [],
+      "commands": ["editor.action.rename"],
+    },
   ],
   "vim.visualModeKeyBindingsNonRecursive": [
     {
