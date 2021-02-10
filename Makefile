@@ -21,7 +21,7 @@ $(CONFIG_DIR)/kitty/$(KITTY_CONF): $(KITTY_CONF)
 	@mkdir -p "$$(dirname "$@")"
 	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
 
-.PHONY: vscode vscode/extensions
+.PHONY: vscode vscode/extensions vscode-extra
 vscode: $(VSCODE_DIR)/keybindings.json $(VSCODE_DIR)/settings.json vscode/extensions
 $(VSCODE_DIR)/%.json: vscode/%.json
 	@mkdir -p "$$(dirname "$@")"
@@ -30,6 +30,8 @@ vscode/extensions:
 	@for ext in $$(code --list-extensions | comm -23 $@ -); do \
 		code --install-extension "$$ext"; \
 	done
+vscode-extra:
+	@code --list-extensions | comm -23 - vscode/extensions
 
 .PHONY: test
 test: UNLINKED = $(strip $(foreach f,$(FILES),$(shell test $(f) -ef $(HOME)/.$(f) || echo $(f))))
