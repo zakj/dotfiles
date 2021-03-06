@@ -5,8 +5,7 @@ setopt hist_ignore_dups  # Don't insert immediate duplicates into history.
 setopt share_history     # Read/write from the history file immediately.
 
 # Environment  {{{1
-typeset -U path
-path=(~/.local/bin ~/bin /usr/local/bin /usr/local/sbin $path)
+typeset -U PATH path
 fpath+=~/.zfuncs
 
 export EDITOR=$(basename $(whence nvim || whence vim))
@@ -39,13 +38,13 @@ add-zsh-hook -U precmd precmd-prompt
 precmd-prompt() { vcs_info; RPROMPT=$vcs_info_msg_0_ }
 
 () {
-    local format='%m%c%u%F{8}%b'
-    zstyle ':vcs_info:*' formats "$format%f"
-    zstyle ':vcs_info:*' actionformats "$format%F{yellow}⚡%a%f"
-    zstyle ':vcs_info:*' enable git hg svn
-    zstyle ':vcs_info:*' check-for-changes true
-    zstyle ':vcs_info:*' stagedstr '%F{green}•'
-    zstyle ':vcs_info:*' unstagedstr '%F{red}•'
+  local format='%m%c%u%F{8}%b'
+  zstyle ':vcs_info:*' formats "$format%f"
+  zstyle ':vcs_info:*' actionformats "$format%F{yellow}⚡%a%f"
+  zstyle ':vcs_info:*' enable git hg svn
+  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:*' stagedstr '%F{green}•'
+  zstyle ':vcs_info:*' unstagedstr '%F{red}•'
 }
 
 # vcs_info doesn't detect added/removed files, so I do it myself.
@@ -109,12 +108,12 @@ eg() {
 
 # Reconnect ssh socket in an existing tmux session.
 fixssh() {
-    for line in "${(f)$(tmux show-environment)}"; do
-        if [[ $line =~ '^SSH_\w+=' ]]; then
-            echo export $line
-            export $line
-        fi
-    done
+  for line in "${(f)$(tmux show-environment)}"; do
+    if [[ $line =~ '^SSH_\w+=' ]]; then
+      echo export $line
+      export $line
+    fi
+  done
 }
 
 # zle  {{{1
@@ -147,9 +146,9 @@ zle -N rationalise-dot
 bindkey . rationalise-dot
 
 page-up-within-tmux() {
-    if [[ $TMUX != '' ]]; then
-        tmux copy-mode -u
-    fi
+  if [[ $TMUX != '' ]]; then
+    tmux copy-mode -u
+  fi
 }
 zle -N page-up-within-tmux
 bindkey "${terminfo[kpp]}" page-up-within-tmux
@@ -158,13 +157,16 @@ bindkey "${terminfo[kpp]}" page-up-within-tmux
 
 # Manage terminal window titles.
 if [[ $TERM =~ "(rxvt|xterm).*" ]]; then
-    termtitle() { print -Pn "\e]0;$*\a" }
-    precmd-termtitle() { termtitle '%n@%m:%~' }
-    preexec-termtitle() { termtitle $1 }
-    autoload -U add-zsh-hook
-    add-zsh-hook -U precmd precmd-termtitle
-    add-zsh-hook -U preexec preexec-termtitle
+  termtitle() { print -Pn "\e]0;$*\a" }
+  precmd-termtitle() { termtitle '%n@%m:%~' }
+  preexec-termtitle() { termtitle $1 }
+  autoload -U add-zsh-hook
+  add-zsh-hook -U precmd precmd-termtitle
+  add-zsh-hook -U preexec preexec-termtitle
 fi
+
+# Homebrew for arm64
+[[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
 
 # Local overrides
 [[ -f ~/.local/zshrc ]] && source ~/.local/zshrc || true
