@@ -1,21 +1,16 @@
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/core"
-tap "puma/puma"
-
 brew "fd"
 brew "git"
-brew "httpie"
-brew "hub"
 brew "mas"
 brew "node"
 brew "pnpm"
-brew "puma-dev"
+brew "puma/puma/puma-dev"
 brew "ripgrep"
 brew "trash"
+brew "xh"
 brew "youtube-dl"
 
 cask "1password"
+cask "appcleaner"
 cask "firefox"
 cask "hammerspoon"
 cask "iina"
@@ -36,5 +31,5 @@ cask "xee"
 
 mas "Acorn", id: 1019272813
 mas "Deliveries", id: 290986013
-mas "Things 3", id: 904280696
+mas "Things", id: 904280696
 mas "Tweetbot", id: 1384080005
