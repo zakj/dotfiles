@@ -73,7 +73,7 @@ zstyle ':completion:*:*:cdr:*:*' menu selection
 autoload -Uz zmv
 
 # Give a short name to the given (or current) directory.
-namedir() { eval "$1=${2-$PWD}" && : ~$1 }
+namedir() { eval "$1='${2-$PWD}'" && cd ~$1 }
 
 # Normalize recursive grep tools.
 g() {
