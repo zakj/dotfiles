@@ -7,25 +7,12 @@ alternates() {
 }
 
 set -a
-PATH="$HOME/.local/bin:$HOME/bin:/usr/ucb:$HOME/sadm/bin:$HOME/mmake/bin"
-PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
-PATH="$PATH:/usr/X11R6/bin:/var/qmail/bin:/usr/games"
-CVS_RSH=ssh
 EDITOR=$(alternates vim vi)
 ENV="$HOME/.profile"
 FIGNORE=".pyc:.DS_Store"
-FTP_PASSIVE_MODE=YES
 HISTIGNORE='&'
-HOMETEXMF="$HOME/doc/texmf:$HOME/fenris/hometexmf"
-TEXMFHOME="$HOMETEXMF"
 LESS=gij5MR
 PAGER=$(alternates less more)
-QMAILINJECT=i
-RSYNC_RSH=ssh
-WORKON_HOME="$HOME/.virtualenvs"
-PIP_VIRTUALENV_BASE="$WORKON_HOME"
-PIP_RESPECT_VIRTUALENV=1
-VIRTUALENV_USE_DISTRIBUTE=1
 set +a
 
 if [ -n "$PS1" ]; then
