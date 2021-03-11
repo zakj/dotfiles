@@ -6,7 +6,6 @@ local message = require 'message'
 local reload = require 'reload'
 local superClick = require 'superclick'
 
-ctrl:start()
 reload:start()
 
 hs.hints.style = 'vimperator'
@@ -90,6 +89,22 @@ local hyperMode = hyper.new({
   {'4', withFocusedWindow(layout.sizeQuarter, layout.moveBR)},
   {'5', function() hs.window.focusedWindow():setSize(1320, 870 + 75) end},
 })
+
+
+local keysEnabled = true
+hs.hotkey.bind('⌘⌃⌥', 'k', function()
+  if keysEnabled then
+    ctrl:stop()
+    hyperMode:stop()
+    message.show('Hotkeys disabled.', 2)
+  else
+    ctrl:start()
+    hyperMode:start()
+    message.show('Hotkeys enabled.', 2)
+  end
+  keysEnabled = not keysEnabled
+end)
+ctrl:start()
 hyperMode:start()
 
 
