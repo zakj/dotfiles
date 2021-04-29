@@ -5,6 +5,7 @@ local layout = require 'layout'
 local message = require 'message'
 local reload = require 'reload'
 local superClick = require 'superclick'
+local u = require 'util'
 
 reload:start()
 
@@ -60,22 +61,29 @@ local function undock()
   hs.caffeinate.systemSleep()
 end
 
-local function open(name)
-  return function() hs.application.open(name) end
+-- hs.application.open can be slow.
+local function open(name, ...)
+  local args = u.map({...}, function (x) return "'" .. x .. "'" end)
+  io.popen('open -a "' .. name .. '" ' .. u.join(args, ' '))
+end
+
+local function opener(name, ...)
+  local args = {...}
+  return function() open(name, table.unpack(args)) end
 end
 
 
 local hyperMode = hyper.new({
   {'space', launcher()},
   {';', function() hs.caffeinate.lockScreen() end},
-  {'f', function() hs.application.open(hs.settings.get('default-browser') or 'Firefox') end},
+  {'f', opener(hs.settings.get('default-browser') or 'Firefox')},
   {'k', withFocusedWindow(layout.moveCenter)},
-  {'l', open('Slack')},
-  {'m', open('Messages')},
-  {'n', function() hs.task.new('/usr/local/bin/code', nil, {notesPath}):start() end},
-  {'t', open('kitty')},
+  {'l', opener('Slack')},
+  {'m', opener('Messages')},
+  {'n', opener('Visual Studio Code', notesPath)},
+  {'t', opener('kitty')},
   {'u', undock},
-  {'v', open('Visual Studio Code')},
+  {'v', opener('Visual Studio Code')},
   {'x', superClick},
 
   -- {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
