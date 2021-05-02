@@ -13,6 +13,7 @@ hs.hints.style = 'vimperator'
 hs.hotkey.setLogLevel('warning')
 hs.window.animationDuration = 0
 
+menuItem = hs.menubar.new(false)
 local notesPath = '/Users/zakj/Library/Mobile Documents/27N4MQEA55~pro~writer/Documents'
 
 local function withFocusedWindow(...)
@@ -72,10 +73,21 @@ local function opener(name, ...)
   return function() open(name, table.unpack(args)) end
 end
 
+local function toggleCaffeinate()
+  local sleeping = hs.caffeinate.toggle('displayIdle')
+  if sleeping then
+    menuItem:returnToMenuBar()
+    menuItem:setClickCallback(toggleCaffeinate)
+    menuItem:setIcon(hs.image.imageFromName('NSTouchBarControlStripLockScreenTemplate'))
+  else
+    menuItem:removeFromMenuBar()
+  end
+end
 
 local hyperMode = hyper.new({
   {'space', launcher()},
   {';', function() hs.caffeinate.lockScreen() end},
+  {"'", toggleCaffeinate},
   {'f', opener(hs.settings.get('default-browser') or 'Firefox')},
   {'k', withFocusedWindow(layout.moveCenter)},
   {'l', opener('Slack')},
