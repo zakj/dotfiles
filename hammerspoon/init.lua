@@ -1,6 +1,3 @@
-local ctrl = require 'ctrl'
-local hyper = require 'hyper'
-local launcher = require 'launcher'
 local layout = require 'layout'
 local message = require 'message'
 local reload = require 'reload'
@@ -13,7 +10,7 @@ hs.hints.style = 'vimperator'
 hs.hotkey.setLogLevel('warning')
 hs.window.animationDuration = 0
 
-menuItem = hs.menubar.new(false)
+local menuItem = hs.menubar.new(false)
 local notesPath = '/Users/zakj/Library/Mobile Documents/27N4MQEA55~pro~writer/Documents'
 
 local function withFocusedWindow(...)
@@ -84,48 +81,34 @@ local function toggleCaffeinate()
   end
 end
 
-local hyperMode = hyper.new({
-  {'space', launcher()},
-  {';', function() hs.caffeinate.lockScreen() end},
-  {"'", toggleCaffeinate},
-  {'f', opener(hs.settings.get('default-browser') or 'Firefox')},
-  {'k', withFocusedWindow(layout.moveCenter)},
-  {'l', opener('Slack')},
-  {'m', opener('Messages')},
-  {'n', opener('Visual Studio Code', notesPath)},
-  {'t', opener('kitty')},
-  {'u', undock},
-  {'v', opener('Visual Studio Code')},
-  {'x', superClick},
+-- Chorded modal support via Karabiner Elements.
+local modal = hs.hotkey.modal.new()
+hs.hotkey.bind({}, "f18",
+  function() message.show('⌘'); modal:enter() end,
+  function() message.hide(); modal:exit() end)
 
-  -- {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
-  -- {nil, 'd', toggleDesktopIcons},
-  -- {{'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV)},
-  {'left', withFocusedWindow(layout.moveTL, layout.maximizeV)},
-  {'right', withFocusedWindow(layout.moveTR, layout.maximizeV)},
-  {'1', withFocusedWindow(layout.sizeQuarter, layout.moveTL)},
-  {'2', withFocusedWindow(layout.sizeQuarter, layout.moveBL)},
-  {'3', withFocusedWindow(layout.sizeQuarter, layout.moveTR)},
-  {'4', withFocusedWindow(layout.sizeQuarter, layout.moveBR)},
-  {'5', function() hs.window.focusedWindow():setSize(1320, 870 + 75) end},
-})
+modal:bind({}, ';', function() hs.caffeinate.lockScreen() end)
+modal:bind({}, "'", toggleCaffeinate)
+modal:bind({}, 'f', opener(hs.settings.get('default-browser') or 'Firefox'))
+modal:bind({}, 'l', opener('Slack'))
+modal:bind({}, 'm', opener('Messages'))
+modal:bind({}, 'n', opener('Visual Studio Code', notesPath))
+modal:bind({}, 't', opener('kitty'))
+modal:bind({}, 'u', undock)
+modal:bind({}, 'v', opener('Visual Studio Code'))
+modal:bind({}, 'x', superClick)
 
-
-local keysEnabled = true
-hs.hotkey.bind('⌘⌃⌥', 'k', function()
-  if keysEnabled then
-    ctrl:stop()
-    hyperMode:stop()
-    message.show('Hotkeys disabled.', 2)
-  else
-    ctrl:start()
-    hyperMode:start()
-    message.show('Hotkeys enabled.', 2)
-  end
-  keysEnabled = not keysEnabled
-end)
-ctrl:start()
-hyperMode:start()
+-- {nil, 'd', toggleDesktopIcons},
+-- {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
+modal:bind({'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV))
+modal:bind({}, 'k', withFocusedWindow(layout.moveCenter))
+modal:bind({}, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV))
+modal:bind({}, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV))
+modal:bind({}, '1', withFocusedWindow(layout.sizeQuarter, layout.moveTL))
+modal:bind({}, '2', withFocusedWindow(layout.sizeQuarter, layout.moveBL))
+modal:bind({}, '3', withFocusedWindow(layout.sizeQuarter, layout.moveTR))
+modal:bind({}, '4', withFocusedWindow(layout.sizeQuarter, layout.moveBR))
+modal:bind({}, '5', function() hs.window.focusedWindow():setSize(1320, 870 + 75) end)
 
 
 -- Make sure garbage collection doesn't break new functionality.
