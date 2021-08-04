@@ -1,19 +1,26 @@
-IGNORED = Brewfile Makefile README.md vscode $(KITTY_CONF)
+IGNORED = Brewfile Makefile README.md vscode $(KARABINER_CONF) $(KITTY_CONF)
 FILES = $(filter-out $(IGNORED),$(wildcard *))
 DOTFILES = $(addprefix $(HOME)/.,$(FILES))
 RELDIR = $(subst $(HOME)/,,$(shell pwd -L))
 CONFIG_DIR = $(HOME)/.config
 
+KARABINER_CONF = karabiner.json
 KITTY_CONF = kitty.conf
 VSCODE_DIR = $(HOME)/Library/Application\ Support/Code/User
 
-all: links test kitty vscode
+all: links test karabiner kitty vscode
 
 .PHONY: links
 links: $(DOTFILES)
 
 $(HOME)/.%: %
 	@ln -sv$(if $(FORCE),f) "$(RELDIR)/$<" "$@"
+
+.PHONY: karabiner
+karabiner: $(CONFIG_DIR)/karabiner/$(KARABINER_CONF)
+$(CONFIG_DIR)/karabiner/$(KARABINER_CONF): $(KARABINER_CONF)
+	@mkdir -p "$$(dirname "$@")"
+	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
 
 .PHONY: kitty
 kitty: $(CONFIG_DIR)/kitty/$(KITTY_CONF)
