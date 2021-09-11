@@ -17,6 +17,9 @@
 	pager = less -FSX
 	safecrlf = true
 
+[init]
+	defaultBranch = main
+
 [pretty]
 	graph = %C(yellow)%h%Creset %s%d %C(brightblack)%an %ar
 
