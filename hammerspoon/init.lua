@@ -11,7 +11,7 @@ hs.hotkey.setLogLevel('warning')
 hs.window.animationDuration = 0
 
 local menuItem = hs.menubar.new(false)
-local notesPath = '/Users/zakj/Library/Mobile Documents/27N4MQEA55~pro~writer/Documents'
+local notesPath = '/Users/zakj/Library/Mobile Documents/com~apple~CloudDocs/Documents/Notes'
 
 local function withFocusedWindow(...)
   local varargs = {...}
