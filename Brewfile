@@ -1,5 +1,4 @@
 brew "fd"
-brew "git"
 brew "mas"
 brew "node"
 brew "pnpm"
@@ -9,28 +8,27 @@ brew "trash"
 brew "xh"
 brew "youtube-dl"
 
-cask "1password"
-cask "appcleaner"
-cask "firefox"
 cask "hammerspoon"
 cask "iina"
 cask "imageoptim"
 cask "karabiner-elements"
 cask "kitty"
-cask "spotify"
-cask "the-unarchiver"
+cask "raycast"
 cask "visual-studio-code"
 cask "xee"
 
 # Optional.
+# cask "1password"
+# cask "appcleaner"
 # cask "google-chrome"
 # cask "dropbox"
 # cask "slack"
 # cask "steam"
+# cask "the-unarchiver"
 # cask "zoomus"
+# mas "Acorn", id: 1019272813
 # mas "Next Meeting", id: 1017470484
 
-mas "Acorn", id: 1019272813
 mas "Deliveries", id: 290986013
 mas "Things", id: 904280696
 mas "Tweetbot", id: 1384080005
