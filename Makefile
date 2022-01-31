@@ -1,4 +1,4 @@
-IGNORED = Brewfile Makefile README.md vscode $(KARABINER_CONF) $(KITTY_CONF)
+IGNORED = Brewfile Makefile README.md raycast vscode $(KARABINER_CONF) $(KITTY_CONF)
 FILES = $(filter-out $(IGNORED),$(wildcard *))
 DOTFILES = $(addprefix $(HOME)/.,$(FILES))
 RELDIR = $(subst $(HOME)/,,$(shell pwd -L))
