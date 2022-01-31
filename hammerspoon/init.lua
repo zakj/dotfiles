@@ -89,10 +89,11 @@ hs.hotkey.bind({}, "f18",
 
 modal:bind({}, ';', function() hs.caffeinate.lockScreen() end)
 modal:bind({}, "'", toggleCaffeinate)
-modal:bind({}, 'f', opener(hs.settings.get('default-browser') or 'Firefox'))
+modal:bind({}, 'f', opener(hs.settings.get('default-browser') or 'Safari'))
 modal:bind({}, 'l', opener('Slack'))
 modal:bind({}, 'm', opener('Messages'))
-modal:bind({}, 'n', opener('Visual Studio Code', notesPath))
+-- modal:bind({}, 'n', opener('Visual Studio Code', notesPath))
+modal:bind({}, 'n', opener('Obsidian', notesPath))
 modal:bind({}, 't', opener('kitty'))
 modal:bind({}, 'u', undock)
 modal:bind({}, 'v', opener('Visual Studio Code'))
