@@ -1,5 +1,4 @@
 {
-  "breadcrumbs.enabled": true,
   "editor.acceptSuggestionOnEnter": "off",
   "editor.codeActionsOnSave": {
     "source.organizeImports": true,
@@ -16,12 +15,8 @@
   "files.insertFinalNewline": true,
 
   "git.autofetch": true,
-  "gitlens.advanced.messages": {
-    "suppressShowKeyBindingsNotice": true
-  },
   "gitlens.codeLens.enabled": false,
   "gitlens.currentLine.enabled": false,
-  "gitlens.views.lineHistory.enabled": true,
 
   "html.format.extraLiners": "",
   "html.format.wrapLineLength": 80,
@@ -29,6 +24,8 @@
   "languageStylus.useSeparator": false,
 
   "python.venvPath": "~/.virtualenvs",
+
+  "svelte.enable-ts-plugin": true,
 
   // TODO: move into theme?
   "workbench.colorCustomizations": {
@@ -39,7 +36,6 @@
   },
   "workbench.colorTheme": "Mourning",
   "workbench.startupEditor": "newUntitledFile",
-  "workbench.statusBar.feedback.visible": false,
   "workbench.tips.enabled": false,
   "workbench.tree.renderIndentGuides": "none",
   "vim.leader": ",",
