@@ -11,7 +11,6 @@ hs.hotkey.setLogLevel('warning')
 hs.window.animationDuration = 0
 
 local menuItem = hs.menubar.new(false)
-local notesPath = '/Users/zakj/Library/Mobile Documents/com~apple~CloudDocs/Documents/Notes'
 
 local function withFocusedWindow(...)
   local varargs = {...}
@@ -81,6 +80,18 @@ local function toggleCaffeinate()
   end
 end
 
+local function openAndResizeObsidian()
+  open('Obsidian')
+  hs.timer.waitUntil(
+    function()
+      local app = hs.application.frontmostApplication()
+      return app:name() == 'Obsidian' and app:focusedWindow() ~= nil
+    end,
+    function() hs.window.focusedWindow():setSize(850, 1050) end,
+    .1
+  )
+end
+
 -- Chorded modal support via Karabiner Elements.
 local modal = hs.hotkey.modal.new()
 hs.hotkey.bind({}, "f18",
@@ -92,8 +103,7 @@ modal:bind({}, "'", toggleCaffeinate)
 modal:bind({}, 'f', opener(hs.settings.get('default-browser') or 'Safari'))
 modal:bind({}, 'l', opener('Slack'))
 modal:bind({}, 'm', opener('Messages'))
--- modal:bind({}, 'n', opener('Visual Studio Code', notesPath))
-modal:bind({}, 'n', opener('Obsidian', notesPath))
+modal:bind({}, 'n', openAndResizeObsidian)
 modal:bind({}, 't', opener('kitty'))
 modal:bind({}, 'u', undock)
 modal:bind({}, 'v', opener('Visual Studio Code'))
@@ -109,7 +119,7 @@ modal:bind({}, '1', withFocusedWindow(layout.sizeQuarter, layout.moveTL))
 modal:bind({}, '2', withFocusedWindow(layout.sizeQuarter, layout.moveBL))
 modal:bind({}, '3', withFocusedWindow(layout.sizeQuarter, layout.moveTR))
 modal:bind({}, '4', withFocusedWindow(layout.sizeQuarter, layout.moveBR))
-modal:bind({}, '5', function() hs.window.focusedWindow():setSize(1320, 870 + 75) end)
+modal:bind({}, '5', withFocusedWindow(function(w) w:setSize(1320, 870 + 75) end))
 
 
 -- Make sure garbage collection doesn't break new functionality.
