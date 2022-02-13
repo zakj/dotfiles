@@ -6,11 +6,17 @@ setopt share_history     # Read/write from the history file immediately.
 
 # Environment  {{{1
 typeset -U PATH path
-fpath+=~/.zfuncs
+fpath=(~/.zfuncs $fpath)
 
 export EDITOR=$(basename $(whence nvim || whence vim))
 export LESS=gij5MR
 export PAGER=less
+
+# Homebrew
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval $(/opt/homebrew/bin/brew shellenv)
+  fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
+fi
 
 # Python virtual environments.
 export WORKON_HOME=~/.virtualenvs
@@ -164,9 +170,6 @@ if [[ $TERM =~ "(rxvt|xterm).*" ]]; then
   add-zsh-hook -U precmd precmd-termtitle
   add-zsh-hook -U preexec preexec-termtitle
 fi
-
-# Homebrew for arm64
-[[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
 
 # Local overrides
 [[ -f ~/.local/zshrc ]] && source ~/.local/zshrc || true
