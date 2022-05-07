@@ -1,5 +1,6 @@
 {
   "editor.acceptSuggestionOnEnter": "off",
+  "editor.bracketPairColorization.enabled": false,
   "editor.codeActionsOnSave": {
     "source.organizeImports": true,
   },
