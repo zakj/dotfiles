@@ -1,10 +1,14 @@
+local ctrl = require 'ctrl'
 local layout = require 'layout'
 local message = require 'message'
 local reload = require 'reload'
+local space = require 'space'
 local superClick = require 'superclick'
 local u = require 'util'
 
+ctrl:start()
 reload:start()
+space:start()
 
 hs.hints.style = 'vimperator'
 hs.hotkey.setLogLevel('warning')
