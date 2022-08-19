@@ -29,6 +29,6 @@ cask "xee"
 # mas "Acorn", id: 1019272813
 # mas "Next Meeting", id: 1017470484
 
-mas "Deliveries", id: 290986013
+mas "Parcel", id: 639968404
 mas "Things", id: 904280696
 mas "Tweetbot", id: 1384080005
