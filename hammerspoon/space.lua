@@ -5,7 +5,6 @@ local State = {
   TYPING = 'TYPING',
   SPACE_DOWN = 'SPACE_DOWN',
   SYNTHETIC_SPACE = 'SYNTHETIC_SPACE',
-  SPACE_HELD = 'SPACE_HELD',
   HYPER = 'HYPER',
 }
 
@@ -57,8 +56,14 @@ local function startMachine(hyperKey)
 
     [State.SPACE_DOWN] = {
       [Message.KEYUP_SPACE] = sendSyntheticSpace,
+      [Message.KEYDOWN_OTHER] = function(event)
+        -- Ensure the space keydown event is sent before this one.
+        sendSyntheticSpace()
+        hs.eventtap.event.newKeyEvent(event:getCharacters(), true):post()
+        return suppressEvent()
+      end,
       [Message.HELD_TIMER] = function()
-        state = State.SPACE_HELD
+        state = State.HYPER
         hs.eventtap.event.newKeyEvent(hyperKey, true):post()
         heldTimer:start()
         idleTimer:stop()
@@ -67,18 +72,6 @@ local function startMachine(hyperKey)
 
     [State.SYNTHETIC_SPACE] = {
       [Message.KEYDOWN_SPACE] = function() state = State.IDLE end,
-    },
-
-    -- An in-between state; send the hyper key for a quick transition to hyper
-    -- mode, but also send a synthetic space event if we see a space up during
-    -- this window to allow for tapping space from IDLE.
-    [State.SPACE_HELD] = {
-      [Message.KEYDOWN_SPACE] = suppressEvent,
-      [Message.KEYUP_SPACE] = function()
-        sendSyntheticSpace()
-        hs.eventtap.event.newKeyEvent(hyperKey, false):post()
-      end,
-      [Message.HELD_TIMER] = function() state = State.HYPER end,
     },
 
     [State.HYPER] = {
@@ -97,7 +90,7 @@ local function startMachine(hyperKey)
   end
 
   idleTimer = hs.timer.delayed.new(0.2, function() handleMessage(Message.IDLE_TIMER) end)
-  heldTimer = hs.timer.delayed.new(0.1, function() handleMessage(Message.HELD_TIMER) end)
+  heldTimer = hs.timer.delayed.new(0.15, function() handleMessage(Message.HELD_TIMER) end)
 
   return handleMessage
 end
