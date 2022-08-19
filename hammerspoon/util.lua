@@ -39,7 +39,7 @@ end
 function exports.map(tbl, fn)
   local rv = {}
   for i, x in pairs(tbl) do
-      rv[i] = fn(x)
+    rv[i] = fn(x)
   end
   return rv
 end

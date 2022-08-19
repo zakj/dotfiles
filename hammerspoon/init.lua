@@ -17,7 +17,7 @@ hs.window.animationDuration = 0
 local menuItem = hs.menubar.new(false)
 
 local function withFocusedWindow(...)
-  local varargs = {...}
+  local varargs = { ... }
   return function()
     for i, fn in ipairs(varargs) do
       fn(hs.window.focusedWindow())
@@ -43,13 +43,13 @@ end
 local function toggleDesktopIcons()
   hs.task.new('/usr/bin/defaults', function(exitCode, stdOut, stdErr)
     local hidden = exitCode == 0 or stdOut:gsub('%s+', '') == '0'
-      if hidden then
-        os.execute('defaults delete com.apple.finder CreateDesktop')
-      else
-        os.execute('defaults write com.apple.finder CreateDesktop -bool false')
-      end
-      os.execute('killall Finder')
-    end, {'read', 'com.apple.finder', 'CreateDesktop'}
+    if hidden then
+      os.execute('defaults delete com.apple.finder CreateDesktop')
+    else
+      os.execute('defaults write com.apple.finder CreateDesktop -bool false')
+    end
+    os.execute('killall Finder')
+  end, { 'read', 'com.apple.finder', 'CreateDesktop' }
   ):start()
 end
 
@@ -64,12 +64,12 @@ end
 
 -- hs.application.open can be slow.
 local function open(name, ...)
-  local args = u.map({...}, function (x) return "'" .. x .. "'" end)
+  local args = u.map({ ... }, function(x) return "'" .. x .. "'" end)
   io.popen('open -a "' .. name .. '" ' .. u.join(args, ' '))
 end
 
 local function opener(name, ...)
-  local args = {...}
+  local args = { ... }
   return function() open(name, table.unpack(args)) end
 end
 
@@ -108,7 +108,7 @@ modal:bind({}, 'f', opener(hs.settings.get('default-browser') or 'Safari'))
 modal:bind({}, 'l', opener('Slack'))
 modal:bind({}, 'm', opener('Messages'))
 modal:bind({}, 'n', opener('Obsidian'))
-modal:bind({'shift'}, 'n', openAndResizeObsidian)
+modal:bind({ 'shift' }, 'n', openAndResizeObsidian)
 modal:bind({}, 't', opener('kitty'))
 modal:bind({}, 'u', undock)
 modal:bind({}, 'v', opener('Visual Studio Code'))
@@ -116,7 +116,7 @@ modal:bind({}, 'x', superClick)
 
 -- {nil, 'd', toggleDesktopIcons},
 -- {nil, 's', function() layout.staggerWindows(hs.application.frontmostApplication()) end},
-modal:bind({'shift'}, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV))
+modal:bind({ 'shift' }, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV))
 modal:bind({}, 'k', withFocusedWindow(layout.moveCenter))
 modal:bind({}, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV))
 modal:bind({}, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV))
