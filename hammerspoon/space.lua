@@ -65,19 +65,17 @@ local function startMachine(hyperKey)
       [Message.HELD_TIMER] = function()
         state = State.HYPER
         hs.eventtap.event.newKeyEvent(hyperKey, true):post()
-        heldTimer:start()
         idleTimer:stop()
       end,
     },
 
     [State.SYNTHETIC_SPACE] = {
-      [Message.KEYDOWN_SPACE] = function() state = State.IDLE end,
+      [Message.KEYDOWN_SPACE] = enterTyping,
     },
 
     [State.HYPER] = {
       [Message.KEYDOWN_SPACE] = suppressEvent,
       [Message.KEYUP_SPACE] = function()
-        heldTimer:stop()
         state = State.IDLE
         hs.eventtap.event.newKeyEvent(hyperKey, false):post()
       end,
