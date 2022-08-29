@@ -62,6 +62,18 @@ local function undock()
   hs.caffeinate.systemSleep()
 end
 
+local function toggleSpecialKeys()
+  if ctrl:isEnabled() or space:isEnabled() then
+    ctrl:stop()
+    space:stop()
+    message.show('Special keys disabled.', 1)
+  else
+    ctrl:start()
+    space:start()
+    message.show('Special keys enabled.', 1)
+  end
+end
+
 -- hs.application.open can be slow.
 local function open(name, ...)
   local args = u.map({ ... }, function(x) return "'" .. x .. "'" end)
@@ -98,6 +110,7 @@ end
 
 -- Chorded modal support via Karabiner Elements.
 local modal = hs.hotkey.modal.new()
+hs.hotkey.bind({'command', 'control', 'option'}, 'space', toggleSpecialKeys)
 hs.hotkey.bind({}, "f18",
   function() message.show('⌘'); modal:enter() end,
   function() message.hide(); modal:exit() end)

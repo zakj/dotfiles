@@ -108,6 +108,10 @@ local function init()
     if e:getCharacters() == ' ' then return send(Message.KEYUP_SPACE) end
   end)
 
+  function self.isEnabled()
+    return keyDownTap:isEnabled() or keyUpTap:isEnabled()
+  end
+
   function self.start()
     keyDownTap:start()
     keyUpTap:start()
