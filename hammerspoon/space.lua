@@ -21,6 +21,9 @@ local function startMachine(hyperKey)
   local idleTimer
   local heldTimer
 
+  -- eventtap callbacks return true to suppress the original event.
+  local function suppressEvent() return true end
+
   local function enterTyping()
     state = State.TYPING
     idleTimer:start()
@@ -30,10 +33,9 @@ local function startMachine(hyperKey)
     heldTimer:stop()
     state = State.SYNTHETIC_SPACE
     hs.eventtap.event.newKeyEvent('space', true):post()
+    hs.eventtap.event.newKeyEvent('space', false):post()
+    return suppressEvent()
   end
-
-  -- eventtap callbacks return true to suppress the original event.
-  local function suppressEvent() return true end
 
   local stateMap = {
     [State.IDLE] = {
