@@ -108,7 +108,6 @@ local function openAndResizeObsidian()
   )
 end
 
--- Chorded modal support via Karabiner Elements.
 local modal = hs.hotkey.modal.new()
 hs.hotkey.bind({'command', 'control', 'option'}, 'space', toggleSpecialKeys)
 hs.hotkey.bind({}, "f18",
