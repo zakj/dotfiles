@@ -79,7 +79,11 @@ local function startMachine(hyperKey)
       [Message.KEYDOWN_SPACE] = suppressEvent,
       [Message.KEYUP_SPACE] = function()
         state = State.IDLE
-        hs.eventtap.event.newKeyEvent(hyperKey, false):post()
+        -- HACK: Something causes newKeyEvent to include an fn keydown when
+        -- sending hyperKey as f18. Somehow that would then get stuck;
+        -- subsequent keypresses would act like fn was still down. For some
+        -- reason explicitly resetting flags here seems to solve it.
+        hs.eventtap.event.newKeyEvent(hyperKey, false):setFlags({}):post()
       end,
     },
   }
