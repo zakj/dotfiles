@@ -8,15 +8,15 @@ setopt share_history     # Read/write from the history file immediately.
 typeset -U PATH path
 fpath=(~/.zfuncs $fpath)
 
-export EDITOR=$(basename $(whence nvim || whence vim))
-export LESS=gij5MR
-export PAGER=less
-
 # Homebrew
 if [[ -x /opt/homebrew/bin/brew ]]; then
   eval $(/opt/homebrew/bin/brew shellenv)
   fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
 fi
+
+export EDITOR=$(basename $(whence nvim || whence vim))
+export LESS=gij5MR
+export PAGER=less
 
 # Python virtual environments.
 export WORKON_HOME=~/.virtualenvs

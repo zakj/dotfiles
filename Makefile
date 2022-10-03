@@ -1,4 +1,4 @@
-IGNORED = Brewfile Makefile README.md raycast vscode $(KITTY_CONF)
+IGNORED = Brewfile Makefile README.md raycast vscode $(KITTY_CONF) nvim.lua
 FILES = $(filter-out $(IGNORED),$(wildcard *))
 DOTFILES = $(addprefix $(HOME)/.,$(FILES))
 RELDIR = $(subst $(HOME)/,,$(shell pwd -L))
@@ -7,7 +7,7 @@ CONFIG_DIR = $(HOME)/.config
 KITTY_CONF = kitty.conf
 VSCODE_DIR = $(HOME)/Library/Application\ Support/Code/User
 
-all: links test kitty vscode
+all: links test kitty nvim vscode
 
 .PHONY: links
 links: $(DOTFILES)
@@ -18,6 +18,12 @@ $(HOME)/.%: %
 .PHONY: kitty
 kitty: $(CONFIG_DIR)/kitty/$(KITTY_CONF)
 $(CONFIG_DIR)/kitty/$(KITTY_CONF): $(KITTY_CONF)
+	@mkdir -p "$$(dirname "$@")"
+	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
+
+.PHONY: nvim
+nvim: $(CONFIG_DIR)/nvim/init.lua
+$(CONFIG_DIR)/nvim/init.lua: nvim.lua
 	@mkdir -p "$$(dirname "$@")"
 	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
 
