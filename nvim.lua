@@ -34,7 +34,6 @@ require('packer').startup(function(use)
   use {
     'nvim-lualine/lualine.nvim',
     config = function()
-      vim.opt.ruler = false
       vim.opt.showmode = false
       local function diff()
         local gitsigns = vim.b.gitsigns_status_dict
@@ -134,6 +133,7 @@ require('packer').startup(function(use)
 end)
 
 vim.g.mapleader = ','
+vim.opt.ruler = false
 vim.keymap.set({'n', 'v'}, ';', ':')
 vim.keymap.set('n', '<c-j>', '<cmd>bnext<cr>', {silent = true})
 vim.keymap.set('n', '<c-k>', '<cmd>bprevious<cr>', {silent = true})
