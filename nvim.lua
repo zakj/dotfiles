@@ -59,12 +59,12 @@ require('packer').startup(function(use)
           icons_enabled = false,
         },
         sections = {
-          lualine_b = {'b:gitsigns_head', {'diff', source = diff}},
-          lualine_c = {{'filename', path = 1}},
-          lualine_x = {'diagnostics', 'filetype'},
+          lualine_b = { 'b:gitsigns_head', { 'diff', source = diff } },
+          lualine_c = { { 'filename', path = 1 } },
+          lualine_x = { 'diagnostics', 'filetype' },
         },
         inactive_sections = {
-          lualine_c = {{'filename', path = 1}},
+          lualine_c = { { 'filename', path = 1 } },
         },
       })
     end
@@ -76,7 +76,7 @@ require('packer').startup(function(use)
     cond = not_vscode,
     config = function()
       local cmd = '<cmd>update<cr><cmd>Bdelete<cr>'
-      vim.keymap.set('n', '<leader>x', cmd, {silent = true})
+      vim.keymap.set('n', '<leader>x', cmd, { silent = true })
     end
   }
 
@@ -98,10 +98,11 @@ require('packer').startup(function(use)
         on_attach = function(bufnr)
           local gs = package.loaded.gitsigns
           local function map(mode, l, r)
-            vim.keymap.set(mode, l, r, {buffer = bufnr})
+            vim.keymap.set(mode, l, r, { buffer = bufnr })
           end
-          map({'n', 'v'}, '<leader>hs', gs.stage_hunk)
-          map({'n', 'v'}, '<leader>hr', gs.reset_hunk)
+
+          map({ 'n', 'v' }, '<leader>hs', gs.stage_hunk)
+          map({ 'n', 'v' }, '<leader>hr', gs.reset_hunk)
           map('n', '<leader>hu', gs.undo_stage_hunk)
         end
       })
@@ -113,7 +114,7 @@ require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     cond = not_vscode,
     run = function()
-      require('nvim-treesitter.install').update({with_sync = true})
+      require('nvim-treesitter.install').update({ with_sync = true })
     end
   }
 
@@ -146,10 +147,10 @@ require('packer').startup(function(use)
 end)
 
 vim.g.mapleader = ','
-vim.keymap.set({'n', 'v'}, ';', ':')
+vim.keymap.set({ 'n', 'v' }, ';', ':')
 vim.keymap.set('n', '<leader><leader>', '<cmd>buffer#<cr>')
-vim.keymap.set('n', '<c-j>', '<cmd>bnext<cr>', {silent = true})
-vim.keymap.set('n', '<c-k>', '<cmd>bprevious<cr>', {silent = true})
+vim.keymap.set('n', '<c-j>', '<cmd>bnext<cr>', { silent = true })
+vim.keymap.set('n', '<c-k>', '<cmd>bprevious<cr>', { silent = true })
 vim.keymap.set('v', '<leader>s', ':sort i<cr>')
 if vim.g.vscode ~= nil then
   vim.keymap.set('n', 'gr', '<cmd>call VSCodeNotify("editor.action.rename")<cr>')
