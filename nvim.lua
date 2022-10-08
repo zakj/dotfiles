@@ -11,19 +11,25 @@ local packer_bootstrap = (function()
   return true
 end)()
 
+local function not_vscode() return vim.g.vscode == nil end
+
 -- Reload/recompile packer when saving nvim config.
 vim.cmd [[au! BufWritePost $MYVIMRC,~/etc/nvim.lua source <afile> | PackerCompile]]
 
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
-  -- Sensible defaults, indent detection, repeat for complex actions.
-  use {'tpope/vim-sensible', 'tpope/vim-sleuth', 'tpope/vim-repeat'}
+  -- Indent detection, better surrounds, repeat for complex actions.
+  use 'tpope/vim-sleuth'
+  use 'tpope/vim-surround'
+  use 'michaeljsmith/vim-indent-object'
+  use 'tpope/vim-repeat'
 
   -- Minimal colorscheme.
   use {
     'mcchrish/zenbones.nvim',
     requires = 'rktjmp/lush.nvim',
+    cond = not_vscode,
     config = function()
       vim.opt.termguicolors = true
       vim.cmd [[colorscheme zenbones]]
@@ -33,7 +39,9 @@ require('packer').startup(function(use)
   -- Improved statusline.
   use {
     'nvim-lualine/lualine.nvim',
+    cond = not_vscode,
     config = function()
+      vim.opt.ruler = false
       vim.opt.showmode = false
       local function diff()
         local gitsigns = vim.b.gitsigns_status_dict
@@ -45,6 +53,7 @@ require('packer').startup(function(use)
           }
         end
       end
+
       require('lualine').setup({
         options = {
           icons_enabled = false,
@@ -64,6 +73,7 @@ require('packer').startup(function(use)
   -- ,x to save/close a buffer without affecting window positions.
   use {
     'moll/vim-bbye',
+    cond = not_vscode,
     config = function()
       local cmd = '<cmd>update<cr><cmd>Bdelete<cr>'
       vim.keymap.set('n', '<leader>x', cmd, {silent = true})
@@ -82,6 +92,7 @@ require('packer').startup(function(use)
   -- Git gutter and some bindings.
   use {
     'lewis6991/gitsigns.nvim',
+    cond = not_vscode,
     config = function()
       require('gitsigns').setup({
         on_attach = function(bufnr)
@@ -100,6 +111,7 @@ require('packer').startup(function(use)
   -- Smarter syntax, used by many other plugins.
   use {
     'nvim-treesitter/nvim-treesitter',
+    cond = not_vscode,
     run = function()
       require('nvim-treesitter.install').update({with_sync = true})
     end
@@ -110,6 +122,7 @@ require('packer').startup(function(use)
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
     requires = 'nvim-lua/plenary.nvim',
+    cond = not_vscode,
     config = function()
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>e', builtin.find_files)
@@ -133,10 +146,11 @@ require('packer').startup(function(use)
 end)
 
 vim.g.mapleader = ','
-vim.opt.ruler = false
 vim.keymap.set({'n', 'v'}, ';', ':')
+vim.keymap.set('n', '<leader><leader>', '<cmd>buffer#<cr>')
 vim.keymap.set('n', '<c-j>', '<cmd>bnext<cr>', {silent = true})
 vim.keymap.set('n', '<c-k>', '<cmd>bprevious<cr>', {silent = true})
-
--- TODO: consider keybinding organization; it's a little haphazard now.
--- TODO: move over a few more common bindings from vim config
+vim.keymap.set('v', '<leader>s', ':sort i<cr>')
+if vim.g.vscode ~= nil then
+  vim.keymap.set('n', 'gr', '<cmd>call VSCodeNotify("editor.action.rename")<cr>')
+end

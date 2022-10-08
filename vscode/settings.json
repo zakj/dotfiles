@@ -2,7 +2,7 @@
   "editor.acceptSuggestionOnEnter": "off",
   "editor.bracketPairColorization.enabled": false,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true,
+    "source.organizeImports": true
   },
   "editor.cursorBlinking": "solid",
   "editor.formatOnSave": true,
@@ -22,81 +22,57 @@
   "html.format.extraLiners": "",
   "html.format.wrapLineLength": 80,
 
-  "languageStylus.useSeparator": false,
+  "Lua.telemetry.enable": false,
+  "Lua.diagnostics.globals": ["hs", "vim"],
 
   "python.venvPath": "~/.virtualenvs",
 
   "svelte.enable-ts-plugin": true,
+  "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
 
   // TODO: move into theme?
   "workbench.colorCustomizations": {
     "editorBracketMatch.background": "#333",
     "editorBracketMatch.border": "#00000000",
     "editorIndentGuide.activeBackground": "#ffffff22",
-    "editorIndentGuide.background": "#00000000",
+    "editorIndentGuide.background": "#00000000"
   },
   "workbench.colorTheme": "Mourning",
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tips.enabled": false,
   "workbench.tree.renderIndentGuides": "none",
-  "vim.leader": ",",
-  "vim.searchHighlightColor": "#afff5f",
-  "vim.showmodename": true,
-
-  "vim.normalModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<C-h>"],
-      "after": [],
-      "commands": [{
-        "command": ":set hlsearch!",
-        "args": [],
-      }],
-    },
-    {
-      "before": ["g", "r"],
-      "after": [],
-      "commands": ["editor.action.rename"],
-    },
-  ],
-  "vim.visualModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<leader>", "s"],
-      "after": [],
-      "commands": [{
-        "command": "editor.action.sortLinesAscending",
-        "args": [],
-      }, {
-        // exit visual mode
-        "command": "extension.vim_escape",
-        "args": [],
-      }],
-    },
-  ],
 
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[markdown]": {
     "editor.fontSize": 16,
     "editor.lineNumbers": "off",
-    "editor.quickSuggestions": false,
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    },
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 76,
-    "editor.wrappingIndent": "indent",
+    "editor.wrappingIndent": "indent"
   },
   "[python]": {
-    "editor.tabSize": 4,
+    "editor.tabSize": 4
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
