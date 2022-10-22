@@ -1,5 +1,6 @@
 brew "fd"
 brew "mas"
+brew "neovim"
 brew "node"
 brew "pnpm"
 brew "puma/puma/puma-dev"
