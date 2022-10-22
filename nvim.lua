@@ -11,7 +11,8 @@ local packer_bootstrap = (function()
   return true
 end)()
 
-local vscode = vim.g.vscode ~= nil
+-- Packer requires a function for `cond`; booleans don't work.
+local function not_vscode() return vim.g.vscode == nil end
 
 -- Reload/recompile packer when saving nvim config.
 vim.cmd [[au! BufWritePost $MYVIMRC,~/etc/nvim.lua source <afile> | PackerCompile]]
@@ -29,14 +30,14 @@ require('packer').startup(function(use)
   -- gc<...> commands for commenting (gb for block).
   use {
     'numToStr/Comment.nvim',
-    cond = not vscode,
+    cond = not_vscode,
     config = function() require('Comment').setup() end
   }
 
   -- ,x to save/close a buffer without affecting window positions.
   use {
     'moll/vim-bbye',
-    cond = not vscode,
+    cond = not_vscode,
     config = function()
       local cmd = '<cmd>update<cr><cmd>Bdelete<cr>'
       vim.keymap.set('n', '<leader>x', cmd, { silent = true })
@@ -47,7 +48,7 @@ require('packer').startup(function(use)
   use {
     'mcchrish/zenbones.nvim',
     requires = 'rktjmp/lush.nvim',
-    cond = not vscode,
+    cond = not_vscode,
     config = function()
       vim.opt.termguicolors = true
       vim.cmd.colorscheme('zenbones')
@@ -57,7 +58,7 @@ require('packer').startup(function(use)
   -- Improved statusline.
   use {
     'nvim-lualine/lualine.nvim',
-    cond = not vscode,
+    cond = not_vscode,
     config = function()
       vim.opt.ruler = false
       vim.opt.showmode = false
@@ -91,7 +92,7 @@ require('packer').startup(function(use)
   -- Git gutter and some bindings.
   use {
     'lewis6991/gitsigns.nvim',
-    cond = not vscode,
+    cond = not_vscode,
     config = function()
       require('gitsigns').setup({
         on_attach = function(bufnr)
@@ -111,7 +112,7 @@ require('packer').startup(function(use)
   -- Smarter syntax, used by many other plugins.
   use {
     'nvim-treesitter/nvim-treesitter',
-    cond = not vscode,
+    cond = not_vscode,
     run = function()
       require('nvim-treesitter.install').update({ with_sync = true })
     end
@@ -122,7 +123,7 @@ require('packer').startup(function(use)
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
     requires = 'nvim-lua/plenary.nvim',
-    cond = not vscode,
+    cond = not_vscode,
     config = function()
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>e', builtin.find_files)
@@ -161,9 +162,8 @@ vim.opt.wildmode = 'longest:full'
 vim.keymap.set({ 'n', 'v' }, ';', ':')
 vim.keymap.set('v', '<leader>s', ':sort i<cr>')
 
-if vscode then
+if vim.g.vscode ~= nil then
   vim.keymap.set('n', 'gr', [[<cmd>call VSCodeNotify("editor.action.rename")<cr>]])
-  -- TODO: see if Commentary works with treesitter enabled
   vim.keymap.set('n', 'gcc', '<cmd>call VSCodeNotify("editor.action.commentLine")<cr>')
   vim.keymap.set('n', 'gbc', '<cmd>call VSCodeNotify("editor.action.blockComment")<cr>')
   vim.keymap.set('v', 'gc', '<cmd>call VSCodeNotifyVisual("editor.action.commentLine", 0)<cr>')
