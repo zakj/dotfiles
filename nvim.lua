@@ -163,12 +163,18 @@ vim.keymap.set({ 'n', 'v' }, ';', ':')
 vim.keymap.set('v', '<leader>s', ':sort i<cr>')
 
 if vim.g.vscode ~= nil then
-  vim.keymap.set('n', 'gr', [[<cmd>call VSCodeNotify("editor.action.rename")<cr>]])
-  vim.keymap.set('n', 'gcc', '<cmd>call VSCodeNotify("editor.action.commentLine")<cr>')
-  vim.keymap.set('n', 'gbc', '<cmd>call VSCodeNotify("editor.action.blockComment")<cr>')
-  vim.keymap.set('v', 'gc', '<cmd>call VSCodeNotifyVisual("editor.action.commentLine", 0)<cr>')
-  vim.keymap.set('v', 'gb', '<cmd>call VSCodeNotifyVisual("editor.action.blockComment", 0)<cr>')
-  -- TODO: add telescope-like bindings?
+  local function vscode(cmd) return '<cmd>call VSCodeNotify("' .. cmd ..'")<cr>' end
+  local function vscode_visual(cmd) return '<cmd>call VSCodeNotifyVisual("' .. cmd ..'", 0)<cr>' end
+
+  vim.keymap.set('n', '<leader>e', vscode('workbench.action.quickOpen'))
+  vim.keymap.set('n', '<leader>f', vscode('workbench.action.showAllEditors'))
+  vim.keymap.set('n', '<leader>g', vscode('workbench.action.findInFiles'))
+
+  vim.keymap.set('n', 'gr', vscode('editor.action.rename'))
+  vim.keymap.set('n', 'gcc', vscode('editor.action.commentLine'))
+  vim.keymap.set('n', 'gbc', vscode('editor.action.blockComment'))
+  vim.keymap.set('v', 'gc', vscode_visual('editor.action.commentLine', 0))
+  vim.keymap.set('v', 'gb', vscode_visual('editor.action.blockComment', 0))
 else
   vim.keymap.set('n', '<leader><leader>', '<cmd>buffer#<cr>')
   vim.keymap.set('n', '<c-j>', '<cmd>bnext<cr>', { silent = true })
