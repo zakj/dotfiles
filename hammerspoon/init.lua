@@ -117,6 +117,7 @@ hs.hotkey.bind({}, "f18",
 modal:bind({}, ';', function() hs.caffeinate.lockScreen() end)
 modal:bind({}, "'", toggleCaffeinate)
 modal:bind({}, 'f', opener(hs.settings.get('default-browser') or 'Safari'))
+modal:bind({}, 'h', opener('Things3'))
 modal:bind({}, 'l', opener('Slack'))
 modal:bind({}, 'm', opener('Messages'))
 modal:bind({}, 'n', opener('Obsidian'))
