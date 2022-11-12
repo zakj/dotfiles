@@ -1,4 +1,5 @@
 brew "fd"
+brew "git-lfs"
 brew "mas"
 brew "neovim"
 brew "node"
