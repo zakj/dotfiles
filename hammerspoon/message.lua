@@ -21,32 +21,30 @@ local canvas = hs.canvas.new({ x = 0, y = 0, w = 100, h = 100 }):appendElements(
   type = 'text', text = text
 })
 local canvasText = canvas[2]
+canvasText.frame.x = paddingX
+canvasText.frame.y = paddingY
 
 local fadeInTween = tween.new(0, 1, fadeTime, function(v) canvas:alpha(v) end)
 local fadeOutTween = tween.new(1, 0, fadeTime, function(v) canvas:alpha(v) end)
 
 
-local function reFrame()
-  local size = canvas:minimumTextSize(text)
-  local frame = { w = size.w + paddingX * 2, h = size.h + paddingY * 2 }
-  local screen = hs.screen.mainScreen():fullFrame()
-  frame.x = screen.w - frame.w - margin
-  frame.y = screen.h - frame.h - margin
-  canvas:frame(frame)
-  canvasText.frame.x = paddingX
-  canvasText.frame.y = paddingY
-end
-
-function exports.set(msg)
+local function updateText(msg)
   msg = msg and #msg > 0 and msg or ' '
   text = text:setString(msg)
   canvasText.text = text
-  reFrame()
+
+  local textSize = canvas:minimumTextSize(text)
+  local msgFrame = { w = textSize.w + paddingX * 2, h = textSize.h + paddingY * 2 }
+  local screen = hs.screen.mainScreen()
+  local screenFrame = screen:fullFrame()
+  msgFrame.x = screenFrame.w - msgFrame.w - margin
+  msgFrame.y = screenFrame.h - msgFrame.h - margin
+  canvas:frame(screen:localToAbsolute(msgFrame))
 end
 
 function exports.show(msg, n)
   n = n or 0
-  exports.set(msg)
+  updateText(msg)
 
   if fadeOutTween:running() then
     fadeOutTween:onComplete(function() end)
