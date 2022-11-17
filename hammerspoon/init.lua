@@ -115,7 +115,7 @@ modal.exited = function() message.hide() end
 hs.hotkey.bind({ 'command', 'control', 'option' }, 'space', toggleSpecialKeys)
 hs.hotkey.bind({}, "f18", function() modal:enter() end, function() modal:exit() end)
 
-modal:bind({}, ';', function() modal:exit(); hs.caffeinate.lockScreen() end)
+modal:bind({}, ';', function() hs.caffeinate.lockScreen() end)
 modal:bind({}, "'", toggleCaffeinate)
 modal:bind({}, 'f', opener(hs.settings.get('default-browser') or 'Safari'))
 modal:bind({}, 'h', opener('Things3'))

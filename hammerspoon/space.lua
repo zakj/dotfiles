@@ -112,6 +112,14 @@ local function init()
     if e:getCharacters() == ' ' then return send(Message.KEYUP_SPACE) end
   end)
 
+  local cafWatcher = hs.caffeinate.watcher.new(function()
+    -- When locking the screen or going to sleep while in a non-idle state
+    -- (e.g., because we used a space-based shortcut), Hammerspoon won't see
+    -- the keyup event. Send one artificially to avoid needing to manually hit
+    -- space to break out of SPACE_DOWN/HYPER.
+    return send(Message.KEYUP_SPACE)
+  end)
+
   function self.isEnabled()
     return keyDownTap:isEnabled() or keyUpTap:isEnabled()
   end
@@ -119,11 +127,13 @@ local function init()
   function self.start()
     keyDownTap:start()
     keyUpTap:start()
+    cafWatcher:start()
   end
 
   function self.stop()
     keyDownTap:stop()
     keyUpTap:stop()
+    cafWatcher:stop()
   end
 
   return self
