@@ -164,7 +164,8 @@ vim.keymap.set('v', '<leader>s', ':sort i<cr>')
 
 if vim.g.vscode ~= nil then
   local function vscode(cmd) return '<cmd>call VSCodeNotify("' .. cmd ..'")<cr>' end
-  local function vscode_visual(cmd) return '<cmd>call VSCodeNotifyVisual("' .. cmd ..'", 0)<cr>' end
+  -- TODO: 0 argument doesn't seem to work
+  local function vscode_visual(cmd) return '<cmd>call VSCodeNotifyVisual("' .. cmd ..'", 0)<cr>v' end
 
   vim.keymap.set('n', '<leader>e', vscode('workbench.action.quickOpen'))
   vim.keymap.set('n', '<leader>f', vscode('workbench.action.showAllEditors'))
@@ -173,8 +174,8 @@ if vim.g.vscode ~= nil then
   vim.keymap.set('n', 'gr', vscode('editor.action.rename'))
   vim.keymap.set('n', 'gcc', vscode('editor.action.commentLine'))
   vim.keymap.set('n', 'gbc', vscode('editor.action.blockComment'))
-  vim.keymap.set('v', 'gc', vscode_visual('editor.action.commentLine', 0))
-  vim.keymap.set('v', 'gb', vscode_visual('editor.action.blockComment', 0))
+  vim.keymap.set('v', 'gc', vscode_visual('editor.action.commentLine'))
+  vim.keymap.set('v', 'gb', vscode_visual('editor.action.blockComment'))
 else
   vim.keymap.set('n', '<leader><leader>', '<cmd>buffer#<cr>')
   vim.keymap.set('n', '<c-j>', '<cmd>bnext<cr>', { silent = true })
