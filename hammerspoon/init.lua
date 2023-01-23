@@ -1,8 +1,9 @@
 local ctrl = require 'ctrl'
+local doublemod = require 'doublemod'
 local layout = require 'layout'
 local message = require 'message'
 local reload = require 'reload'
-local superClick = require 'superclick'
+-- local superClick = require 'superclick'
 local u = require 'util'
 
 ctrl:start()
@@ -90,8 +91,11 @@ local function openAndResizeObsidian()
   )
 end
 
-local modal = hs.hotkey.modal.new({'option'}, 'space')
-local modalTap = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function (event)
+local modal = hs.hotkey.modal.new({ 'option' }, 'space')
+doublemod.on('cmd', function() modal:enter() end)
+
+-- Exit the modal on any keydown (delayed, to make sure modal catches it first).
+local modalTap = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
   hs.timer.doAfter(0.1, function() modal:exit() end)
 end)
 modal.entered = function()
@@ -108,34 +112,34 @@ local function launch(name)
 end
 
 modal
-  -- Utility:
-  :bind({}, 'escape', function() modal:exit() end)
-  :bind({}, ';', function() hs.caffeinate.lockScreen() end)
-  :bind({}, "'", toggleCaffeinate)
-  -- :bind({}, 'u', undock)
-  -- :bind({}, 'x', superClick)
-  -- :bind({}, 'd', toggleDesktopIcons)
+    -- Utility:
+    :bind({}, 'escape', function() modal:exit() end)
+    :bind({}, ';', function() hs.caffeinate.lockScreen() end)
+    :bind({}, "'", toggleCaffeinate)
+    -- :bind({}, 'u', undock)
+    -- :bind({}, 'x', superClick)
+    -- :bind({}, 'd', toggleDesktopIcons)
 
-  -- Applications:
-  :bind({}, 'f', launch(hs.settings.get('default-browser') or 'Safari'))
-  :bind({}, 'h', launch('Things3'))
-  :bind({}, 'l', launch('Slack'))
-  :bind({}, 'm', launch('Messages'))
-  :bind({}, 'n', launch('Obsidian'))
-  :bind({ 'shift' }, 'n', openAndResizeObsidian)
-  :bind({}, 't', launch('kitty'))
-  :bind({}, 'v', launch('Visual Studio Code'))
+    -- Applications:
+    :bind({}, 'f', launch(hs.settings.get('default-browser') or 'Safari'))
+    :bind({}, 'h', launch('Things3'))
+    :bind({}, 'l', launch('Slack'))
+    :bind({}, 'm', launch('Messages'))
+    :bind({}, 'n', launch('Obsidian'))
+    :bind({ 'shift' }, 'n', openAndResizeObsidian)
+    :bind({}, 't', launch('kitty'))
+    :bind({}, 'v', launch('Visual Studio Code'))
 
-  -- Window layouts:
-  :bind({ 'shift' }, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV))
-  :bind({}, 'k', withFocusedWindow(layout.moveCenter))
-  :bind({}, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV))
-  :bind({}, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV))
-  :bind({}, '1', withFocusedWindow(layout.sizeQuarter, layout.moveTL))
-  :bind({}, '2', withFocusedWindow(layout.sizeQuarter, layout.moveBL))
-  :bind({}, '3', withFocusedWindow(layout.sizeQuarter, layout.moveTR))
-  :bind({}, '4', withFocusedWindow(layout.sizeQuarter, layout.moveBR))
-  :bind({}, '5', withFocusedWindow(function(w) w:setSize(1320, 870 + 75) end))
+    -- Window layouts:
+    :bind({ 'shift' }, 'k', withFocusedWindow(layout.moveCenter, layout.maximizeV))
+    :bind({}, 'k', withFocusedWindow(layout.moveCenter))
+    :bind({}, 'left', withFocusedWindow(layout.moveTL, layout.maximizeV))
+    :bind({}, 'right', withFocusedWindow(layout.moveTR, layout.maximizeV))
+    :bind({}, '1', withFocusedWindow(layout.sizeQuarter, layout.moveTL))
+    :bind({}, '2', withFocusedWindow(layout.sizeQuarter, layout.moveBL))
+    :bind({}, '3', withFocusedWindow(layout.sizeQuarter, layout.moveTR))
+    :bind({}, '4', withFocusedWindow(layout.sizeQuarter, layout.moveBR))
+    :bind({}, '5', withFocusedWindow(function(w) w:setSize(1320, 870 + 75) end))
 
 
 -- Make sure garbage collection doesn't break new functionality.
