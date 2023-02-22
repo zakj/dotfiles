@@ -10,7 +10,7 @@ local function init()
       if _lastFlags[k] == nil then
         if _modDownCount[k] == nil then _modDownCount[k] = 0 end
         _modDownCount[k] = _modDownCount[k] + 1
-        hs.timer.doAfter(0.2, function()
+        hs.timer.doAfter(0.4, function()
           _modDownCount[k] = _modDownCount[k] - 1
         end)
         if _modDownCount[k] % 2 == 0 and _handlers[k] ~= nil then

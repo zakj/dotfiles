@@ -61,13 +61,6 @@ local function undock()
   hs.caffeinate.systemSleep()
 end
 
--- hs.application.open can be slow.
--- TODO hs.application.launchOrFocus()
-local function open(name, ...)
-  local args = u.map({ ... }, function(x) return "'" .. x .. "'" end)
-  io.popen('open -a "' .. name .. '" ' .. u.join(args, ' '))
-end
-
 local function toggleCaffeinate()
   local sleeping = hs.caffeinate.toggle('displayIdle')
   if sleeping then
@@ -80,7 +73,7 @@ local function toggleCaffeinate()
 end
 
 local function openAndResizeObsidian()
-  open('Obsidian')
+  hs.application.launchOrFocus('Obsidian')
   hs.timer.waitUntil(
     function()
       local app = hs.application.frontmostApplication()
@@ -91,7 +84,7 @@ local function openAndResizeObsidian()
   )
 end
 
-local modal = hs.hotkey.modal.new({ 'option' }, 'space')
+local modal = hs.hotkey.modal.new()
 doublemod.on('cmd', function() modal:enter() end)
 
 -- Exit the modal on any keydown (delayed, to make sure modal catches it first).
