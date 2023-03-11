@@ -158,6 +158,7 @@ end)
 
 vim.g.mapleader = ','
 vim.opt.shortmess:append 'I'
+vim.opt.title = true
 vim.opt.wildmode = 'longest:full'
 vim.keymap.set({ 'n', 'v' }, ';', ':')
 vim.keymap.set('v', '<leader>s', ':sort i<cr>')
