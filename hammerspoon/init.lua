@@ -84,7 +84,7 @@ local function openAndResizeObsidian()
   )
 end
 
-local modal = hs.hotkey.modal.new()
+local modal = hs.hotkey.modal.new({}, 'f18')
 doublemod.on('cmd', function() modal:enter() end)
 
 -- Exit the modal on any keydown (delayed, to make sure modal catches it first).
