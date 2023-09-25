@@ -7,6 +7,7 @@ CONFIG_DIR = $(HOME)/.config
 KITTY_CONF = kitty.conf
 VSCODE_DIR = $(HOME)/Library/Application\ Support/Code/User
 
+.PHONY: all
 all: links test kitty nvim vscode
 
 .PHONY: links
