@@ -30,4 +30,5 @@ cask "xee"
 # cask "zoomus"
 
 mas "Parcel", id: 639968404
+mas "Pixelmator Pro", id: 1289583905
 mas "Things", id: 904280696
