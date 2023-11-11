@@ -13,5 +13,9 @@
     "key": "shift+cmd+j",
     "command": "workbench.action.toggleMaximizedPanel",
     "when": "!(inSearchEditor || searchViewletFocus)"
+  },
+  {
+    "key": "cmd+k cmd+s",
+    "command": "git.stage"
   }
 ]

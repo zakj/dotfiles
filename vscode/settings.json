@@ -2,15 +2,18 @@
   "editor.acceptSuggestionOnEnter": "off",
   "editor.bracketPairColorization.enabled": false,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
   "editor.cursorBlinking": "solid",
   "editor.formatOnSave": true,
-  "editor.matchBrackets": "near",
+  "editor.guides.indentation": false,
   "editor.minimap.enabled": false,
   "editor.occurrencesHighlight": false,
   "editor.renderLineHighlight": "none",
-  "editor.tabSize": 2,
+  "editor.unicodeHighlight.allowedCharacters": {
+    "×": true
+  },
+  "errorLens.messageBackgroundMode": "message",
   "explorer.confirmDelete": false,
   "files.insertFinalNewline": true,
 
@@ -20,22 +23,11 @@
 
   "html.format.extraLiners": "",
   "html.format.wrapLineLength": 80,
-
-  "Lua.telemetry.enable": false,
   "Lua.diagnostics.globals": ["hs", "vim"],
-
-  "python.venvPath": "~/.virtualenvs",
-
   "svelte.enable-ts-plugin": true,
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
 
-  // TODO: move into theme?
-  "workbench.colorCustomizations": {
-    "editorBracketMatch.background": "#333",
-    "editorBracketMatch.border": "#00000000",
-    "editorIndentGuide.activeBackground": "#ffffff22",
-    "editorIndentGuide.background": "#00000000"
-  },
+  "window.commandCenter": false,
   "workbench.colorTheme": "Mourning",
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tips.enabled": false,
@@ -61,12 +53,17 @@
     }
   },
   "[python]": {
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "ms-python.black-formatter"
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
   }
 }
