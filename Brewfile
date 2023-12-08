@@ -9,7 +9,7 @@ brew "puma/puma/puma-dev"
 brew "ripgrep"
 brew "trash"
 brew "xh"
-brew "youtube-dl"
+brew "yt-dlp"
 
 cask "1password"
 cask "hammerspoon"
