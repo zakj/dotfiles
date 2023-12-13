@@ -44,8 +44,8 @@ end
 function exports.moveCenter(win)
   local frame = win:frame()
   local screen = win:screen():fullFrame()
-  frame.x = screen.w / 2 - frame.w / 2 + screen.x
-  frame.y = screen.h / 2 - frame.h / 2 + screen.y
+  frame.x = (screen.w - frame.w) / 2 + screen.x
+  frame.y = (screen.h - frame.h) / 3 + screen.y
   win:setTopLeft(frame)
 end
 

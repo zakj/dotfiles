@@ -1,3 +1,4 @@
+local caffeinate = require 'caffeinate'
 local ctrl = require 'ctrl'
 local doublemod = require 'doublemod'
 local layout = require 'layout'
@@ -6,14 +7,13 @@ local reload = require 'reload'
 -- local superClick = require 'superclick'
 local u = require 'util'
 
+caffeinate:start()
 ctrl:start()
 reload:start()
 
 hs.hints.style = 'vimperator'
 hs.hotkey.setLogLevel('warning')
 hs.window.animationDuration = 0
-
-local menuItem = hs.menubar.new(false)
 
 local function withFocusedWindow(...)
   local varargs = { ... }
@@ -61,23 +61,12 @@ local function undock()
   hs.caffeinate.systemSleep()
 end
 
-local function toggleCaffeinate()
-  local sleeping = hs.caffeinate.toggle('displayIdle')
-  if sleeping then
-    menuItem:returnToMenuBar()
-    menuItem:setClickCallback(toggleCaffeinate)
-    menuItem:setIcon(hs.image.imageFromName('NSTouchBarControlStripLockScreenTemplate'))
-  else
-    menuItem:removeFromMenuBar()
-  end
-end
-
-local function openAndResizeObsidian()
-  hs.application.launchOrFocus('Obsidian')
+local function openAndResizeLogseq()
+  hs.application.launchOrFocus('Logseq')
   hs.timer.waitUntil(
     function()
       local app = hs.application.frontmostApplication()
-      return app:name() == 'Obsidian' and app:focusedWindow() ~= nil
+      return app:name() == 'Logseq' and app:focusedWindow() ~= nil
     end,
     function() hs.window.focusedWindow():setSize(850, 1050) end,
     .1
@@ -107,8 +96,8 @@ end
 modal
     -- Utility:
     :bind({}, 'escape', function() modal:exit() end)
-    :bind({}, ';', function() hs.caffeinate.lockScreen() end)
-    :bind({}, "'", toggleCaffeinate)
+    :bind({}, ';', hs.caffeinate.lockScreen)
+    :bind({}, "'", function() caffeinate:toggle() end)
     -- :bind({}, 'u', undock)
     -- :bind({}, 'x', superClick)
     -- :bind({}, 'd', toggleDesktopIcons)
@@ -118,8 +107,8 @@ modal
     :bind({}, 'h', launch('Things3'))
     :bind({}, 'l', launch('Slack'))
     :bind({}, 'm', launch('Messages'))
-    :bind({}, 'n', launch('Obsidian'))
-    :bind({ 'shift' }, 'n', openAndResizeObsidian)
+    :bind({}, 'n', launch('Logseq'))
+    :bind({ 'shift' }, 'n', openAndResizeLogseq)
     :bind({}, 't', launch('kitty'))
     :bind({}, 'v', launch('Visual Studio Code'))
 
