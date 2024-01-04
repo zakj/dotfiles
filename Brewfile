@@ -12,11 +12,12 @@ brew "xh"
 brew "yt-dlp"
 
 cask "1password"
+cask "arc"
 cask "hammerspoon"
 cask "iina"
 cask "imageoptim"
+cask "logseq"
 cask "kitty"
-cask "obsidian"
 cask "raycast"
 cask "visual-studio-code"
 cask "xee"
@@ -31,4 +32,3 @@ cask "xee"
 
 mas "Parcel", id: 639968404
 mas "Pixelmator Pro", id: 1289583905
-mas "Things", id: 904280696
