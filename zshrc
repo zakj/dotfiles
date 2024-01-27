@@ -38,25 +38,30 @@ test -n "$SSH_CLIENT" && PROMPT="%m:$PROMPT"
 # Prepend a marker whose color reflects last command exit status.
 [[ -v VSCODE_SHELL_INTEGRATION ]] || PROMPT="%F{15}%(?..%F{9})➜%f $PROMPT"
 
-# vcs_info output in RPROMPT.
-autoload -U add-zsh-hook vcs_info
-add-zsh-hook -U precmd precmd-prompt
-precmd-prompt() { vcs_info; RPROMPT=$vcs_info_msg_0_ }
+if whence starship >/dev/null; then
+  eval "$(starship init zsh)"
+else
+  # vcs_info output in RPROMPT.
+  autoload -U add-zsh-hook vcs_info
+  add-zsh-hook -U precmd precmd-prompt
+  precmd-prompt() { vcs_info; RPROMPT=$vcs_info_msg_0_ }
 
-() {
-  local format='%m%c%u%F{8}%b'
-  zstyle ':vcs_info:*' formats "$format%f"
-  zstyle ':vcs_info:*' actionformats "$format%F{yellow}⚡%a%f"
-  zstyle ':vcs_info:*' enable git hg svn
-  zstyle ':vcs_info:*' check-for-changes true
-  zstyle ':vcs_info:*' stagedstr '%F{green}•'
-  zstyle ':vcs_info:*' unstagedstr '%F{red}•'
-}
+  () {
+    local format='%m%c%u%F{8}%b'
+    zstyle ':vcs_info:*' formats "$format%f"
+    zstyle ':vcs_info:*' actionformats "$format%F{yellow}⚡%a%f"
+    zstyle ':vcs_info:*' enable git hg svn
+    zstyle ':vcs_info:*' check-for-changes true
+    zstyle ':vcs_info:*' stagedstr '%F{green}•'
+    zstyle ':vcs_info:*' unstagedstr '%F{red}•'
+  }
 
-# vcs_info doesn't detect added/removed files, so I do it myself.
-autoload -U -- +vi-get-data-git
-zstyle ':vcs_info:git*' check-for-changes false
-zstyle ':vcs_info:git*+post-backend:*' hooks get-data-git
+  # vcs_info doesn't detect added/removed files, so I do it myself.
+  autoload -U -- +vi-get-data-git
+  zstyle ':vcs_info:git*' check-for-changes false
+  zstyle ':vcs_info:git*+post-backend:*' hooks get-data-git
+fi
+
 
 # Enable completion.
 autoload -U compinit

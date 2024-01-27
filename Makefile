@@ -8,7 +8,7 @@ KITTY_CONF = kitty.conf
 VSCODE_DIR = $(HOME)/Library/Application\ Support/Code/User
 
 .PHONY: all
-all: links test kitty nvim vscode
+all: links test kitty nvim starship vscode
 
 .PHONY: links
 links: $(DOTFILES)
@@ -26,6 +26,11 @@ $(CONFIG_DIR)/kitty/$(KITTY_CONF): $(KITTY_CONF)
 nvim: $(CONFIG_DIR)/nvim/init.lua
 $(CONFIG_DIR)/nvim/init.lua: nvim.lua
 	@mkdir -p "$$(dirname "$@")"
+	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
+
+.PHONY: starship
+starship: $(CONFIG_DIR)/starship.toml
+$(CONFIG_DIR)/starship.toml: starship.toml
 	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
 
 .PHONY: vscode vscode/extensions vscode-extra

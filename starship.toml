@@ -1,0 +1,24 @@
+add_newline = false
+format = '$character$directory% '
+right_format = """
+$git_status\
+$git_state\
+$git_commit\
+$git_branch"""
+
+[character]
+success_symbol = '[➜](bright-white)'
+error_symbol = '[➜](bright-red)'
+vimcmd_symbol = '[:](bright-white)'
+
+[directory]
+format = '$path[$read_only]($read_only_style)'
+
+[git_branch]
+format = '[$branch([·$remote_branch](blue))](bright-black)'
+
+[git_status]
+format = '([$all_status$ahead_behind](red) )'
+modified = '•'
+staged = '[•](green)'
+stashed = '[⋯](white)'
