@@ -109,6 +109,7 @@ modal
     :bind({}, 'm', launch('Messages'))
     :bind({}, 'n', launch('Logseq'))
     :bind({ 'shift' }, 'n', openAndResizeLogseq)
+    :bind({}, 's', launch('Siri'))
     :bind({}, 't', launch('kitty'))
     :bind({}, 'v', launch('Visual Studio Code'))
 
