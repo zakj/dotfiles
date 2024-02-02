@@ -1,62 +1,58 @@
--- Ensure packer is installed. This is a bit buggy due to async config application.
-local packer_bootstrap = (function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) == 0 then return false end
-  fn.system({
-    'git', 'clone', '--depth', '1',
-    'https://github.com/wbthomason/packer.nvim', install_path
+-- Ensure lazy.nvim is installed.
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    'git', 'clone', '--filter=blob:none', '--branch=stable',
+    'https://github.com/folke/lazy.nvim.git', lazypath,
   })
-  vim.cmd.packadd('packer.nvim')
-  return true
-end)()
+end
+vim.opt.rtp:prepend(lazypath)
 
--- Packer requires a function for `cond`; booleans don't work.
-local function not_vscode() return vim.g.vscode == nil end
+local not_vscode = vim.g.vscode == nil
 
--- Reload/recompile packer when saving nvim config.
-vim.cmd [[au! BufWritePost $MYVIMRC,~/etc/nvim.lua source <afile> | PackerCompile]]
+vim.g.mapleader = ','
+vim.opt.shortmess:append 'I'
+vim.opt.title = true
+vim.opt.wildmode = 'longest:full'
+vim.keymap.set({ 'n', 'v' }, ';', ':')
+vim.keymap.set('v', '<leader>s', ':sort i<cr>')
 
-require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
+require('lazy').setup({
+  -- Minimal colorscheme.
+  {
+    'mcchrish/zenbones.nvim',
+    lazy = false,
+    priority = 1000,
+    dependencies = {'rktjmp/lush.nvim'},
+    cond = not_vscode,
+    config = function()
+      vim.opt.termguicolors = true
+      vim.cmd.colorscheme('zenbones')
+    end,
+  },
 
   -- Indent detection, surrounds/indent objects, auto-insert bracket pairs.
-  use 'tpope/vim-sleuth'
-  use 'michaeljsmith/vim-indent-object'
-  use { 'kylechui/nvim-surround', config = function() require('nvim-surround').setup() end }
-  use { 'windwp/nvim-autopairs', config = function() require('nvim-autopairs').setup() end }
+  'tpope/vim-sleuth',
+  'michaeljsmith/vim-indent-object',
+  { 'kylechui/nvim-surround', config = true },
+  { 'windwp/nvim-autopairs', config = true },
   -- Improved `f`, which also frees up `,` and `;`.
-  use 'rhysd/clever-f.vim'
+  'rhysd/clever-f.vim',
   -- gc<...> commands for commenting (gb for block).
-  use {
-    'numToStr/Comment.nvim',
-    cond = not_vscode,
-    config = function() require('Comment').setup() end
-  }
+  { 'numToStr/Comment.nvim', cond = not_vscode, config = true },
 
   -- ,x to save/close a buffer without affecting window positions.
-  use {
+  {
     'moll/vim-bbye',
     cond = not_vscode,
     config = function()
       local cmd = '<cmd>update<cr><cmd>Bdelete<cr>'
       vim.keymap.set('n', '<leader>x', cmd, { silent = true })
     end
-  }
-
-  -- Minimal colorscheme.
-  use {
-    'mcchrish/zenbones.nvim',
-    requires = 'rktjmp/lush.nvim',
-    cond = not_vscode,
-    config = function()
-      vim.opt.termguicolors = true
-      vim.cmd.colorscheme('zenbones')
-    end
-  }
+  },
 
   -- Improved statusline.
-  use {
+  {
     'nvim-lualine/lualine.nvim',
     cond = not_vscode,
     config = function()
@@ -87,10 +83,11 @@ require('packer').startup(function(use)
         },
       })
     end
-  }
+  },
+
 
   -- Git gutter and some bindings.
-  use {
+  {
     'lewis6991/gitsigns.nvim',
     cond = not_vscode,
     config = function()
@@ -107,22 +104,22 @@ require('packer').startup(function(use)
         end
       })
     end
-  }
+  },
 
   -- Smarter syntax, used by many other plugins.
-  use {
+  {
     'nvim-treesitter/nvim-treesitter',
     cond = not_vscode,
-    run = function()
+    build = function()
       require('nvim-treesitter.install').update({ with_sync = true })
     end
-  }
+  },
 
   -- Multi-purpose fuzzyfinder.
-  use {
+  {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
-    requires = 'nvim-lua/plenary.nvim',
+    dependencies = {'nvim-lua/plenary.nvim'},
     cond = not_vscode,
     config = function()
       local builtin = require('telescope.builtin')
@@ -151,17 +148,31 @@ require('packer').startup(function(use)
         }
       })
     end
-  }
+  },
 
-  if packer_bootstrap then require('packer').sync() end
-end)
+  -- Better nvim :terminal.
+  {'akinsho/toggleterm.nvim', version = "*", cond = not_vscode, config = true},
 
-vim.g.mapleader = ','
-vim.opt.shortmess:append 'I'
-vim.opt.title = true
-vim.opt.wildmode = 'longest:full'
-vim.keymap.set({ 'n', 'v' }, ';', ':')
-vim.keymap.set('v', '<leader>s', ':sort i<cr>')
+}, {
+  ui = {
+    icons = {
+      cmd = "⌘",
+      config = "🛠",
+      event = "📅",
+      ft = "📂",
+      init = "⚙",
+      keys = "🗝",
+      plugin = "🔌",
+      runtime = "💻",
+      require = "🌙",
+      source = "📄",
+      start = "🚀",
+      task = "📌",
+      lazy = "💤 ",
+    },
+  },
+})
+
 
 if vim.g.vscode ~= nil then
   local function vscode(cmd) return '<cmd>call VSCodeNotify("' .. cmd ..'")<cr>' end
