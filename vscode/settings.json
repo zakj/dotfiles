@@ -8,7 +8,7 @@
   "editor.formatOnSave": true,
   "editor.guides.indentation": false,
   "editor.minimap.enabled": false,
-  "editor.occurrencesHighlight": false,
+  "editor.occurrencesHighlight": "off",
   "editor.renderLineHighlight": "none",
   "editor.unicodeHighlight.allowedCharacters": {
     "×": true
@@ -24,6 +24,7 @@
   "html.format.extraLiners": "",
   "html.format.wrapLineLength": 80,
   "Lua.diagnostics.globals": ["hs", "vim"],
+  "mypy.runUsingActiveInterpreter": true,
   "svelte.enable-ts-plugin": true,
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
 
