@@ -1,12 +1,11 @@
 albert.TabOut
 astro-build.astro-vscode
 asvetliakov.vscode-neovim
+charliermarsh.ruff
 dbaeumer.vscode-eslint
 esbenp.prettier-vscode
 knowsuchagency.pdm-task-provider
 matangover.mypy
-ms-python.black-formatter
-ms-python.isort
 ms-python.python
 ms-python.vscode-pylance
 patbenatar.advanced-new-file

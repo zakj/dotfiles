@@ -53,8 +53,9 @@
     }
   },
   "[python]": {
-    "editor.tabSize": 4,
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnType": true,
+    "editor.tabSize": 4
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
