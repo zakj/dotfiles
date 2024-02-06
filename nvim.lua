@@ -98,8 +98,10 @@ require('lazy').setup({
             vim.keymap.set(mode, l, r, { buffer = bufnr })
           end
 
-          map({ 'n', 'v' }, '<leader>hs', gs.stage_hunk)
+          map({ 'n', 'v' }, '<leader>hn', gs.next_hunk)
+          map({ 'n', 'v' }, '<leader>hp', gs.preview_hunk)
           map({ 'n', 'v' }, '<leader>hr', gs.reset_hunk)
+          map({ 'n', 'v' }, '<leader>hs', gs.stage_hunk)
           map('n', '<leader>hu', gs.undo_stage_hunk)
         end
       })
