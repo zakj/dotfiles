@@ -23,7 +23,7 @@ require('lazy').setup({
     'mcchrish/zenbones.nvim',
     lazy = false,
     priority = 1000,
-    dependencies = {'rktjmp/lush.nvim'},
+    dependencies = { 'rktjmp/lush.nvim' },
     cond = not_vscode,
     config = function()
       vim.opt.termguicolors = true
@@ -35,11 +35,11 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   'michaeljsmith/vim-indent-object',
   { 'kylechui/nvim-surround', config = true },
-  { 'windwp/nvim-autopairs', config = true },
+  { 'windwp/nvim-autopairs',  config = true },
   -- Improved `f`, which also frees up `,` and `;`.
-  'rhysd/clever-f.vim',
+  { 'rhysd/clever-f.vim' },
   -- gc<...> commands for commenting (gb for block).
-  { 'numToStr/Comment.nvim', cond = not_vscode, config = true },
+  { 'numToStr/Comment.nvim',  config = true, cond = not_vscode },
 
   -- ,x to save/close a buffer without affecting window positions.
   {
@@ -121,7 +121,7 @@ require('lazy').setup({
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
-    dependencies = {'nvim-lua/plenary.nvim'},
+    dependencies = { 'nvim-lua/plenary.nvim' },
     cond = not_vscode,
     config = function()
       local builtin = require('telescope.builtin')
@@ -153,7 +153,7 @@ require('lazy').setup({
   },
 
   -- Better nvim :terminal.
-  {'akinsho/toggleterm.nvim', version = "*", cond = not_vscode, config = true},
+  { 'akinsho/toggleterm.nvim', version = "*", config = true, cond = not_vscode },
 
 }, {
   ui = {
@@ -164,20 +164,19 @@ require('lazy').setup({
       ft = "📂",
       init = "⚙",
       keys = "🗝",
+      lazy = "💤 ",
       plugin = "🔌",
-      runtime = "💻",
       require = "🌙",
+      runtime = "💻",
       source = "📄",
       start = "🚀",
-      task = "📌",
-      lazy = "💤 ",
     },
   },
 })
 
 
 if vim.g.vscode ~= nil then
-  local function vscode(cmd) return '<cmd>call VSCodeNotify("' .. cmd ..'")<cr>' end
+  local function vscode(cmd) return '<cmd>call VSCodeNotify("' .. cmd .. '")<cr>' end
 
   vim.keymap.set('n', '<leader>e', vscode('workbench.action.quickOpen'))
   vim.keymap.set('n', '<leader>f', vscode('workbench.action.showAllEditors'))
