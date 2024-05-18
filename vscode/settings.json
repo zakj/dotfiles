@@ -10,6 +10,7 @@
   "editor.minimap.enabled": false,
   "editor.occurrencesHighlight": "off",
   "editor.renderLineHighlight": "none",
+  "editor.stickyScroll.enabled": false,
   "editor.unicodeHighlight.allowedCharacters": {
     "×": true
   },
@@ -30,6 +31,7 @@
 
   "window.commandCenter": false,
   "workbench.colorTheme": "Mourning",
+  "workbench.sideBar.location": "right",
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tips.enabled": false,
   "workbench.tree.renderIndentGuides": "none",
