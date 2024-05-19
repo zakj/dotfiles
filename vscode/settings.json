@@ -11,6 +11,7 @@
   "editor.occurrencesHighlight": "off",
   "editor.renderLineHighlight": "none",
   "editor.stickyScroll.enabled": false,
+  "editor.tabSize": 2,
   "editor.unicodeHighlight.allowedCharacters": {
     "×": true
   },
@@ -36,6 +37,9 @@
   "workbench.tips.enabled": false,
   "workbench.tree.renderIndentGuides": "none",
 
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
