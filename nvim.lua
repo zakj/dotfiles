@@ -26,7 +26,6 @@ require('lazy').setup({
     dependencies = { 'rktjmp/lush.nvim' },
     cond = not_vscode,
     config = function()
-      vim.opt.termguicolors = true
       vim.cmd.colorscheme('zenbones')
     end,
   },
@@ -38,8 +37,6 @@ require('lazy').setup({
   { 'windwp/nvim-autopairs',  config = true },
   -- Improved `f`, which also frees up `,` and `;`.
   { 'rhysd/clever-f.vim' },
-  -- gc<...> commands for commenting (gb for block).
-  { 'numToStr/Comment.nvim',  config = true, cond = not_vscode },
 
   -- ,x to save/close a buffer without affecting window positions.
   {
