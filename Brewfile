@@ -15,13 +15,11 @@ brew "yt-dlp"
 cask "1password"
 cask "arc"
 cask "hammerspoon"
-cask "iina"
 cask "imageoptim"
 cask "logseq"
 cask "kitty"
 cask "raycast"
 cask "visual-studio-code"
-cask "xee"
 
 # Optional.
 # cask "appcleaner"
@@ -32,4 +30,5 @@ cask "xee"
 # cask "zoomus"
 
 mas "Parcel", id: 639968404
+mas "Pixea", id: 1507782672
 mas "Pixelmator Pro", id: 1289583905
