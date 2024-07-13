@@ -1,6 +1,3 @@
-ssh/*.pem
-ssh/id_*
-ssh/known_hosts
 vim/autoload/plug.vim.old
 vim/backup/*
 vim/plugged
