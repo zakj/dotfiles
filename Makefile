@@ -1,43 +1,39 @@
-IGNORED = Brewfile Makefile README.md raycast vscode $(KITTY_CONF) nvim.lua
+IGNORED = Brewfile Makefile README.md kitty.conf nvim.lua starship.toml vscode zed
 FILES = $(filter-out $(IGNORED),$(wildcard *))
 DOTFILES = $(addprefix $(HOME)/.,$(FILES))
 RELDIR = $(subst $(HOME)/,,$(shell pwd -L))
 CONFIG_DIR = $(HOME)/.config
 
-KITTY_CONF = kitty.conf
-VSCODE_DIR = $(HOME)/Library/Application\ Support/Code/User
+define MAKE_LINK
+@mkdir -p "$$(dirname "$@")"
+@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
+endef
 
-.PHONY: all
-all: links test kitty nvim starship vscode
+.PHONY: all links test kitty nvim starship vscode zed
+all: links test kitty nvim starship vscode zed
 
-.PHONY: links
 links: $(DOTFILES)
 
 $(HOME)/.%: %
 	@ln -sv$(if $(FORCE),f) "$(RELDIR)/$<" "$@"
 
-.PHONY: kitty
-kitty: $(CONFIG_DIR)/kitty/$(KITTY_CONF)
-$(CONFIG_DIR)/kitty/$(KITTY_CONF): $(KITTY_CONF)
-	@mkdir -p "$$(dirname "$@")"
-	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
+kitty: $(CONFIG_DIR)/kitty/kitty.conf
+$(CONFIG_DIR)/kitty/kitty.conf: kitty.conf
+	$(MAKE_LINK)
 
-.PHONY: nvim
 nvim: $(CONFIG_DIR)/nvim/init.lua
 $(CONFIG_DIR)/nvim/init.lua: nvim.lua
-	@mkdir -p "$$(dirname "$@")"
-	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
+	$(MAKE_LINK)
 
-.PHONY: starship
 starship: $(CONFIG_DIR)/starship.toml
 $(CONFIG_DIR)/starship.toml: starship.toml
-	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
+	$(MAKE_LINK)
 
-.PHONY: vscode vscode/extensions vscode-extra
+.PHONY: vscode/extensions vscode-extra
+VSCODE_DIR = $(HOME)/Library/Application\ Support/Code/User
 vscode: $(VSCODE_DIR)/keybindings.json $(VSCODE_DIR)/settings.json vscode/extensions
 $(VSCODE_DIR)/%.json: vscode/%.json
-	@mkdir -p "$$(dirname "$@")"
-	@ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
+	$(MAKE_LINK)
 vscode/extensions:
 	@for ext in $$(code --list-extensions | comm -23 $@ -); do \
 		code --install-extension "$$ext"; \
@@ -45,7 +41,12 @@ vscode/extensions:
 vscode-extra:
 	@code --list-extensions | comm -23 - vscode/extensions
 
-.PHONY: test
+zed: $(CONFIG_DIR)/zed/settings.json $(CONFIG_DIR)/zed/themes/mourning.json
+$(CONFIG_DIR)/zed/settings.json: zed/settings.json
+	$(MAKE_LINK)
+$(CONFIG_DIR)/zed/themes/mourning.json: zed/mourning.json
+	$(MAKE_LINK)
+
 test: UNLINKED = $(strip $(foreach f,$(FILES),$(shell test $(f) -ef $(HOME)/.$(f) || echo $(f))))
 test:
 	$(if $(UNLINKED),$(error unlinked files: $(UNLINKED)))

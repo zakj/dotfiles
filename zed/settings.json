@@ -1,0 +1,26 @@
+// https://zed.dev/docs/configuring-zed • `zed: open default settings`
+{
+  "theme": "Mourning",
+  "telemetry": { "metrics": false },
+  "vim_mode": true,
+  "cursor_blink": false,
+  "buffer_font_size": 13,
+  "indent_guides": { "enabled": false },
+  "current_line_highlight": "gutter",
+
+  // Disable various bottom-bar and side-bar cruft.
+  "assistant": { "version": "1", "enabled": false },
+  "chat_panel": { "button": false },
+  "collaboration_panel": { "button": false },
+  "features": { "inline_completion_provider": "none" },
+
+  "terminal": {
+    "blinking": "off",
+    "font_family": "Menlo",
+    "line_height": "standard"
+  },
+
+  "languages": {
+    "Lua": { "tab_size": 2 }
+  }
+}

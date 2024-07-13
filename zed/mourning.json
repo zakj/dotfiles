@@ -1,0 +1,47 @@
+{
+  "$schema": "https://zed.dev/schema/themes/v0.1.0.json",
+  "name": "Mourning",
+  "author": "Zak Johnson (https://zakj.net)",
+
+  "themes": [
+    {
+      "name": "Mourning",
+      "appearance": "dark",
+      "style": {
+        "editor.foreground": "#bcbcbc",
+        "editor.background": "#131313",
+        "players": [{ "cursor": "#5ff887" }],
+        "error.background": "#1c1c1c",
+        "warning.background": "#1c1c1c",
+
+        "terminal.foreground": "#919191",
+
+        "terminal.ansi.black": "#000",
+        "terminal.ansi.red": "#b75",
+        "terminal.ansi.green": "#5b7",
+        "terminal.ansi.yellow": "#aa7",
+        "terminal.ansi.blue": "#57b",
+        "terminal.ansi.magenta": "#a7a",
+        "terminal.ansi.cyan": "#7aa",
+        "terminal.ansi.white": "#ccc",
+        "terminal.ansi.bright_black": "#505458",
+        "terminal.ansi.bright_red": "#d97",
+        "terminal.ansi.bright_green": "#7d9",
+        "terminal.ansi.bright_yellow": "#cc9",
+        "terminal.ansi.bright_blue": "#79d",
+        "terminal.ansi.bright_magenta": "#c9c",
+        "terminal.ansi.bright_cyan": "#9cc",
+        "terminal.ansi.bright_white": "#e0e4e8",
+
+        "syntax": {
+          "comment": { "color": "#6c6c6c", "font_style": "italic" },
+          "constant": { "color": "#8787af" },
+          "string": { "color": "#8787af" },
+          "tag": { "color": "#bcbcbc", "font_weight": 700 },
+          "keyword": { "color": "#bcbcbc", "font_weight": 700 },
+          "variable": { "color": "#bcbcbc" }
+        }
+      }
+    }
+  ]
+}
