@@ -12,6 +12,7 @@
         "editor.background": "#131313",
         "players": [{ "cursor": "#5ff887" }],
         "error.background": "#1c1c1c",
+        "info.background": "#1c1c1c",
         "warning.background": "#1c1c1c",
 
         "terminal.foreground": "#919191",
