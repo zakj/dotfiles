@@ -17,7 +17,8 @@
   "terminal": {
     "blinking": "off",
     "font_family": "Menlo",
-    "line_height": "standard"
+    "line_height": "standard",
+    "env": { "EDITOR": "zed --wait" }
   },
 
   "languages": {
