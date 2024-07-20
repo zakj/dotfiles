@@ -14,7 +14,7 @@ if [[ -x /opt/homebrew/bin/brew ]]; then
   fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
 fi
 
-export EDITOR=$(basename $(whence nvim || whence vim))
+export EDITOR=${EDITOR:-$(basename $(whence nvim || whence vim))}
 export LESS=gij5MR
 export PAGER=less
 
