@@ -14,6 +14,10 @@
   "collaboration_panel": { "button": false },
   "features": { "inline_completion_provider": "none" },
 
+  "git": {
+    "inline_blame": { "enabled": false, "delay_ms": 1000 }
+  },
+
   "terminal": {
     "blinking": "off",
     "font_family": "Menlo",
