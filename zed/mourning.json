@@ -14,6 +14,7 @@
         "error.background": "#1c1c1c",
         "info.background": "#1c1c1c",
         "warning.background": "#1c1c1c",
+        "link_text.hover": "#afaff8",
 
         "terminal.foreground": "#919191",
 
