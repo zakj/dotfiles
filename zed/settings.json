@@ -9,7 +9,7 @@
   "current_line_highlight": "gutter",
 
   // Disable various bottom-bar and side-bar cruft.
-  "assistant": { "version": "1", "enabled": false },
+  "assistant": { "version": "2", "enabled": false },
   "chat_panel": { "button": false },
   "collaboration_panel": { "button": false },
   "features": { "inline_completion_provider": "none" },
@@ -26,6 +26,11 @@
   },
 
   "languages": {
-    "Lua": { "tab_size": 2 }
+    "Lua": { "tab_size": 2 },
+    "Python": {
+      "format_on_save": { "language_server": { "name": "ruff" } },
+      "formatter": { "language_server": { "name": "ruff" } },
+      "language_servers": ["pyright", "ruff"]
+    }
   }
 }
