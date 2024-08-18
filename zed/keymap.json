@@ -1,0 +1,10 @@
+// https://zed.dev/docs/key-bindings • `zed: open default keymap`
+[
+  {
+    "context": "(VimControl && !menu) || EmptyPane || SharedScreen",
+    "bindings": {
+      ", e": "file_finder::Toggle",
+      ", f": "tab_switcher::Toggle"
+    }
+  }
+]

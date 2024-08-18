@@ -41,8 +41,10 @@ vscode/extensions:
 vscode-extra:
 	@code --list-extensions | comm -23 - vscode/extensions
 
-zed: $(CONFIG_DIR)/zed/settings.json $(CONFIG_DIR)/zed/themes/mourning.json
+zed: $(CONFIG_DIR)/zed/settings.json $(CONFIG_DIR)/zed/keymap.json $(CONFIG_DIR)/zed/themes/mourning.json
 $(CONFIG_DIR)/zed/settings.json: zed/settings.json
+	$(MAKE_LINK)
+$(CONFIG_DIR)/zed/keymap.json: zed/keymap.json
 	$(MAKE_LINK)
 $(CONFIG_DIR)/zed/themes/mourning.json: zed/mourning.json
 	$(MAKE_LINK)
