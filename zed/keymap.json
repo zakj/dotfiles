@@ -1,6 +1,12 @@
 // https://zed.dev/docs/key-bindings • `zed: open default keymap`
 [
   {
+    "bindings": {
+      "shift-escape": null,
+      "ctrl-z": "workspace::ToggleZoom"
+    }
+  },
+  {
     "context": "(VimControl && !menu) || EmptyPane || SharedScreen",
     "bindings": {
       ", e": "file_finder::Toggle",
