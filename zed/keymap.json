@@ -12,5 +12,18 @@
       ", e": "file_finder::Toggle",
       ", f": "tab_switcher::Toggle"
     }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      "g r": "editor::Rename",
+      "z enter": "editor::ScrollCursorTop"
+    }
+  },
+  {
+    "context": "vim_mode == visual",
+    "bindings": {
+      ", s": "editor::SortLinesCaseInsensitive"
+    }
   }
 ]
