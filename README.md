@@ -1,20 +1,10 @@
 # Configuring a new machine
 
-Generate a new SSH key:
-
-    ssh-keygen -t ed25519 -a 100
-
-Install homebrew and formulae:
-
-    xcode-select --install
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    brew bundle
-    sudo puma-dev -setup
-    puma-dev -install
-
-Fix key repeat in vscode:
-
-    defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+```
+make ssh-key    # generate a new ssh key
+make bootstrap  # install homebrew and formulae
+make            # link dotfiles
+```
 
 ## Sonoma
 
