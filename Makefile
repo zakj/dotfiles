@@ -12,7 +12,7 @@ ssh-key:
 	ssh-keygen -t ed25519 -a 100
 
 all:
-	stow --target=$$HOME --no-folding --restow src
+	stow --target=$$HOME --dotfiles --no-folding --restow src
 
 clean:
-	stow --verbose --target=$$HOME --no-folding --delete src
+	stow --target=$$HOME --dotfiles --no-folding --delete src
