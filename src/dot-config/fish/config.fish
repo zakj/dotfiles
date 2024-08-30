@@ -23,7 +23,8 @@ if status is-interactive
     set -x LESS gij5MR
     set -x RIPGREP_CONFIG_PATH ~/.config/ripgrep.conf
 
-    abbr --add dotdot --regex '^\.\.+$' --function rationalise-dot
+    bind . self-insert expand-abbr
+    abbr --add dot --regex '(\.\./)*\.\.\.' --position anywhere --function rationalise-dot
     abbr --add np --function node-package-managers
     abbr --add psg pgrep -lf
     abbr --add vi --function EDITOR
@@ -48,8 +49,8 @@ if status is-interactive
     end
 
     # Allow for easier upward directory traversal.
-    # TODO: allow for this to expand anywhere so I can use it eg mv ../../
     function rationalise-dot
-        echo (string repeat -n (math (string length -- $argv[1]) - 1) ../)
+        set -l count (string split / $argv[1] | count)
+        string repeat -n (math $count + 1) ../ | string trim -r -c /
     end
 end
