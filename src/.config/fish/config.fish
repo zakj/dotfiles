@@ -21,7 +21,7 @@ if status is-interactive
     end
     function EDITOR; echo $EDITOR; end
     set -x LESS gij5MR
-    set -x RIPGREP_CONFIG_PATH ~/etc/rg.conf
+    set -x RIPGREP_CONFIG_PATH ~/.config/ripgrep.conf
 
     abbr --add dotdot --regex '^\.\.+$' --function rationalise-dot
     abbr --add np --function node-package-managers
