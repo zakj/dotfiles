@@ -1,4 +1,4 @@
-IGNORED = Brewfile Makefile README.md kitty.conf nvim.lua starship.toml vscode zed
+IGNORED = Brewfile Makefile README.md config.fish kitty.conf nvim.lua rg.conf starship.toml vscode zed
 FILES = $(filter-out $(IGNORED),$(wildcard *))
 DOTFILES = $(addprefix $(HOME)/.,$(FILES))
 RELDIR = $(subst $(HOME)/,,$(shell pwd -L))
@@ -9,13 +9,17 @@ define MAKE_LINK
 @ln -sv$(if $(FORCE),f) "$(HOME)/$(RELDIR)/$<" "$@"
 endef
 
-.PHONY: all links test kitty nvim starship vscode zed
-all: links test kitty nvim starship vscode zed
+.PHONY: all links test fish kitty nvim starship vscode zed
+all: links test fish kitty nvim starship vscode zed
 
 links: $(DOTFILES)
 
 $(HOME)/.%: %
 	@ln -sv$(if $(FORCE),f) "$(RELDIR)/$<" "$@"
+
+fish: $(CONFIG_DIR)/fish/config.fish
+$(CONFIG_DIR)/fish/config.fish: config.fish
+	$(MAKE_LINK)
 
 kitty: $(CONFIG_DIR)/kitty/kitty.conf
 $(CONFIG_DIR)/kitty/kitty.conf: kitty.conf
