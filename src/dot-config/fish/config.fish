@@ -24,14 +24,12 @@ if status is-interactive
     set -x RIPGREP_CONFIG_PATH ~/.config/ripgrep.conf
 
     # Abbreviations are like bash/zsh aliases, but expand in place.
-    bind . self-insert expand-abbr
-    abbr --add dot --regex '(\.\./)*\.\.\.' --position anywhere --function rationalise-dot
-    abbr --add np --function node-package-managers
+    abbr --add np --function _node-package-managers
     abbr --add psg pgrep -lf
-    abbr --add vi --function EDITOR
+    abbr --add vi --function _EDITOR
 
     # Allow `vi` abbr to respond to changes to $EDITOR.
-    function EDITOR
+    function _EDITOR
         echo $EDITOR
     end
 
@@ -47,7 +45,7 @@ if status is-interactive
     end
 
     # Normalize node package management.
-    function node-package-managers
+    function _node-package-managers
         if test -f "package-lock.json"; echo npm
         else if test -f "yarn.lock"; echo yarn
         else; echo pnpm
@@ -55,8 +53,13 @@ if status is-interactive
     end
 
     # Allow for easier upward directory traversal.
-    function rationalise-dot
-        set -l count (string split / $argv[1] | count)
-        string repeat -n (math $count + 1) ../ | string trim -r -c /
+    function _rationalise-dot
+        set -l words (string split ' ' (commandline --cut-at-cursor))
+        if string match -q --regex '^(\.\./)*\.\.$' $words[-1]
+            commandline --insert /..
+        else
+            commandline --insert .
+        end
     end
+    bind . -M insert _rationalise-dot
 end
