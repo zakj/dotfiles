@@ -22,7 +22,8 @@
     "blinking": "off",
     "font_family": "Menlo",
     "line_height": "standard",
-    "env": { "EDITOR": "zed --wait" }
+    "env": { "EDITOR": "zed --wait" },
+    "detect_venv": { "on": { "activate_script": "fish" } }
   },
 
   "languages": {
