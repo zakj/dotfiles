@@ -23,7 +23,9 @@
   {
     "context": "vim_mode == visual",
     "bindings": {
-      ", s": "editor::SortLinesCaseInsensitive"
+      ", s": "editor::SortLinesCaseInsensitive",
+      "v": "editor::SelectLargerSyntaxNode",
+      "V": "editor::SelectSmallerSyntaxNode"
     }
   }
 ]
