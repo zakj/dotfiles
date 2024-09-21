@@ -1,4 +1,5 @@
 .DEFAULT_GOAL := all
+.PHONY: bootstrap ssh-key all clean
 BREW := /opt/homebrew/bin
 
 bootstrap:
@@ -10,7 +11,8 @@ bootstrap:
 	sudo $(BREW)/puma-dev -setup
 	$(BREW)/puma-dev -install
 
-ssh-key:
+ssh-key: $(HOME)/.ssh/id_ed25519
+$(HOME)/.ssh/id_ed25519:
 	ssh-keygen -t ed25519 -a 100
 
 all:
