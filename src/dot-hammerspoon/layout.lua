@@ -2,6 +2,51 @@
 
 local exports = {}
 
+function exports.autolayout()
+  local screen = hs.screen.mainScreen():frame()
+  local gap = 10
+  local browserW = 1440
+  local isHomeMacbook = hs.network.configuration.open():hostname() == 'zakj-m1'
+
+  -- TODO layout for when I don't have an external monitor attached?
+
+  local layout = {
+    Arc = { x = 0, y = 0, w = browserW, h = screen.h },
+    Finder = { w = 900, h = 450 },
+    Messages = { x = gap, y = screen.h - gap - 850, w = 850, h = 850 },
+    Obsidian = {
+      x = (screen.w - 900) / 2,
+      y = (screen.h - 1100) * 2 / 5,
+      w = 900,
+      h = 1100,
+    },
+    Zed = { x = browserW + gap, y = gap, w = screen.w - browserW - gap * 2, h = screen.h - gap * 2 },
+  }
+
+  if not isHomeMacbook then
+    -- maybe make a copy? {table.unpack(layout)}
+    local workLayout = { table.unpack(layout) }
+    layout['Arc'] = { x = screen.w - browserW, y = 0, w = browserW, h = screen.h }
+    layout['Slack '] = { x = 0, y = screen.h * 1 / 5, w = screen.w - browserW - gap, h = screen.h * 4 / 5 }
+    -- TODO Zoom?
+  end
+
+  for appName, rect in pairs(layout) do
+    local app = hs.application.get(appName)
+    if app then
+      for _, win in pairs(app:visibleWindows()) do
+        if rect['x'] ~= nil and rect['y'] ~= nil then
+          rect.x = rect.x + screen.x
+          rect.y = rect.y + screen.y
+          win:setFrame(rect)
+        else
+          win:setSize(rect)
+        end
+      end
+    end
+  end
+end
+
 -- {app name or nil, window name or nil, screen name or screen or nil, rect}
 function exports.apply(layout)
   for _, row in pairs(layout) do

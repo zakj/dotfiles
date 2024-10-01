@@ -10,7 +10,6 @@ reload:start()
 
 hs.hints.style = 'vimperator'
 hs.hotkey.setLogLevel('warning')
-hs.window.animationDuration = 0
 
 local function withFocusedWindow(...)
   local varargs = { ... }
@@ -27,6 +26,7 @@ end
 
 -- TODO: just use raycast with single-character aliases?
 hs.hotkey.bind(hyper.mods, 'f', launch(hs.settings.get('default-browser') or 'Safari'))
+hs.hotkey.bind(hyper.mods, 'j', layout.autolayout)
 hs.hotkey.bind(hyper.mods, 'l', launch('Slack'))
 hs.hotkey.bind(hyper.mods, 'm', launch('Messages'))
 hs.hotkey.bind(hyper.mods, 'n', launch('Obsidian'))
