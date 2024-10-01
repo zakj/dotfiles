@@ -36,9 +36,11 @@ function exports.autolayout()
     if app then
       for _, win in pairs(app:visibleWindows()) do
         if rect['x'] ~= nil and rect['y'] ~= nil then
-          rect.x = rect.x + screen.x
-          rect.y = rect.y + screen.y
-          win:setFrame(rect)
+          -- Can't use screen:localToAbsolute, since that uses fullFrame.
+          local abs = hs.geometry.copy(rect)
+          abs.x = rect.x + screen.x
+          abs.y = rect.y + screen.y
+          win:setFrame(abs)
         else
           win:setSize(rect)
         end
