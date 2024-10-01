@@ -1,8 +1,8 @@
 local ctrl = require 'ctrl'
 local hyper = require 'hyper'
 local layout = require 'layout'
-local message = require 'message'
 local reload = require 'reload'
+local toast = require 'toast'
 
 ctrl:start()
 hyper:start()
@@ -45,4 +45,4 @@ hs.hotkey.bind(hyper.mods, 'right', withFocusedWindow(layout.moveTR, layout.maxi
 -- Make sure garbage collection doesn't break new functionality.
 hs.timer.doAfter(2, collectgarbage)
 
-message.show('Hammerspoon loaded.', 1.5)
+toast('Hammerspoon loaded.', 1.5)
