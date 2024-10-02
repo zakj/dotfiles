@@ -59,6 +59,9 @@ local function add(msg, duration)
   table.insert(toasts, canvas)
   canvas:mouseCallback(function() removeToast(canvas) end)
 
+  if type(msg) ~= 'string' then
+    msg = hs.inspect(msg)
+  end
   local text = baseText:setString(msg)
   local textSize = canvas:minimumTextSize(text)
   canvas:size({ w = textSize.w + paddingX * 2, h = textSize.h + paddingY * 2 })
