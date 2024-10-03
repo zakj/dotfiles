@@ -32,6 +32,7 @@ cask "zed"
 # cask "the-unarchiver"
 # cask "zoomus"
 
+mas "HazeOver", id: 430798174
 mas "Parcel", id: 639968404
 mas "Pixea", id: 1507782672
 mas "Pixelmator Pro", id: 1289583905
