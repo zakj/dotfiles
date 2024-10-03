@@ -1,7 +1,10 @@
+local module = {}
+
 local tween = require 'tween'
 
 local fadeTime = .2
 local margin = 20
+local minWidth = 200
 local paddingX = 15
 local paddingY = 10
 local toasts = {}
@@ -43,38 +46,28 @@ local function reposition(inserted)
   end
 end
 
-local function removeToast(canvas)
-  for i, item in ipairs(toasts) do
-    if item == canvas then
-      table.remove(toasts, i)
-    end
-  end
-  reposition()
-  canvas:hide(fadeTime)
-  hs.timer.doAfter(fadeTime, function() canvas:delete() end)
-end
-
-local function add(msg, duration)
+module.add = function(msg, duration)
   local canvas = baseCanvas:copy()
   table.insert(toasts, canvas)
-  canvas:mouseCallback(function() removeToast(canvas) end)
+  canvas:mouseCallback(function() module.remove(canvas) end)
 
   if type(msg) ~= 'string' then
     msg = hs.inspect(msg)
   end
   local text = baseText:setString(msg)
   local textSize = canvas:minimumTextSize(text)
-  canvas:size({ w = textSize.w + paddingX * 2, h = textSize.h + paddingY * 2 })
+  canvas:size({ w = math.max(minWidth, textSize.w + paddingX * 2), h = textSize.h + paddingY * 2 })
   reposition(canvas)
 
   if duration ~= nil then
     local timer
     timer = hs.timer.doAfter(duration, function()
-      removeToast(canvas)
+      module.remove(canvas)
       timer = nil -- prevent GC
     end)
   end
-  canvas
+
+  return canvas
       :appendElements(
         {
           type = 'rectangle',
@@ -90,4 +83,15 @@ local function add(msg, duration)
       :show(fadeTime)
 end
 
-return add
+module.remove = function(canvas)
+  for i, item in ipairs(toasts) do
+    if item == canvas then
+      table.remove(toasts, i)
+    end
+  end
+  reposition()
+  canvas:hide(fadeTime)
+  hs.timer.doAfter(fadeTime, function() canvas:delete() end)
+end
+
+return setmetatable(module, { __call = function(_, ...) return module.add(...) end })
