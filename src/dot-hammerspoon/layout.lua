@@ -2,75 +2,94 @@
 
 local exports = {}
 
-function exports.autolayout()
-  local screen = hs.screen.mainScreen():frame()
+-- Used to detect the "main" Slack window.
+local function widestVisibleWindow(app)
+  return hs.fnutils.reduce(app:visibleWindows(), function(a, b)
+    return a:frame().w > b:frame().w and a or b
+  end)
+end
+
+local function getLayout()
+  local screen = hs.screen.mainScreen()
+  local frame = screen:frame()
   local gap = 10
   local browserW = 1440
+
   local isHomeMacbook = hs.network.configuration.open():hostname() == 'zakj-m1'
+  local isMacbookScreen = screen:name():find('Built-in', 1, true) == 1
+  local userSpaces = hs.fnutils.filter(hs.spaces.spacesForScreen(screen), function(space)
+    return hs.spaces.spaceType(space) == "user"
+  end)
+  local isFirstScreen =
+      hs.fnutils.indexOf(userSpaces, hs.spaces.activeSpaceOnScreen(screen)) == 1
 
-  -- TODO layout for when I don't have an external monitor attached?
-
+  local mainSlackRect = { x = 0, y = frame.h * 1 / 5, w = frame.w - browserW - gap, h = frame.h * 4 / 5 }
   local layout = {
-    Arc = { x = 0, y = 0, w = browserW, h = screen.h },
+    Arc = { x = 0, y = 0, w = browserW, h = frame.h },
     Finder = { w = 900, h = 450 },
-    Messages = { x = gap, y = screen.h - gap - 850, w = 850, h = 850 },
+    Messages = { x = gap, y = frame.h - gap - 850, w = 850, h = 850 },
     Obsidian = {
-      x = (screen.w - 900) / 2,
-      y = (screen.h - 1100) * 2 / 5,
+      x = (frame.w - 900) / 2,
+      y = (frame.h - 1100) * 2 / 5,
       w = 900,
       h = 1100,
     },
-    Zed = { x = browserW + gap, y = gap, w = screen.w - browserW - gap * 2, h = screen.h - gap * 2 },
+    Slack = function(app, win)
+      return win == widestVisibleWindow(app) and mainSlackRect or { w = 550, h = 950 }
+    end,
+    Zed = { x = browserW + gap, y = gap, w = frame.w - browserW - gap * 2, h = frame.h - gap * 2 },
   }
 
-  if not isHomeMacbook then
-    -- maybe make a copy? {table.unpack(layout)}
-    local workLayout = { table.unpack(layout) }
-    layout['Arc'] = { x = screen.w - browserW, y = 0, w = browserW, h = screen.h }
-    layout['Slack '] = { x = 0, y = screen.h * 1 / 5, w = screen.w - browserW - gap, h = screen.h * 4 / 5 }
-    -- TODO Zoom?
+  if isMacbookScreen then
+    local secondaryW = 1100
+    mainSlackRect = { x = 0, y = gap, w = secondaryW, h = frame.h - gap }
+    layout.Zed.x = frame.w - secondaryW
+    layout.Zed.w = secondaryW
   end
 
-  for appName, rect in pairs(layout) do
+  if not isHomeMacbook and isFirstScreen then
+    layout.Arc = { x = frame.w - browserW, y = 0, w = browserW, h = frame.h }
+  end
+
+  return layout
+end
+
+
+-- TODO refactor
+function exports.autolayout()
+  exports.apply(getLayout())
+end
+
+-- screen:localToAbsolute uses fullFrame, which we don't want here.
+local function localToAbsolute(rect, frame)
+  local abs = hs.fnutils.copy(rect)
+  abs.x = rect.x + frame.x
+  abs.y = rect.y + frame.y
+  return abs
+end
+
+-- layout is a table keyed by application name, whose values are either a table
+-- or a function (accepting application and window arguments) returning a table.
+-- The value table is a partial hs.geometry.rect, where w and h are required and
+-- x and y are optional. x and y are relative to the screen's coordinates.
+function exports.apply(layout)
+  local screenFrame = hs.screen.mainScreen():frame()
+  for appName, rectOrFn in pairs(layout) do
     local app = hs.application.get(appName)
     if app then
+      -- TODO: visibleWindows includes from all active spaces, not just current screen
       for _, win in pairs(app:visibleWindows()) do
-        if rect['x'] ~= nil and rect['y'] ~= nil then
-          -- Can't use screen:localToAbsolute, since that uses fullFrame.
-          local abs = hs.geometry.copy(rect)
-          abs.x = rect.x + screen.x
-          abs.y = rect.y + screen.y
-          win:setFrame(abs)
+        local rect = rectOrFn
+        if type(rectOrFn) == "function" then
+          rect = rectOrFn(app, win)
+        end
+        if rect.x ~= nil and rect.y ~= nil then
+          win:setFrame(localToAbsolute(rect, screenFrame))
         else
           win:setSize(rect)
         end
       end
     end
-  end
-end
-
--- {app name or nil, window name or nil, screen name or screen or nil, rect}
-function exports.apply(layout)
-  for _, row in pairs(layout) do
-    local appName, title, screen, rect = table.unpack(row)
-    local app
-    local windows
-
-    if appName then
-      app = hs.appfinder.appFromName(appName)
-    end
-    if app then
-      windows = app:visibleWindows()
-    else
-      windows = hs.window.visibleWindows()
-    end
-
-    windows = hs.fnutils.filter(windows, function(w)
-      return not title or w:title() == title
-    end)
-    -- hs.fnutils.each(windows, function(w)
-    --     w:setFrame(rect)
-    -- end)
   end
 end
 
