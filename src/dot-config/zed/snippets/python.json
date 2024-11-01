@@ -1,0 +1,7 @@
+{
+  "Print expression": {
+    "prefix": "pp",
+    "body": ["print(f'{$1=}')$0"],
+    "description": "Print expression"
+  }
+}
