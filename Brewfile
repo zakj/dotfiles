@@ -30,7 +30,7 @@ cask "zed"
 # cask "slack"
 # cask "steam"
 # cask "the-unarchiver"
-# cask "zoomus"
+# cask "zoom"
 
 mas "HazeOver", id: 430798174
 mas "Parcel", id: 639968404
