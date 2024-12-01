@@ -30,9 +30,12 @@
     "Git Commit": { "wrap_guides": [72] },
     "Lua": { "tab_size": 2 },
     "Python": {
-      "format_on_save": { "language_server": { "name": "ruff" } },
-      "formatter": { "language_server": { "name": "ruff" } },
-      "language_servers": ["pyright", "ruff"]
+      "language_servers": ["pyright", "ruff"],
+      "format_on_save": "on",
+      "formatter": [
+        { "code_actions": { "source.organizeImports.ruff": true } },
+        { "language_server": { "name": "ruff" } }
+      ]
     }
   }
 }
