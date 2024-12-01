@@ -16,6 +16,7 @@ local Message = {
   MOD_DOWN = {},
   MOD_UP = {},
   MOD_OTHER = {},
+  KEY_UP = {},
   IDLE_TIMEOUT = {},
   HYPER_TIMEOUT = {},
 }
@@ -132,6 +133,7 @@ local function startMachine()
     [State.SINGLE_PRESS] = {
       [Message.IDLE_TIMEOUT] = State.IDLE,
       [Message.MOD_OTHER] = State.IDLE,
+      [Message.KEY_UP] = State.IDLE,
       [Message.MOD_DOWN] = function(event)
         hyperTimer:start()
         keyIcon:show()
@@ -186,12 +188,18 @@ local function init()
     end
   end)
 
+  local keyUpTap = hs.eventtap.new({ hs.eventtap.event.types.keyUp }, function(e)
+    send(Message.KEY_UP)
+  end)
+
   function self.start()
     flagsTap:start()
+    keyUpTap:start()
   end
 
   function self.stop()
     flagsTap:stop()
+    keyUpTap:stop()
   end
 
   return self
