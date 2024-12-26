@@ -32,6 +32,15 @@ hs.hotkey.bind(hyper.mods, 'm', launch('Messages'))
 hs.hotkey.bind(hyper.mods, 'n', launch('Obsidian'))
 hs.hotkey.bind(hyper.mods, 't', launch('Ghostty'))
 hs.hotkey.bind(hyper.mods, 'v', launch('Zed'))
+hs.hotkey.bind(hyper.mods, 'x', function()
+  if ctrl:isEnabled() then
+    ctrl:stop()
+    toast('ctrl/esc disabled', 3)
+  else
+    ctrl:start()
+    toast('ctrl/esc enabled', 3)
+  end
+end)
 
 hs.urlevent.bind('autolayout', layout.autolayout)
 hs.hotkey.bind(hyper.mods, 'j', function()
