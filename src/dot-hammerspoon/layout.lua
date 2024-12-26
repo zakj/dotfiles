@@ -9,24 +9,39 @@ local function widestVisibleWindow(app)
   end)
 end
 
+local function activeSpaceIndex(screen)
+  local userSpaces = hs.fnutils.filter(hs.spaces.spacesForScreen(screen), function(space)
+    return hs.spaces.spaceType(space) == "user"
+  end)
+  hs.fnutils.indexOf(userSpaces, hs.spaces.activeSpaceOnScreen(screen))
+end
+
 local function getLayout()
   local screen = hs.screen.mainScreen()
   local frame = screen:frame()
   local gap = 10
   local browserW = 1440
 
-  local isHomeMacbook = hs.network.configuration.open():hostname() == 'zakj-m1'
-  local isMacbookScreen = screen:name():find('Built-in', 1, true) == 1
-  local userSpaces = hs.fnutils.filter(hs.spaces.spacesForScreen(screen), function(space)
-    return hs.spaces.spaceType(space) == "user"
-  end)
-  local isFirstScreen =
-      hs.fnutils.indexOf(userSpaces, hs.spaces.activeSpaceOnScreen(screen)) == 1
+  local is = {
+    builtinDisplay = screen:name():find('Built-in', 1, true) == 1,
+    firstScreen = activeSpaceIndex(screen) == 1,
+  }
 
   local mainSlackRect = { x = 0, y = frame.h * 1 / 5, w = frame.w - browserW - gap, h = frame.h * 4 / 5 }
   local layout = {
     Arc = { x = 0, y = 0, w = browserW, h = frame.h },
     Finder = { w = 900, h = 450 },
+    -- TODO: improve this once Ghostty has better resize handling
+    -- In the meantime, don't change the window size; just center in the space
+    -- next to the browser.
+    Ghostty = function(_, win)
+      local winSize = win:size()
+      local extraW = frame.w - browserW - winSize.w
+      local extraH = frame.h - winSize.h
+      -- Right-align if the window is too big for the space.
+      if extraW < 0 then extraW = extraW * 2 end
+      return { x = browserW + extraW / 2, y = extraH / 2, w = winSize.w, h = winSize.h }
+    end,
     Messages = { x = gap, y = frame.h - gap - 850, w = 850, h = 850 },
     Obsidian = {
       x = (frame.w - 900) / 2,
@@ -40,15 +55,10 @@ local function getLayout()
     Zed = { x = browserW + gap, y = gap, w = frame.w - browserW - gap * 2, h = frame.h - gap * 2 },
   }
 
-  if isMacbookScreen then
+  if is.builtinDisplay then
     local secondaryW = 1100
     mainSlackRect = { x = 0, y = gap, w = secondaryW, h = frame.h - gap }
-    layout.Zed.x = frame.w - secondaryW
-    layout.Zed.w = secondaryW
-  end
-
-  if not isHomeMacbook and isFirstScreen then
-    layout.Arc = { x = frame.w - browserW, y = 0, w = browserW, h = frame.h }
+    layout.Zed = { x = frame.w - secondaryW, y = 0, w = secondaryW, h = frame.h }
   end
 
   return layout
