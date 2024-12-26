@@ -10,6 +10,11 @@ if status is-interactive
     fish_hybrid_key_bindings     # vi mode but with emacs-style bindings.
     set fish_cursor_insert line  # Use cursor to distinguish insert/normal modes.
 
+    # TODO remove this when fish supports ghostty
+    if string match -q -- '*ghostty*' $TERM
+        set -g fish_vi_force_cursor 1
+    end
+
     set fish_greeting            # Shhh.
     set __fish_ls_command ls -F  # Avoid default ls colors added by fish.
 

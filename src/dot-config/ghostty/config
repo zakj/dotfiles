@@ -1,0 +1,39 @@
+# native tabs (transparent)
+# macos-titlebar-style = transparent
+
+window-height = 25
+window-width = 90
+# window-padding-x = 2
+# window-padding-y = 2
+window-padding-balance = true
+window-step-resize = true
+quit-after-last-window-closed = true
+mouse-hide-while-typing = true
+
+# TODO: find a better way to disable the blinking cursor
+shell-integration-features = no-cursor
+
+font-family = Menlo
+font-size = 14
+adjust-cell-height = 1
+adjust-cell-width = -1
+
+background = 131313
+foreground = 919191
+cursor-color = 5ff887
+palette = 0=#000000
+palette = 1=#bb7755
+palette = 2=#55bb77
+palette = 3=#aaaa77
+palette = 4=#5577bb
+palette = 5=#aa77aa
+palette = 6=#77aaaa
+palette = 7=#cccccc
+palette = 8=#505458
+palette = 9=#dd9977
+palette = 10=#77dd99
+palette = 11=#cccc99
+palette = 12=#7799dd
+palette = 13=#cc99cc
+palette = 14=#99cccc
+palette = 15=#e0e4e8
