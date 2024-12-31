@@ -96,6 +96,7 @@ return {
   },
 
   -- Used for LSP code actions.
+  -- TODO figure out how to lazy load better
   {
     'nvim-telescope/telescope-ui-select.nvim',
     event = 'VeryLazy',

@@ -22,9 +22,18 @@ require('lazy').setup({
   change_detection = { notify = false }
 })
 
+-- TODO where? TODO renamed to vim.hl in 0.11
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function() vim.highlight.on_yank({ timeout = 150 }) end,
+  desc = "Briefly highlight yanked text"
+})
+
+-- TODO move some VeryLazy to cmd/keys
+-- TODO normalize leader/Leader
+
 -- TODO ------------------------------------------------------------
 
-
+-- {{{ some fold
 -- vim.opt.wildmode = 'longest:full'
 -- vim.keymap.set('v', '<leader>s', ':sort i<cr>')
 
@@ -51,3 +60,6 @@ require('lazy').setup({
 --       })
 --     end
 --   },
+--
+
+-- vim: foldmethod=marker foldlevel=0
