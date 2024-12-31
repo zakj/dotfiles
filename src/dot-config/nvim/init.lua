@@ -1,13 +1,5 @@
--- TODO move some VeryLazy to cmd/keys
--- TODO normalize leader/Leader
 -- TODO consider vim.opt.wildmode = 'longest:full'
--- TODO consider michaeljsmith/vim-indent-object
--- TODO gitsigns keymap
---   map({ 'n', 'v' }, '<leader>hn', gs.next_hunk, "Next hunk")
---   map({ 'n', 'v' }, '<leader>hp', gs.preview_hunk, "Preview hunk")
---   map({ 'n', 'v' }, '<leader>hr', gs.reset_hunk, "Reset hunk")
---   map({ 'n', 'v' }, '<leader>hs', gs.stage_hunk, "Stage hunk")
---   map('n', '<leader>hu', gs.undo_stage_hunk, "Undo stage hunk")
+-- TODO consider michaeljsmith/vim-indent-object or similar
 
 vim.g.mapleader = " "
 
@@ -40,13 +32,19 @@ local plugins = {
     config = function() vim.cmd.colorscheme('zenbones') end,
   },
 
+  -- TODO trying this out
+  {
+    'rmagatti/auto-session',
+    lazy = false,
+    opts = { allowed_dirs = { '~/etc', '~/src/*' } }
+    -- TODO consider keymaps for SessionSearch, maybe Autosession delete
+  },
+
   {
     'folke/noice.nvim',
     dependencies = { 'MunifTanjim/nui.nvim' },
     event = 'VeryLazy',
-    opts = {
-      cmdline = { view = "cmdline" },
-    },
+    opts = { cmdline = { view = "cmdline" } },
   },
 
   {
@@ -54,14 +52,32 @@ local plugins = {
     lazy = false,
     opts = {
       sections = {
-        lualine_b = { 'branch', 'diff' },
+        lualine_b = { function() return require('auto-session.lib').current_session_name(true) end, 'diff' },
         lualine_c = { { 'filename', path = 1 } },
         lualine_x = { 'diagnostics', { 'filetype', icons_enabled = false } },
       },
     },
   },
 
-  { 'lewis6991/gitsigns.nvim', event = 'VeryLazy',    opts = {} },
+  {
+    'lewis6991/gitsigns.nvim',
+    event = 'VeryLazy',
+    opts = {},
+    -- TODO should I only add these on attach? seems not to matter.
+    keys = {
+      { ']h',         function() require('gitsigns').next_hunk() end,           desc = 'Next hunk' },
+      { '[h',         function() require('gitsigns').prev_hunk() end,           desc = 'Previous hunk' },
+      { '<Leader>hd', function() require('gitsigns').preview_hunk_inline() end, desc = 'Show diff' },
+      { '<Leader>hR', function() require('gitsigns').reset_hunk() end,          desc = 'Reset hunk' },
+    },
+    -- TODO it would be nice if these were shades of the existing Add/Change/DeleteLn colors
+    -- also this should end up in upstream
+    init = function()
+      vim.cmd.highlight('link GitSignsAddInline DiffText')
+      vim.cmd.highlight('link GitSignsChangeInline DiffText')
+      vim.cmd.highlight('link GitSignsDeleteInline DiffText')
+    end
+  },
 
   {
     'folke/which-key.nvim',
@@ -88,36 +104,31 @@ local plugins = {
     branch = '0.1.x',
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons' },
     cmd = 'Telescope',
-    opts = function()
-      return {
-        defaults = {
-          mappings = {
-            i = {
-              ['<esc>'] = require('telescope.actions').close,
-              ['<C-u>'] = false,
-            },
-          }
-        },
-        pickers = {
-          buffers = {
-            preview = { hide_on_startup = true },
-            layout_strategy = 'vertical',
-            layout_config = { width = 0.5, height = 0.4 },
+    opts = {
+      defaults = {
+        mappings = {
+          i = {
+            ['<esc>'] = function(buf) require('telescope.actions').close(buf) end,
+            ['<C-u>'] = false,
           },
         }
+      },
+      pickers = {
+        buffers = {
+          preview = { hide_on_startup = true },
+          layout_strategy = 'vertical',
+          layout_config = { width = 0.5, height = 0.4 },
+        },
       }
-    end,
-    keys = function()
-      -- TODO is this what's causing early load?
-      return {
-        { '<leader>e', require('telescope.builtin').find_files, desc = "Find files" },
-        { '<leader>f', require('telescope.builtin').buffers,    desc = "Find open buffers" },
-        { '<leader>g', require('telescope.builtin').live_grep,  desc = "Live grep" },
-      }
-    end
+    },
+    keys = {
+      { '<Leader>e', function() require('telescope.builtin').find_files() end, desc = "Find files" },
+      { '<Leader>f', function() require('telescope.builtin').buffers() end,    desc = "Find open buffers" },
+      { '<Leader>g', function() require('telescope.builtin').live_grep() end,  desc = "Live grep" },
+    }
   },
 
-  -- Used primarily for LSP code actions.
+  -- Used primarily for a code actions menu.
   {
     'nvim-telescope/telescope-ui-select.nvim',
     -- TODO figure out how to lazy load better
@@ -140,16 +151,16 @@ local plugins = {
     'echasnovski/mini.files',
     opts = {},
     keys = {
-      { '<Leader>m', function() require('mini.files').open() end, desc = 'File explorer' },
+      { '<Leader>l', function() require('mini.files').open(vim.api.nvim_buf_get_name(0)) end, desc = 'File explorer' },
     },
   },
 
   -- Editing -- {{{1
 
-  { 'tpope/vim-sleuth',        lazy = false },
-  { 'rhysd/clever-f.vim',      event = 'VeryLazy' }, -- TODO consider hop/leap/etc.
-  { 'windwp/nvim-autopairs',   event = 'InsertEnter', opts = {} },
-  { 'kylechui/nvim-surround',  event = 'VeryLazy',    opts = {} },
+  { 'tpope/vim-sleuth',       lazy = false },
+  { 'rhysd/clever-f.vim',     event = 'VeryLazy' }, -- TODO consider hop/leap/etc.
+  { 'windwp/nvim-autopairs',  event = 'InsertEnter', opts = {} },
+  { 'kylechui/nvim-surround', event = 'VeryLazy',    opts = {} },
 
   {
     'nvim-treesitter/nvim-treesitter',
@@ -174,27 +185,24 @@ local plugins = {
     },
   },
 
-  -- LSP  {{{1
+  -- LSP {{{1
 
   {
-    'neovim/nvim-lspconfig',
-    -- TODO: steal LazyFile from LazyVim?
+    'williamboman/mason-lspconfig.nvim',
     event = { "BufReadPost", "BufWritePost", "BufNewFile" },
-
     dependencies = {
+      { 'williamboman/mason.nvim', opts = {} },
+      { 'neovim/nvim-lspconfig' },
       {
         'saghen/blink.cmp',
         version = '*',
         opts = {
-          keymap = { preset = 'super-tab' }
+          keymap = { preset = 'super-tab' },
+          sources = { default = { 'lsp', 'path' } },
         }
       },
-      { 'williamboman/mason.nvim',           opts = {} },
-      { 'williamboman/mason-lspconfig.nvim', opts = {} },
     },
-
     opts = {
-      -- TODO should this go in mason-lspconfig?
       ensure_installed = {
         'astro',
         'lua_ls',
@@ -204,6 +212,7 @@ local plugins = {
         'svelte',
       }
     },
+
     config = function()
       local capabilities = require('blink.cmp').get_lsp_capabilities()
       local lspconfig = require('lspconfig')
@@ -218,10 +227,16 @@ local plugins = {
         callback = function(args)
           local builtin = require('telescope.builtin')
           require('which-key').add({
-            { '<Leader>ca', vim.lsp.buf.code_action,      desc = 'Code actions' },
-            { '<Leader>cd', vim.lsp.buf.definition,       desc = 'Go to definition' },
-            { '<Leader>cr', vim.lsp.buf.rename,           desc = 'Rename symbol' },
-            { '<Leader>co', builtin.lsp_document_symbols, desc = 'Find symbols' },
+            { '<Leader>ca', vim.lsp.buf.code_action, desc = 'Code actions' },
+            { '<Leader>cd', vim.lsp.buf.definition,  desc = 'Go to definition' },
+            { '<Leader>cr', vim.lsp.buf.rename,      desc = 'Rename symbol' },
+            {
+              '<Leader>co',
+              function()
+                builtin.lsp_document_symbols({ ignore_symbols = 'variable' })
+              end,
+              desc = 'Find symbols'
+            },
             buffer = args.buf
           })
         end
@@ -236,7 +251,8 @@ local plugins = {
       -- TODO: needed to `npm i prettier-plugin-astro prettier-plugin-svelte`
       -- from ~/.local/share/nvim/mason/packages/prettier/ to make this work,
       -- and also add a .prettierrc.mjs to the appropriate repository.
-      -- See <https://github.com/williamboman/mason.nvim/issues/392>
+      -- See foo <https://github.com/williamboman/mason.nvim/issues/392>
+      -- Maybe just automate via lazy.nvim's 'build' config?
       formatters_by_ft = {
         astro = { 'prettier' },
         javascript = { 'prettier' },
@@ -252,7 +268,6 @@ local plugins = {
   -- }}}
 }
 
--- lazy.nvim  {{{1
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
