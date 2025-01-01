@@ -1,23 +1,23 @@
-# native tabs (transparent)
-# macos-titlebar-style = transparent
-
-window-height = 25
 window-width = 90
-# window-padding-x = 2
-# window-padding-y = 2
+window-height = 25
 window-padding-balance = true
+window-padding-color = extend
 window-step-resize = true
-quit-after-last-window-closed = true
-mouse-hide-while-typing = true
 
-# TODO: find a better way to disable the blinking cursor
+adjust-cursor-thickness = 2
+macos-titlebar-proxy-icon = hidden
+mouse-hide-while-typing = true
+quit-after-last-window-closed = true
+# TODO: find a better way to disable the blinking cursor; cursor-style-blink = false
+# doesn't seem to work
 shell-integration-features = no-cursor
 
-font-family = Menlo
-font-size = 14
-adjust-cell-height = 1
-adjust-cell-width = -1
+keybind = super+ctrl+down=resize_split:down,18
+keybind = super+ctrl+up=resize_split:up,18
+keybind = super+shift+ctrl+down=resize_split:down,90
+keybind = super+shift+ctrl+up=resize_split:up,90
 
+# theme:
 background = 131313
 foreground = 919191
 cursor-color = 5ff887
