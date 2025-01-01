@@ -1,5 +1,5 @@
-window-width = 90
-window-height = 25
+window-width = 132
+window-height = 76
 window-padding-balance = true
 window-padding-color = extend
 window-step-resize = true
@@ -8,14 +8,19 @@ adjust-cursor-thickness = 2
 macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
 quit-after-last-window-closed = true
-# TODO: find a better way to disable the blinking cursor; cursor-style-blink = false
-# doesn't seem to work
+# TODO: find a better way to disable the blinking cursor;
+# `cursor-style-blink = false` doesn't seem to work.
 shell-integration-features = no-cursor
 
 keybind = super+ctrl+down=resize_split:down,18
 keybind = super+ctrl+up=resize_split:up,18
 keybind = super+shift+ctrl+down=resize_split:down,90
 keybind = super+shift+ctrl+up=resize_split:up,90
+
+# F19 is emitted by Hammerspoon on hyper-`.
+keybind = f19=toggle_quick_terminal
+quick-terminal-position = center
+quick-terminal-animation-duration = 0
 
 # theme:
 background = 131313

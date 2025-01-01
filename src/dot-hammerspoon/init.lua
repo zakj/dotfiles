@@ -25,14 +25,11 @@ local function launch(name)
   return function() hs.application.launchOrFocus(name) end
 end
 
--- TODO: just use raycast with single-character aliases?
-hs.hotkey.bind(hyper.mods, 'f', launch(defaultWebHandler))
-hs.hotkey.bind(hyper.mods, 'l', launch('Slack'))
-hs.hotkey.bind(hyper.mods, 'm', launch('Messages'))
-hs.hotkey.bind(hyper.mods, 'n', launch('Obsidian'))
-hs.hotkey.bind(hyper.mods, 't', launch('Ghostty'))
-hs.hotkey.bind(hyper.mods, 'v', launch('Zed'))
-hs.hotkey.bind(hyper.mods, 'x', function()
+local function toggleGhosttyQuickTerminal()
+  hs.eventtap.keyStroke({}, 'f19', 0, hs.appfinder.appFromName('Ghostty'))
+end
+
+local function toggleCtrlEscOverload()
   if ctrl:isEnabled() then
     ctrl:stop()
     toast('ctrl/esc disabled', 3)
@@ -40,7 +37,17 @@ hs.hotkey.bind(hyper.mods, 'x', function()
     ctrl:start()
     toast('ctrl/esc enabled', 3)
   end
-end)
+end
+
+-- TODO: just use raycast with single-character aliases?
+hs.hotkey.bind(hyper.mods, '`', toggleGhosttyQuickTerminal)
+hs.hotkey.bind(hyper.mods, 'f', launch(defaultWebHandler))
+hs.hotkey.bind(hyper.mods, 'l', launch('Slack'))
+hs.hotkey.bind(hyper.mods, 'm', launch('Messages'))
+hs.hotkey.bind(hyper.mods, 'n', launch('Obsidian'))
+hs.hotkey.bind(hyper.mods, 't', launch('Ghostty'))
+hs.hotkey.bind(hyper.mods, 'v', launch('Zed'))
+hs.hotkey.bind(hyper.mods, 'x', toggleCtrlEscOverload)
 
 hs.urlevent.bind('autolayout', layout.autolayout)
 hs.hotkey.bind(hyper.mods, 'j', function()
