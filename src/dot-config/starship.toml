@@ -1,10 +1,14 @@
 add_newline = false
 format = '$character$directory% '
 right_format = """
+(${custom.jj})\
 $git_status\
 $git_state\
-$git_commit\
 $git_branch"""
+
+[custom.jj]
+when = 'jj root'
+command = 'jj log -r @ -T prompt --ignore-working-copy --no-graph --no-pager --color always'
 
 [character]
 success_symbol = '[➜](bright-white)'
@@ -16,6 +20,7 @@ format = '$path[$read_only]($read_only_style)'
 
 [git_branch]
 format = '[$branch([·$remote_branch](blue))](bright-black)'
+only_attached = true
 
 [git_status]
 format = '([$all_status$ahead_behind](red) )'

@@ -1,0 +1,22 @@
+[user]
+name = "Zak Johnson"
+email = "me@zakj.net"
+
+[ui]
+default-command = "log"
+diff-editor = ":builtin"
+
+[git]
+private-commits = 'description(glob:"private:*")'
+
+[colors]
+# https://github.com/jj-vcs/jj/blob/main/cli/src/config/colors.toml
+"diff token" = {underline = false}
+
+[template-aliases]
+prompt = '''
+  separate(" ",
+    if(empty, label("empty", "∅")),
+    concat(change_id.shortest(4).prefix(), change_id.shortest(4).rest()),
+  )
+'''
