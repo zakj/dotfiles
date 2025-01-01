@@ -4,9 +4,16 @@ local layout = require 'layout'
 local reload = require 'reload'
 local toast = require 'toast'
 
-ctrl:start()
 hyper:start()
 reload:start()
+
+local hasExternalKeyboard = hs.fnutils.some(hs.usb.attachedDevices(), function(device)
+  -- This keyboard is programmable, and has ctrl/esc functionality in firmware.
+  return device.productName == 'Keychron K7 Pro'
+end)
+if not hasExternalKeyboard then
+  ctrl:start()
+end
 
 hs.hotkey.setLogLevel('warning')
 
@@ -28,6 +35,7 @@ end
 local function toggleGhosttyQuickTerminal()
   hs.eventtap.keyStroke({}, 'f19', 0, hs.appfinder.appFromName('Ghostty'))
 end
+
 
 local function toggleCtrlEscOverload()
   if ctrl:isEnabled() then
