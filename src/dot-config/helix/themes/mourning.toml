@@ -1,0 +1,117 @@
+# Author: Zak Johnson <me@zakj.net>
+#:schema https://zakj.github.io/helix-theme-schema/theme.json
+
+# https://foliagefriend.com/flowers-that-represent-mourning/
+# https://oklch.com/
+# https://github.com/helix-editor/helix/blob/master/theme.toml
+# https://docs.helix-editor.com/themes.html#interface
+# https://www.color-name.com/
+# https://docs.helix-editor.com/themes.html#interface
+
+# Main window.
+"ui.background" = { bg = "decay" }
+"ui.text" = "bone"
+"ui.window" = "shroom"
+"ui.cursor" = { modifiers = ["reversed"] }
+"ui.cursor.match" = { fg = "talc", "modifiers" = ["bold"] }
+"ui.cursor.primary" = { fg = "black", bg = "lichen" }
+"ui.selection" = { bg = "soil" }
+
+# Gutter.
+"ui.debug.breakpoint" = "shroom"
+"ui.linenr" = "dust"
+"ui.linenr.selected" = "talc"
+
+# Status and buffer lines.
+"ui.statusline" = { fg = "calla", bg = "shroom-dim" }
+"ui.statusline.inactive" = { fg = "fog", bg = "black" }
+"ui.statusline.insert" = { bg = "shroom" }
+"ui.statusline.select" = { bg = "soil" }
+"ui.statusline.separator" = "shroom"
+
+"ui.bufferline" = "fog"
+"ui.bufferline.active" = { fg = "calla", bg = "decay" }
+"ui.bufferline.background" = { bg = "black" }
+
+# Popups/pickers.
+"ui.popup" = { fg = "shroom", bg = "black" }
+"ui.picker.header" = "shroom"                            # Column header.
+"ui.picker.header.column.active" = "calla"
+"ui.background.separator" = "shroom"                     # Picker separator below input line.
+"ui.text.focus" = { bg = "soil" }                        # The currently-selected line in the picker.
+"ui.text.inactive" = { modifiers = ["dim"] }             # Suggestions in prompt/picker.
+"ui.text.directory" = "ansi-blue"
+"ui.help" = "shroom"                                     # Description box for commands.
+"ui.menu" = { fg = "bone", bg = "black" }
+"ui.menu.selected" = { fg = "calla", bg = "shroom-dim" }
+"ui.menu.scroll" = { fg = "shroom", bg = "shroom-dim" }
+"special" = { fg = "ansi-red", modifiers = ["bold"] }    # Match text in picker?
+
+# Virtual text.
+"ui.virtual.ruler" = { bg = "soil" }
+"ui.virtual.whitespace" = "shroom-dim"
+"ui.virtual.indent-guide" = "shroom-dim"
+"ui.virtual.wrap" = "shroom-dim"
+"ui.virtual.jump-label" = { modifiers = ["bold"] }
+
+# Diagnostics.
+"hint" = "ansi-blue"      # also HINT MARK etc
+"info" = "ansi-bblue"     # also TODO INFO NOTE etc
+"warning" = "ansi-yellow" # also HACK WARN WARNING TEST etc
+"error" = "ansi-red"      # also XXX FIXME FIX etc
+
+"diagnostic.hint" = { underline = { color = "ansi-blue", style = "curl" } }
+"diagnostic.info" = { underline = { color = "ansi-bblue", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "ansi-yellow", style = "curl" } }
+"diagnostic.error" = { underline = { color = "ansi-red", style = "curl" } }
+"diagnostic.unnecessary" = { modifiers = ["dim"] }
+"diagnostic.deprecated" = { modifiers = ["crossed_out"] }
+
+# Syntax.
+"constant" = "shroom"
+string = "shroom"
+comment = { fg = "fog", modifiers = ["italic"] }
+punctuation = { modifiers = ["dim"] }
+keyword = { fg = "talc", modifiers = ["bold"] }
+type = { modifiers = ["dim"] }                   # TODO maybe some dimness here?
+
+"markup.heading" = { fg = "shroom", modifiers = ["bold"] }
+"markup.bold" = { modifiers = ["bold"] }
+"markup.italic" = { modifiers = ["italic"] }
+"markup.strikethrough" = { modifiers = ["crossed_out"] }
+
+"diff.plus" = "ansi-green"
+"diff.minus" = "ansi-red"
+"diff.delta" = "ansi-blue"
+
+
+[palette]
+black = "#080808"
+decay = "#1c1917"      # Primary background.
+soil = "#2c2a29"       # Selection.
+dust = "#3c3c3c"       # Just line numbers at the moment.
+lichen = "#5fff87"     # Primary cursor.
+shroom = "#8b7e70"     # UI highlights.
+shroom-dim = "#514539" # UI highlights background, virtual text.
+fog = "#6c6c6c"        # Dim text: comments and inactive states.
+bone = "#acacac"       # Primary text.  # TODO tmp from zb
+talc = "#bebebe"       # Slightly brighter text for some emphasis.
+calla = "#e4e4e4"      # Brightest text for active/selection.
+
+# A full ANSI palette of softer colors; mostly unused, but here for posterity.
+ansi-black = "#000000"
+ansi-red = "#bb7755"
+ansi-green = "#55bb77"
+ansi-yellow = "#aaaa77"
+ansi-blue = "#5577bb"
+ansi-purple = "#aa77aa"
+ansi-cyan = "#77aaaa"
+ansi-white = "#cccccc"
+ansi-bblack = "#505458"
+ansi-bred = "#dd9977"
+ansi-bgreen = "#77dd99"
+ansi-byellow = "#cccc99"
+ansi-bblue = "#7799dd"
+ansi-bpurple = "#cc99cc"
+ansi-bcyan = "#99cccc"
+ansi-bwhite = "#e0e4e8"
