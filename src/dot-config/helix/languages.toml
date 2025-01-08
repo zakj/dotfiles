@@ -1,0 +1,49 @@
+# Defaults: https://github.com/helix-editor/helix/blob/master/languages.toml
+
+[[language]]
+name = "astro"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--plugin",
+  "prettier-plugin-astro",
+  "--parser",
+  "astro",
+] }
+language-servers = ["astro-ls"]
+
+[language-server.astro-ls]
+command = "astro-ls"
+args = ["--stdio"]
+config.typescript.tsdk = "/opt/homebrew/lib/node_modules/@astrojs/language-server/node_modules/typescript/lib"
+config.environment = "node"
+
+[[language]]
+name = "python"
+auto-format = true
+language-servers = ["pyright", "ruff"]
+
+# TODO auto-organize imports on save
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+[[language]]
+name = "svelte"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--plugin",
+  "prettier-plugin-svelte",
+  "--parser",
+  "svelte",
+] }
+
+[[language]]
+# TODO needs a .git as a parent, otherwise it works in "detached workspace" mode and doesn't validate
+name = "toml"
+auto-format = true
+formatter = { command = "taplo", args = ["fmt", "-"] }
+
+[[language]]
+name = "typescript"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }

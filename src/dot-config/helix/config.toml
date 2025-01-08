@@ -1,0 +1,50 @@
+theme = "mourning"
+
+[editor]
+bufferline = "multiple"
+color-modes = true
+end-of-line-diagnostics = "hint" # TODO may be enabled by default in future
+scroll-lines = 1
+soft-wrap.enable = true
+
+[editor.cursor-shape]
+insert = "bar"
+select = "underline"
+
+# TODO new inline diagnostics config, disabled by default but enabled in future:
+[editor.inline-diagnostics]
+cursor-line = "warning"
+
+[editor.statusline]
+right = [
+  "diagnostics",
+  "register",
+  "selections",
+  "separator",
+  "file-encoding",
+  "file-type",
+  "separator",
+  "spacer",
+  "position-percentage",
+  "position",
+]
+
+[keys.normal]
+esc = ["collapse_selection", "keep_primary_selection"]
+Cmd-s = ":write"
+Cmd-z = ":reset-diff-change"
+# TODO maybe get used to the helix built-ins here, ]p and [p, or A-n and A-p (siblings)
+"{" = ["goto_prev_paragraph", "collapse_selection"]
+"}" = ["goto_next_paragraph", "collapse_selection"]
+X = ["goto_first_nonwhitespace", "extend_to_line_end"]
+# TODO trying this out to handle vim's D/C usecases. t<enter> is the helix way
+L = ["collapse_selection", "extend_to_line_end"]
+# TODO trying this out
+C-j = ["select_line_below"]
+C-k = ["select_line_above"]
+
+[keys.normal.space]
+x = ":buffer-close"
+
+[keys.insert]
+Cmd-s = ":write"

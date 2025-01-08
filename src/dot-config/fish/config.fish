@@ -4,24 +4,24 @@ end
 
 if status is-interactive
     fish_config theme choose 'Solarized Dark'
-    set fish_color_valid_path    # Reset theme's underlines on paths.
-    starship init fish | source  # Set prompt.
+    set fish_color_valid_path # Reset theme's underlines on paths.
+    starship init fish | source # Set prompt.
 
-    fish_hybrid_key_bindings     # vi mode but with emacs-style bindings.
-    set fish_cursor_insert line  # Use cursor to distinguish insert/normal modes.
+    fish_hybrid_key_bindings # vi mode but with emacs-style bindings.
+    set fish_cursor_insert line # Use cursor to distinguish insert/normal modes.
 
     # TODO remove this when fish supports ghostty
     if string match -q -- '*ghostty*' $TERM
         set -g fish_vi_force_cursor 1
     end
 
-    set fish_greeting            # Shhh.
-    set __fish_ls_command ls -F  # Avoid default ls colors added by fish.
+    set fish_greeting # Shhh.
+    set __fish_ls_command ls -F # Avoid default ls colors added by fish.
 
     # Configure some environment variables for other utilities.
     if not set -q EDITOR
         set -l editors (
-            path filter -x (which nvim) (which vim) (which vi) | path basename
+            path filter -x (which hx) (which nvim) (which vim) (which vi) | path basename
         )
         set -x EDITOR $editors[1]
     end
@@ -51,9 +51,12 @@ if status is-interactive
 
     # Normalize node package management.
     function _node-package-managers
-        if test -f "package-lock.json"; echo npm
-        else if test -f "yarn.lock"; echo yarn
-        else; echo pnpm
+        if test -f "package-lock.json"
+            echo npm
+        else if test -f "yarn.lock"
+            echo yarn
+        else
+            echo pnpm
         end
     end
 
