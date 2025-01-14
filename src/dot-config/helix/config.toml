@@ -33,13 +33,27 @@ right = [
 esc = ["collapse_selection", "keep_primary_selection"]
 Cmd-s = ":write"
 Cmd-z = ":reset-diff-change"
-# TODO maybe get used to the helix built-ins here, ]p and [p, or A-n and A-p (siblings)
+
+# vim helpers; I should be getting used to helix, but these are too ingrained
+G = "goto_file_end"
+C-r = "redo"
+C = ["collapse_selection", "extend_to_line_end", "change_selection"]
+D = ["collapse_selection", "extend_to_line_end", "delete_selection"]
 "{" = ["goto_prev_paragraph", "collapse_selection"]
 "}" = ["goto_next_paragraph", "collapse_selection"]
-X = ["goto_first_nonwhitespace", "extend_to_line_end"]
+
+A-c = "copy_selection_on_next_line" # replace helix `C` bind
+
+
+# X = ["goto_first_nonwhitespace", "extend_to_line_end"]
+# TODO
+# teaches you to use select_mode when using x; X prepares for going up
+# x = ["extend_line", "select_mode"]
+# X = ["extend_line", "select_mode", "flip_selections"]
 # TODO trying this out to handle vim's D/C usecases. t<enter> is the helix way
-L = ["collapse_selection", "extend_to_line_end"]
-# TODO trying this out
+# L = ["collapse_selection", "extend_to_line_end"]
+
+# TODO trying this out; do I need these, or should I just swap to select mode?
 C-j = ["select_line_below"]
 C-k = ["select_line_above"]
 
