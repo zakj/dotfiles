@@ -63,7 +63,7 @@ if status is-interactive
     # Allow for easier upward directory traversal.
     function _rationalise-dot
         set -l words (string split ' ' (commandline --cut-at-cursor))
-        if string match -q --regex '^(\.\./)*\.\.$' $words[-1]
+        if string match -q --regex '^(\.\./)*\.\.$' -- $words[-1]
             commandline --insert /..
         else
             commandline --insert .
