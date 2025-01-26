@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-.PHONY: bootstrap ssh-key all clean
+.PHONY: bootstrap ssh-key lsp all clean
 BREW := /opt/homebrew/bin
 
 bootstrap:
@@ -15,6 +15,11 @@ bootstrap:
 ssh-key: $(HOME)/.ssh/id_ed25519
 $(HOME)/.ssh/id_ed25519:
 	ssh-keygen -t ed25519 -a 100
+
+lsp:
+	$(BREW)/brew bundle --file=Brewfile.lsp
+	# install prettier plugins in local packages: prettier-plugin-astro prettier-plugin-svelte
+	npm install --global --no-fund @astrojs/language-server svelte-language-server
 
 all:
 	$(BREW)/stow --target=$$HOME --dotfiles --no-folding --restow src

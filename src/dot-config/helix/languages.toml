@@ -20,7 +20,7 @@ config.environment = "node"
 [[language]]
 name = "python"
 auto-format = true
-language-servers = ["pyright", "ruff"]
+language-servers = ["basedpyright", "ruff"]
 
 # TODO auto-organize imports on save
 [language-server.ruff]

@@ -1,0 +1,5 @@
+brew "basedpyright"
+brew "prettier"
+brew "ruff"
+brew "taplo"
+brew "vscode-langservers-extracted"
