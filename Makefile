@@ -3,11 +3,12 @@
 BREW := /opt/homebrew/bin
 
 bootstrap:
-	xcode-select --install
-	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	test -d $(BREW) || /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	$(BREW)/brew bundle --no-lock
-	grep -q $(BREW)/fish /etc/shells || (echo $(BREW)/fish | sudo tee -a /etc/shells)
-	chsh -s $(BREW)/fish
+	if ! grep -q $(BREW)/fish /etc/shells; then \
+		echo $(BREW)/fish | sudo tee -a /etc/shells; \
+		chsh -s $(BREW)/fish; \
+	fi
 	sudo $(BREW)/puma-dev -setup
 	$(BREW)/puma-dev -install
 

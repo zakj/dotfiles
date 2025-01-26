@@ -1,7 +1,10 @@
+tap "puma/puma"
+
 brew "fd"
 brew "fish"
 brew "gh"
-brew "git-lfs"
+brew "helix"
+brew "jj"
 brew "mas"
 brew "neovim"
 brew "node"
@@ -17,12 +20,11 @@ brew "yt-dlp"
 
 cask "1password"
 cask "arc"
+cask "ghostty"
 cask "hammerspoon"
 cask "imageoptim"
-cask "kitty"
 cask "obsidian"
 cask "raycast"
-cask "zed"
 
 # Optional.
 # cask "appcleaner"

@@ -1,14 +1,16 @@
 # Configuring a new machine
 
 ```
+xcode-select --install
 make ssh-key    # generate a new ssh key
 make bootstrap  # install homebrew and formulae
 make            # link dotfiles
 ```
 
-## Sonoma
+## Sequoia
 
 * System settings:
+    * Appearance: Show scroll bars: When scrolling
     * Desktop & Dock: Automatically hide and show the Dock
     * Desktop & Dock: Turn off "Show suggested and recent apps Dock"
     * Keyboard: Text Input: Turn off "Correct spelling automatically"
