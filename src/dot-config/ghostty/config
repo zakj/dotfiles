@@ -7,6 +7,7 @@ window-step-resize = true
 adjust-cursor-thickness = 2
 macos-titlebar-proxy-icon = hidden
 mouse-hide-while-typing = true
+mouse-scroll-multiplier = 0.2  # default is 5 lines, we want 1
 quit-after-last-window-closed = true
 # TODO: find a better way to disable the blinking cursor;
 # `cursor-style-blink = false` doesn't seem to work.
