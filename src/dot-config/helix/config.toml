@@ -4,6 +4,7 @@ theme = "mourning"
 bufferline = "multiple"
 color-modes = true
 end-of-line-diagnostics = "hint" # TODO may be enabled by default in future
+lsp.auto-signature-help = false
 scroll-lines = 1
 soft-wrap.enable = true
 
@@ -44,15 +45,6 @@ D = ["collapse_selection", "extend_to_line_end", "delete_selection"]
 
 A-c = "copy_selection_on_next_line" # replace helix `C` bind
 
-
-# X = ["goto_first_nonwhitespace", "extend_to_line_end"]
-# TODO
-# teaches you to use select_mode when using x; X prepares for going up
-# x = ["extend_line", "select_mode"]
-# X = ["extend_line", "select_mode", "flip_selections"]
-# TODO trying this out to handle vim's D/C usecases. t<enter> is the helix way
-# L = ["collapse_selection", "extend_to_line_end"]
-
 # TODO trying this out; do I need these, or should I just swap to select mode?
 C-j = ["select_line_below"]
 C-k = ["select_line_above"]
@@ -62,3 +54,4 @@ x = ":buffer-close"
 
 [keys.insert]
 Cmd-s = ":write"
+C-c = "signature_help"
