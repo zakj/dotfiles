@@ -42,6 +42,8 @@ C = ["collapse_selection", "extend_to_line_end", "change_selection"]
 D = ["collapse_selection", "extend_to_line_end", "delete_selection"]
 "{" = ["goto_prev_paragraph", "collapse_selection"]
 "}" = ["goto_next_paragraph", "collapse_selection"]
+C-e = "scroll_down"
+C-y = "scroll_up"
 
 A-c = "copy_selection_on_next_line" # replace helix `C` bind
 
