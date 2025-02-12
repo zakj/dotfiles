@@ -17,7 +17,7 @@ end
 
 hs.hotkey.setLogLevel('warning')
 
-local defaultWebHandler = hs.application.get(hs.urlevent.getDefaultHandler('http')):name()
+local defaultWebHandler = hs.application.nameForBundleID(hs.urlevent.getDefaultHandler('http'))
 
 local function withFocusedWindow(...)
   local varargs = { ... }
@@ -33,7 +33,7 @@ local function launch(name)
 end
 
 local function toggleGhosttyQuickTerminal()
-  hs.eventtap.keyStroke({}, 'f19', 0, hs.appfinder.appFromName('Ghostty'))
+  hs.eventtap.keyStroke({}, 'f19', 0, hs.application.get('Ghostty'))
 end
 
 
