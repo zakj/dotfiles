@@ -40,8 +40,10 @@ G = "goto_file_end"
 C-r = "redo"
 C = ["collapse_selection", "extend_to_line_end", "change_selection"]
 D = ["collapse_selection", "extend_to_line_end", "delete_selection"]
-"{" = ["goto_prev_paragraph", "collapse_selection"]
-"}" = ["goto_next_paragraph", "collapse_selection"]
+# "{" = ["goto_prev_paragraph", "collapse_selection"]
+# "}" = ["goto_next_paragraph", "collapse_selection"]
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
 C-e = "scroll_down"
 C-y = "scroll_up"
 
