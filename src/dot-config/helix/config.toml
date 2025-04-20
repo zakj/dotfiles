@@ -59,6 +59,7 @@ C-j = ["select_line_below"]
 C-k = ["select_line_above"]
 
 [keys.normal.space]
+o = "file_picker_in_current_buffer_directory"
 x = ":buffer-close"
 
 [keys.normal.Z]
