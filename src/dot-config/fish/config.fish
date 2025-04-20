@@ -21,7 +21,7 @@ if status is-interactive
     # Configure some environment variables for other utilities.
     if not set -q EDITOR
         set -l editors (
-            path filter -x (which hx) (which nvim) (which vim) (which vi) | path basename
+            for x in hx nvim vim vi; which $x; end | path filter -x | path basename
         )
         set -x EDITOR $editors[1]
     end
