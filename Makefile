@@ -18,7 +18,7 @@ $(HOME)/.ssh/id_ed25519:
 
 lsp:
 	$(BREW)/brew bundle --file=Brewfile.lsp
-	# install prettier plugins in local packages: prettier-plugin-astro prettier-plugin-svelte
+	# install prettier plugins in local packages: prettier-plugin-astro prettier-plugin-svelte prettier-plugin-vue
 	npm install --global --no-fund @astrojs/language-server svelte-language-server
 
 all:
