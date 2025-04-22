@@ -4,7 +4,7 @@ BREW := /opt/homebrew/bin
 
 bootstrap:
 	test -d $(BREW) || /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	$(BREW)/brew bundle --no-lock
+	$(BREW)/brew bundle
 	if ! grep -q $(BREW)/fish /etc/shells; then \
 		echo $(BREW)/fish | sudo tee -a /etc/shells; \
 		chsh -s $(BREW)/fish; \
