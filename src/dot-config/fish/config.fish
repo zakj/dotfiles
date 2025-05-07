@@ -29,6 +29,7 @@ if status is-interactive
     set -x RIPGREP_CONFIG_PATH ~/.config/ripgrep.conf
 
     # Abbreviations are like bash/zsh aliases, but expand in place.
+    abbr --add gf --command jj git fetch
     abbr --add np --function _node-package-managers
     abbr --add psg pgrep -lf
     abbr --add vi --function _EDITOR
