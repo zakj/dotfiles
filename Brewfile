@@ -23,6 +23,7 @@ cask "arc"
 cask "ghostty"
 cask "hammerspoon"
 cask "imageoptim"
+cast "logi-options+"
 cask "obsidian"
 cask "raycast"
 
