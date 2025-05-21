@@ -68,3 +68,7 @@ Z = ":write-quit"
 [keys.insert]
 Cmd-s = ":write"
 C-c = "signature_help"
+
+[keys.select]
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
