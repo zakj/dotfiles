@@ -11,7 +11,13 @@ private-commits = 'description(glob:"private:*")'
 
 [colors]
 # https://github.com/jj-vcs/jj/blob/main/cli/src/config/colors.toml
-"diff token" = {underline = false}
+"diff token" = { underline = false }
+
+[aliases]
+tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
+
+[revset-aliases]
+'closest_bookmark(to)' = 'heads(::to & bookmarks())'
 
 [template-aliases]
 prompt = '''
