@@ -31,17 +31,7 @@ local function getLayout()
   local layout = {
     Arc = { x = 0, y = 0, w = browserW, h = frame.h },
     Finder = { w = 900, h = 450 },
-    -- TODO: improve this once Ghostty has better resize handling
-    -- In the meantime, don't change the window size; just center in the space
-    -- next to the browser.
-    Ghostty = function(_, win)
-      local winSize = win:size()
-      local extraW = frame.w - browserW - winSize.w
-      local extraH = frame.h - winSize.h
-      -- Right-align if the window is too big for the space.
-      if extraW < 0 then extraW = extraW * 2 end
-      return { x = browserW + extraW / 2, y = extraH / 2, w = winSize.w, h = winSize.h }
-    end,
+    Ghostty = { x = browserW + gap, y = gap, w = frame.w - browserW - gap * 2, h = frame.h - gap * 2 },
     Messages = { x = gap, y = frame.h - gap - 850, w = 850, h = 850 },
     Obsidian = {
       x = (frame.w - 900) / 2,
@@ -58,6 +48,7 @@ local function getLayout()
   if is.builtinDisplay then
     local secondaryW = 1100
     mainSlackRect = { x = 0, y = gap, w = secondaryW, h = frame.h - gap }
+    layout.Ghostty = { x = frame.w - secondaryW, y = 0, w = secondaryW, h = frame.h }
     layout.Zed = { x = frame.w - secondaryW, y = 0, w = secondaryW, h = frame.h }
   end
 
