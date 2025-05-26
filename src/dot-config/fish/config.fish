@@ -30,6 +30,7 @@ if status is-interactive
 
     # Abbreviations are like bash/zsh aliases, but expand in place.
     abbr --add gf --command jj git fetch
+    abbr --add cl --command jj --set-cursor git clone --colocate git@github.com:%.git
     abbr --add np --function _node-package-managers
     abbr --add psg pgrep -lf
     abbr --add vi --function _EDITOR
