@@ -11,7 +11,7 @@
 # Main window.
 "ui.background" = { bg = "decay" }
 "ui.text" = "bone"
-"ui.window" = "shroom"
+"ui.window" = "black"
 "ui.cursor" = { modifiers = ["reversed"] }
 "ui.cursor.match" = { fg = "talc", "modifiers" = ["bold"] }
 "ui.cursor.primary" = { fg = "black", bg = "lichen" }
