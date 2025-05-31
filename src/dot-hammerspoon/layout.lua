@@ -2,63 +2,73 @@
 
 local exports = {}
 
--- Used to detect the "main" Slack window.
-local function widestVisibleWindow(app)
+function exports.isBuiltinDisplay()
+  return hs.screen.mainScreen():name():find('Built-in', 1, true) == 1
+end
+
+function exports.isFirstUserDesktop()
+  local screen = hs.screen.mainScreen()
+  local userSpaces = hs.fnutils.filter(hs.spaces.spacesForScreen(screen), function(space)
+    return hs.spaces.spaceType(space) == "user"
+  end)
+  return hs.fnutils.indexOf(userSpaces, hs.spaces.activeSpaceOnScreen(screen)) == 1
+end
+
+-- Used to detect the "main" window for a given app.
+-- TODO: should be largestVisibleWindow, w * h
+function exports.widestVisibleWindow(app)
   return hs.fnutils.reduce(app:visibleWindows(), function(a, b)
     return a:frame().w > b:frame().w and a or b
   end)
 end
 
-local function activeSpaceIndex(screen)
-  local userSpaces = hs.fnutils.filter(hs.spaces.spacesForScreen(screen), function(space)
-    return hs.spaces.spaceType(space) == "user"
-  end)
-  hs.fnutils.indexOf(userSpaces, hs.spaces.activeSpaceOnScreen(screen))
-end
+local function normalizeRect(rect, winFrame, screenFrame)
+  assert(not (rect.right and rect.x and rect.w), 'right cannot be used with both x and w')
+  assert(not (rect.bottom and rect.y and rect.h), 'bottom cannot be used with both y and h')
+  assert(not (rect.x == 'center' and rect.right), 'x = center cannot be used with right')
+  assert(not (rect.y == 'center' and rect.bottom), 'y = center cannot be used with bottom')
 
-local function getLayout()
-  local screen = hs.screen.mainScreen()
-  local frame = screen:frame()
-  local gap = 10
-  local browserW = 1440
-
-  local is = {
-    builtinDisplay = screen:name():find('Built-in', 1, true) == 1,
-    firstScreen = activeSpaceIndex(screen) == 1,
+  -- Create our return value, falling back to winFrame for missing keys.
+  local rv = {
+    x = rect.x or winFrame.x,
+    y = rect.y or winFrame.y,
+    w = rect.w or winFrame.w,
+    h = rect.h or winFrame.h,
   }
 
-  local mainSlackRect = { x = 0, y = frame.h * 1 / 5, w = frame.w - browserW - gap, h = frame.h * 4 / 5 }
-  local layout = {
-    Arc = { x = 0, y = 0, w = browserW, h = frame.h },
-    Finder = { w = 900, h = 450 },
-    Ghostty = { x = browserW + gap, y = gap, w = frame.w - browserW - gap * 2, h = frame.h - gap * 2 },
-    Messages = { x = gap, y = frame.h - gap - 850, w = 850, h = 850 },
-    Obsidian = {
-      x = (frame.w - 900) / 2,
-      y = (frame.h - 1100) * 2 / 5,
-      w = 900,
-      h = 1100,
-    },
-    Slack = function(app, win)
-      return win == widestVisibleWindow(app) and mainSlackRect or { w = 550, h = 950 }
-    end,
-    Zed = { x = browserW + gap, y = gap, w = frame.w - browserW - gap * 2, h = frame.h - gap * 2 },
-  }
+  -- Normalize fractional values to a percentage of the screen size in the same dimension.
+  -- Needs to happen before centering.
+  if type(rv.x) == 'number' and rv.x > 0 and rv.x <= 1 then rv.x = rv.x * screenFrame.w end
+  if type(rv.y) == 'number' and rv.y > 0 and rv.y <= 1 then rv.y = rv.y * screenFrame.h end
+  -- TODO fractional right/bottom?
+  if rv.h and rv.h > 0 and rv.h <= 1 then rv.h = rv.h * screenFrame.h end
+  if rv.w and rv.w > 0 and rv.w <= 1 then rv.w = rv.w * screenFrame.w end
 
-  if is.builtinDisplay then
-    local secondaryW = 1100
-    mainSlackRect = { x = 0, y = gap, w = secondaryW, h = frame.h - gap }
-    layout.Ghostty = { x = frame.w - secondaryW, y = 0, w = secondaryW, h = frame.h }
-    layout.Zed = { x = frame.w - secondaryW, y = 0, w = secondaryW, h = frame.h }
+  -- Center.
+  if rect.x == 'center' then
+    rv.x = screenFrame.w / 2 - rv.w / 2
+  end
+  if rect.y == 'center' then
+    rv.y = screenFrame.h / 2 - rv.h / 2
   end
 
-  return layout
-end
+  -- Convert bottom/right values to x/y/w/h.
+  if rect.right then
+    if rect.x then
+      rv.w = screenFrame.w - rect.right - rect.x
+    elseif rect.w then
+      rv.x = screenFrame.w - rect.right - (rect.w or winFrame.w)
+    end
+  end
+  if rect.bottom then
+    if rect.y then
+      rv.h = screenFrame.h - rect.bottom - rect.y
+    elseif rect.h then
+      rv.y = screenFrame.h - rect.bottom - (rect.h or winFrame.h)
+    end
+  end
 
-
--- TODO refactor
-function exports.autolayout()
-  exports.apply(getLayout())
+  return rv
 end
 
 -- screen:localToAbsolute uses fullFrame, which we don't want here.
@@ -76,14 +86,16 @@ end
 function exports.apply(layout)
   local screenFrame = hs.screen.mainScreen():frame()
   for appName, rectOrFn in pairs(layout) do
-    local app = hs.application.get(appName)
-    if app then
+    local app = hs.application.find(appName, true)
+    if app and app:isRunning() then
       -- TODO: visibleWindows includes from all active spaces, not just current screen
       for _, win in pairs(app:visibleWindows()) do
         local rect = rectOrFn
         if type(rectOrFn) == "function" then
           rect = rectOrFn(app, win)
         end
+        rect = normalizeRect(rect, win:frame(), screenFrame)
+        -- TODO should we cap size to screen frame?
         if rect.x ~= nil and rect.y ~= nil then
           win:setFrame(localToAbsolute(rect, screenFrame))
         else
@@ -92,76 +104,6 @@ function exports.apply(layout)
       end
     end
   end
-end
-
-function exports.staggerWindows(app)
-  local staggerSize = 22
-  local topLeft
-  hs.fnutils.each(app:visibleWindows(), function(w)
-    if w:size().h == 1 then return end -- ignore magic Chrome windows
-    if topLeft == nil then
-      topLeft = w:topLeft()
-    else
-      topLeft.x = topLeft.x + staggerSize
-      w:setTopLeft(topLeft)
-    end
-  end)
-end
-
-function exports.moveCenter(win)
-  local frame = win:frame()
-  local screen = win:screen():fullFrame()
-  frame.x = (screen.w - frame.w) / 2 + screen.x
-  frame.y = (screen.h - frame.h) / 3 + screen.y
-  win:setTopLeft(frame)
-end
-
-function exports.moveTL(win)
-  local frame = win:frame()
-  local screen = win:screen():frame()
-  frame.x = screen.x
-  frame.y = screen.y
-  win:setFrame(frame)
-end
-
-function exports.moveBL(win)
-  local frame = win:frame()
-  local screen = win:screen():frame()
-  frame.x = screen.x
-  frame.y = screen.y + screen.h - frame.h
-  win:setFrame(frame)
-end
-
-function exports.moveTR(win)
-  local frame = win:frame()
-  local screen = win:screen():frame()
-  frame.x = screen.x + screen.w - frame.w
-  frame.y = screen.y
-  win:setFrame(frame)
-end
-
-function exports.moveBR(win)
-  local frame = win:frame()
-  local screen = win:screen():frame()
-  frame.x = screen.x + screen.w - frame.w
-  frame.y = screen.y + screen.h - frame.h
-  win:setFrame(frame)
-end
-
-function exports.maximizeV(win)
-  local frame = win:frame()
-  local screen = win:screen():frame()
-  frame.y = screen.y
-  frame.h = screen.h
-  win:setFrame(frame)
-end
-
-function exports.sizeQuarter(win)
-  local frame = win:frame()
-  local screen = win:screen():frame()
-  frame.w = screen.w / 2
-  frame.h = screen.h / 2
-  win:setFrame(frame)
 end
 
 return exports
