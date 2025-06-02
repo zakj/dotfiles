@@ -6,6 +6,7 @@ window-step-resize = true
 
 adjust-cursor-thickness = 2
 macos-titlebar-proxy-icon = hidden
+macos-titlebar-style = "hidden"
 mouse-hide-while-typing = true
 # default is 5 lines, we want 1
 mouse-scroll-multiplier = 0.2
@@ -14,10 +15,12 @@ quit-after-last-window-closed = true
 # `cursor-style-blink = false` doesn't seem to work.
 shell-integration-features = no-cursor
 
-keybind = super+ctrl+down=resize_split:down,18
-keybind = super+ctrl+up=resize_split:up,18
-keybind = super+shift+ctrl+down=resize_split:down,90
-keybind = super+shift+ctrl+up=resize_split:up,90
+# Zellij
+keybind = cmd+shift+left_bracket=unbind
+keybind = cmd+shift+right_bracket=unbind
+keybind = cmd+left_bracket=unbind
+keybind = cmd+right_bracket=unbind
+keybind = cmd+t=unbind
 
 # F19 is emitted by Hammerspoon on hyper-`.
 keybind = f19=toggle_quick_terminal

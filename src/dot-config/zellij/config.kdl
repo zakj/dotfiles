@@ -6,18 +6,9 @@ keybinds clear-defaults=true {
         bind "Super Shift ]" { GoToNextTab; }
         bind "Super [" { FocusPreviousPane; }
         bind "Super ]" { FocusNextPane; }
-        // TODO: temp until I add ghostty overrides
-        bind "Alt h" { MoveFocusOrTab "Left"; }
-        bind "Alt l" { MoveFocusOrTab "Right"; }
-        bind "Alt j" { MoveFocus "Down"; }
-        bind "Alt k" { MoveFocus "Up"; }
-        // END
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt =" { Resize "Increase"; }
         bind "Ctrl g" { SwitchToMode "Pane"; }
-    }
-
-    locked {
     }
 
     shared_except "locked" {
@@ -25,11 +16,18 @@ keybinds clear-defaults=true {
     }
 
     pane {
+        bind "p" { TogglePanePinned; SwitchToMode "Locked"; }
         bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
+        bind "t" { NewTab; SwitchToMode "Locked"; }
+        bind "1" { SwitchToMode "Locked"; GoToTab 1; }
+        bind "2" { SwitchToMode "Locked"; GoToTab 2; }
+        bind "3" { SwitchToMode "Locked"; GoToTab 3; }
+        bind "4" { SwitchToMode "Locked"; GoToTab 4; }
         bind "h" { Resize "Increase Left"; }
         bind "j" { Resize "Increase Down"; }
         bind "k" { Resize "Increase Up"; }
         bind "l" { Resize "Increase Right"; }
+        bind "Tab" { ToggleTab; SwitchToMode "Locked"; }
         bind "Ctrl q" { Quit; }
     }
 
@@ -46,15 +44,15 @@ load_plugins {
 plugins {
     zjstatus location="https://github.com/dj95/zjstatus/releases/download/v0.21.0/zjstatus.wasm" {
         format_left "{mode}{tabs}"
-        color_active "#98c379"
-        color_inactive "#abb2bf"
         color_mode "magenta"
-        //       
+        color_bg "#000000"
+        color_active "#98c379"
+        color_normal "#abb2bf"
         mode_locked     "#[]   "
         mode_pane       "#[fg=$mode,bold] ZELLIJ "
         mode_rename_tab "#[fg=$mode,bold] RENAME "
-        tab_active "#[bg=$active,fg=#000000] #[bg=$active,fg=#000000,bold]{name} #[bg=#000000,fg=$active]"
-        tab_normal "#[bg=$inactive,fg=#000000] #[bg=$inactive,fg=#000000,bold]{name} #[bg=#000000,fg=$inactive]"
+        tab_active "#[bg=$active,fg=$bg] #[bg=$active,fg=$bg,bold]{name} #[bg=$bg,fg=$active]"
+        tab_normal "#[bg=$normal,fg=$bg] #[bg=$normal,fg=$bg,bold]{name} #[bg=$bg,fg=$normal]"
     }
 }
 

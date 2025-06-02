@@ -60,9 +60,11 @@ D = ":sh echo '-> t<ret>d'"
 G = [":sh echo '-> ge'", "goto_line"] # TODO remove this, it's built in
 
 [keys.normal.space]
-o = ":sh echo '--> <space>F'"                 # TODO remove; this is built in
+o = ":sh echo '--> <space>F'" # TODO remove; this is built in
+# TODO this steps on the jumplist picker... but I never use it
+j = ":sh zellij run -ic -n jjui -- sh -c jjui" # TODO would be nice not to rely on zellij for this. also evaluate the key
 x = ":buffer-close"
-F = "file_picker_in_current_buffer_directory" # TODO consider: default is current_directory, but this is more useful
+F = "file_picker_in_current_buffer_directory"  # TODO consider: default is current_directory, but this is more useful
 
 [keys.insert]
 Cmd-s = ":write"
