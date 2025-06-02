@@ -21,6 +21,9 @@ keybind = cmd+left_bracket=unbind
 keybind = cmd+right_bracket=unbind
 keybind = cmd+t=unbind
 
+# For Claude.
+keybind = shift+enter=text:\n
+
 # F19 is emitted by Hammerspoon on hyper-`.
 keybind = f19=toggle_quick_terminal
 quick-terminal-position = center
