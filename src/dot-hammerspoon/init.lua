@@ -1,18 +1,15 @@
-local ctrl = require 'ctrl'
 local hyper = require 'hyper'
 local layout = require 'layout'
+local modtap = require 'modtap'
 local reload = require 'reload'
 local toast = require 'toast'
 
 hyper:start()
 reload:start()
 
-local hasExternalKeyboard = hs.fnutils.some(hs.usb.attachedDevices(), function(device)
-  -- This keyboard is programmable, and has ctrl/esc functionality in firmware.
-  return device.productName == 'Keychron K7 Pro'
-end)
-if not hasExternalKeyboard then
-  ctrl:start()
+local function isProgrammableKeyboard(device) return device.productName == 'Keychron K7 Pro' end
+if not hs.fnutils.some(hs.usb.attachedDevices(), isProgrammableKeyboard) then
+  modtap:start('ctrl', {}, 'escape', 0.3)
 end
 
 hs.hotkey.setLogLevel('warning')
@@ -37,16 +34,6 @@ local function toggleGhosttyQuickTerminal()
 end
 
 
-local function toggleCtrlEscOverload()
-  if ctrl:isEnabled() then
-    ctrl:stop()
-    toast('ctrl/esc disabled', 3)
-  else
-    ctrl:start()
-    toast('ctrl/esc enabled', 3)
-  end
-end
-
 -- TODO: just use raycast with single-character aliases?
 hs.hotkey.bind(hyper.mods, '`', toggleGhosttyQuickTerminal)
 hs.hotkey.bind(hyper.mods, 'f', launch(defaultWebHandler))
@@ -55,7 +42,6 @@ hs.hotkey.bind(hyper.mods, 'm', launch('Messages'))
 hs.hotkey.bind(hyper.mods, 'n', launch('Obsidian'))
 hs.hotkey.bind(hyper.mods, 't', launch('Ghostty'))
 hs.hotkey.bind(hyper.mods, 'v', launch('Zed'))
-hs.hotkey.bind(hyper.mods, 'x', toggleCtrlEscOverload)
 
 hs.urlevent.bind('autolayout', layout.autolayout)
 hs.hotkey.bind(hyper.mods, 'j', function()
