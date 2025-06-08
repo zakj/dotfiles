@@ -1,10 +1,11 @@
 add_newline = false
 format = '$character$directory% '
 right_format = """
-(${custom.jj})\
 $git_status\
 $git_state\
-$git_branch"""
+$git_branch\
+(${custom.jj})
+"""
 
 [custom.jj]
 when = 'jj root'

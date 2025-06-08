@@ -20,9 +20,17 @@ tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
 'closest_bookmark(to)' = 'heads(::to & bookmarks())'
 
 [template-aliases]
-prompt = '''
+prompt_change_id = '''
   separate(" ",
     if(empty, label("empty", "∅")),
     concat(change_id.shortest(4).prefix(), change_id.shortest(4).rest()),
   )
 '''
+prompt_desc = '''
+  separate(
+    " ",
+    label("elided", truncate_end(26, description.first_line(), "…")),
+    if(empty, label("empty", "∅")),
+  )
+'''
+prompt = 'prompt_desc'
