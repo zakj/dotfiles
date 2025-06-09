@@ -1,0 +1,589 @@
+local Panel = require("panel")
+local pluck = require('util').pluck
+
+-- This is what we expect the user to pass in.
+---@alias KeyMap {
+---  [1]: string,
+---  desc?: string,
+---  app?: string,
+---  url?: string,
+---  fn?: function,
+---  children?: KeyMap[],
+---}
+
+-- The primary datastructure for managing navigation.
+---@alias Node {
+---  key: string,
+---  path: string,
+---  parent: Node,
+---  order: number,
+---  children: Node[],
+---  desc: string,
+---  fn: function,
+---}
+
+---@class LeaderKey
+---@field activationMods string[]
+---@field activationKeyCode number
+---@field navigator Navigator
+---@field indicator Indicator
+---@field infoPanel InfoPanel
+---@field state State
+---@field stateMap table
+---@field keyDownTap any
+---@field clickTap any
+local LeaderKey = {}
+LeaderKey.__index = LeaderKey
+
+-- TODO: maybe parsing should live elsewhere?
+-- Parses keymap into a tree of Nodes and Manages navigation.
+---@class Navigator
+---@field root Node
+---@field current Node|nil
+local Navigator = {}
+Navigator.__index = Navigator
+
+-- Simple UI to show current navigation state.
+---@class Indicator
+---@field panel Panel
+local Indicator = {}
+Indicator.__index = Indicator
+
+-- Helix-style auto-info.
+---@class InfoPanel
+---@field panel Panel
+---@field autoShowTimer any
+local InfoPanel = {}
+InfoPanel.__index = InfoPanel
+
+---@enum State
+local State = {
+  INACTIVE = {},
+  ACTIVE = {},
+  ACTIVE_INFO = {},
+}
+
+---@enum Message
+local Message = {
+  ENTER = {},
+  EXIT = {},
+  NAVIGATE = {},
+  EXECUTE = {},
+  GO_BACK = {},
+  TOGGLE_INFO = {},
+  INVALID_KEY = {},
+  INFO_TIMER = {},
+  CLICK_OUTSIDE = {},
+}
+
+---event:getFlags():containExactly() doesn't handle mod aliases for us.
+---@param mods (string[] | string)
+---@return string[]
+local function normalizeMods(mods)
+  local modAliases = {
+    { 'cmd', 'command', '⌘' },
+    { 'ctrl', 'control', '⌃' },
+    { 'alt', 'option', '⌥' },
+    { 'shift', '⇧' }
+  }
+
+  local result = {}
+  local input = type(mods) == "table" and table.concat(mods, "-") or tostring(mods)
+
+  for _, aliases in ipairs(modAliases) do
+    if hs.fnutils.some(aliases, function(alias) return input:find(alias) end) then
+      table.insert(result, aliases[1])
+    end
+  end
+
+  return result
+end
+
+---@param mods (string | string[])
+---@param key string
+---@param keymap KeyMap
+---@return LeaderKey
+function LeaderKey.new(mods, key, keymap)
+  local self = setmetatable({}, LeaderKey)
+
+  self.activationMods = normalizeMods(mods)
+  self.activationKeyCode = hs.keycodes.map[key]
+  self.navigator = Navigator.new(keymap)
+  self.indicator = Indicator.new()
+  self.infoPanel = InfoPanel.new()
+  self.state = State.INACTIVE
+  self.stateMap = self:_createStateMap()
+
+  -- I'd love to toggle here instead, but we consume key events before the
+  -- hotkey has a chance to fire. we have to detect the mods/key manually in our
+  -- key event handler.
+  hs.hotkey.bind(mods, key, function() self:_dispatch(Message.ENTER) end)
+
+  self.keyDownTap = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
+    return self:_onKeyEvent(event)
+  end)
+
+  self.clickTap = hs.eventtap.new({ hs.eventtap.event.types.leftMouseDown }, function(event)
+    return self:_onClickEvent(event)
+  end)
+
+  return self
+end
+
+function LeaderKey:_createStateMap()
+  local function exitToInactive()
+    self.navigator:stop()
+    self.keyDownTap:stop()
+    self.clickTap:stop()
+    self.infoPanel:cancelAutoShow()
+    self.indicator:hide()
+    self.infoPanel:hide()
+    return State.INACTIVE
+  end
+
+  return {
+    [State.INACTIVE] = {
+      [Message.ENTER] = function()
+        self.navigator:start()
+        self.keyDownTap:start()
+        self.clickTap:start()
+        self.indicator:show(pluck(self.navigator:getPath(), "key"))
+        self.infoPanel:startAutoShow(1, function()
+          if self.navigator.current then
+            self:_dispatch(Message.INFO_TIMER)
+          end
+        end)
+        return State.ACTIVE
+      end,
+    },
+
+    [State.ACTIVE] = {
+      [Message.EXIT] = exitToInactive,
+      [Message.CLICK_OUTSIDE] = exitToInactive,
+      [Message.EXECUTE] = function(node)
+        node.fn()
+        return exitToInactive()
+      end,
+      [Message.NAVIGATE] = function()
+        self.indicator:update(pluck(self.navigator:getPath(), "key"))
+      end,
+      [Message.GO_BACK] = function()
+        if self.navigator:back() then
+          self.indicator:update(pluck(self.navigator:getPath(), "key"))
+        end
+      end,
+      [Message.TOGGLE_INFO] = function()
+        local children = self.navigator:getChildren()
+        local path = pluck(self.navigator:getPath(), "desc")
+        self.infoPanel:show(children, path, self.indicator)
+        return State.ACTIVE_INFO
+      end,
+      [Message.INVALID_KEY] = function()
+        local children = self.navigator:getChildren()
+        local path = pluck(self.navigator:getPath(), "desc")
+        self.infoPanel:show(children, path, self.indicator)
+        self.indicator:shake()
+        return State.ACTIVE_INFO
+      end,
+      [Message.INFO_TIMER] = function()
+        local children = self.navigator:getChildren()
+        local path = pluck(self.navigator:getPath(), "desc")
+        self.infoPanel:show(children, path, self.indicator)
+        return State.ACTIVE_INFO
+      end,
+    },
+
+    [State.ACTIVE_INFO] = {
+      [Message.EXIT] = exitToInactive,
+      [Message.CLICK_OUTSIDE] = exitToInactive,
+      [Message.EXECUTE] = function(node)
+        node.fn()
+        return exitToInactive()
+      end,
+      [Message.NAVIGATE] = function()
+        self.indicator:update(pluck(self.navigator:getPath(), "key"))
+        local children = self.navigator:getChildren()
+        local path = pluck(self.navigator:getPath(), "desc")
+        self.infoPanel:update(children, path)
+      end,
+      [Message.GO_BACK] = function()
+        if self.navigator:back() then
+          self.indicator:update(pluck(self.navigator:getPath(), "key"))
+          local children = self.navigator:getChildren()
+          local path = pluck(self.navigator:getPath(), "desc")
+          self.infoPanel:update(children, path)
+        end
+      end,
+      [Message.TOGGLE_INFO] = function()
+        self.infoPanel:hide()
+        return State.ACTIVE
+      end,
+      [Message.INVALID_KEY] = function()
+        self.indicator:shake()
+      end,
+    },
+  }
+end
+
+---@param message table
+---@param ... any
+function LeaderKey:_dispatch(message, ...)
+  local handler = self.stateMap[self.state][message]
+  if handler then
+    local newState = handler(...)
+    if newState then
+      self.state = newState
+    end
+  end
+end
+
+function LeaderKey:_onKeyEvent(event)
+  local keyCode = event:getKeyCode()
+  local flags = event:getFlags()
+  self.infoPanel:onUserActivity()
+
+  if not self.navigator.current then
+    -- Cannot assert() or error() for this, or we'll consume the event and
+    -- potentially disable the keyboard. Should never happen.
+    print('!!! leaderkey received event while inactive')
+    return false
+  end
+
+  -- This handler fires before our activation hotkey bind, so we have to handle
+  -- toggling manually.
+  if keyCode == self.activationKeyCode and flags:containExactly(self.activationMods) then
+    self:_dispatch(Message.EXIT)
+    return true
+  end
+
+  if keyCode == hs.keycodes.map.escape then
+    self:_dispatch(Message.EXIT)
+    return true
+  end
+
+  if keyCode == hs.keycodes.map.delete then
+    self:_dispatch(Message.GO_BACK)
+    return true
+  end
+
+  -- TODO handle shifted keys
+  local key = hs.keycodes.map[keyCode]
+  if not key then
+    return true
+  end
+
+  if key == '/' and flags:contain({ 'shift' }) then -- `?`
+    self:_dispatch(Message.TOGGLE_INFO)
+    return true
+  end
+
+  local node = self.navigator:go(key)
+  if node then
+    if next(node.children) then
+      self:_dispatch(Message.NAVIGATE)
+    else
+      self:_dispatch(Message.EXECUTE, node)
+    end
+  else
+    self:_dispatch(Message.INVALID_KEY)
+  end
+
+  return true
+end
+
+function LeaderKey:_onClickEvent(event)
+  local clickPos = event:location()
+  local clickedOnPanel = (
+    self.indicator:containsPoint(clickPos.x, clickPos.y) or
+    self.infoPanel:containsPoint(clickPos.x, clickPos.y))
+  if not clickedOnPanel then self:_dispatch(Message.CLICK_OUTSIDE) end
+  return clickedOnPanel
+end
+
+---@param keymap KeyMap[]
+---@return Navigator
+function Navigator.new(keymap)
+  local self = setmetatable({}, Navigator)
+  self.root = { path = "", children = {} }
+  self.current = nil
+  self:_buildNodes(keymap, self.root)
+  return self
+end
+
+---@param keymap KeyMap[]
+---@param parent Node
+function Navigator:_buildNodes(keymap, parent)
+  for i, item in ipairs(keymap) do
+    local key = item[1]
+    local path = parent.path .. key
+
+    local node = {
+      key = key,
+      path = path,
+      parent = parent,
+      order = i,
+      children = {},
+      desc = item.desc or item.app or "",
+    }
+
+    -- Normalize all actions to fn
+    if item.fn then
+      node.fn = item.fn
+    elseif item.app then
+      node.fn = function() hs.application.launchOrFocus(item.app) end
+    elseif item.url then
+      node.fn = function() hs.urlevent.openURL(item.url) end
+    end
+
+    parent.children[key] = node
+
+    if item.children then
+      self:_buildNodes(item.children, node)
+    end
+  end
+end
+
+function Navigator:start()
+  self.current = self.root
+end
+
+function Navigator:stop()
+  self.current = nil
+end
+
+-- Navigate to the node represented by the given key, or nil if that doesn't exist..
+---@param key string
+---@return Node|nil
+function Navigator:go(key)
+  if not self.current then return nil end
+
+  local child = self.current.children[key]
+  if not child then return nil end
+
+  self.current = child
+  return child
+end
+
+-- Navigate one layer up the stack; returns whether it was successful.
+---@return boolean
+function Navigator:back()
+  if self.current and self.current.parent then
+    self.current = self.current.parent
+    return true
+  end
+  return false
+end
+
+---@return Node[]
+function Navigator:getPath()
+  local path = {}
+  local current = self.current
+  while current and current ~= self.root do
+    table.insert(path, 1, current)
+    current = current.parent
+  end
+  return path
+end
+
+---@return Node[]
+function Navigator:getChildren()
+  if not self.current then return {} end
+
+  local children = {}
+  for _, child in pairs(self.current.children) do
+    table.insert(children, child)
+  end
+
+  -- Maintain original order.
+  table.sort(children, function(a, b) return a.order < b.order end)
+  return children
+end
+
+---@return Indicator
+function Indicator.new()
+  local self = setmetatable({}, Indicator)
+  self.panel = Panel.new()
+  return self
+end
+
+---@param keyPath string[]
+function Indicator:show(keyPath)
+  self:update(keyPath)
+  self.panel:position(Panel.pos.center())
+  self.panel:show()
+end
+
+---@param keyPath string[]
+function Indicator:update(keyPath)
+  local text = #keyPath == 0 and "●" or table.concat(keyPath)
+  local size = 60
+
+  -- TODO/HACK: vertical centering is a nightmare, this 14 value is eyeballed
+  self.panel:setElements({
+    {
+      type = "text",
+      text = hs.styledtext.new(text, {
+        font = { name = hs.styledtext.defaultFonts.boldSystem.name, size = 24 },
+        color = { red = 0.1, green = 0.1, blue = 0.1, alpha = 1 },
+        paragraphStyle = { alignment = "center" }
+      }),
+      frame = { x = 0, y = 14, w = size, h = size - 14 }
+    }
+  }, { padding = 16 })
+end
+
+function Indicator:shake()
+  self.panel:animate(Panel.anim.shake)
+end
+
+---@return any|nil
+function Indicator:hide()
+  return self.panel:hide()
+end
+
+---@param x number
+---@param y number
+---@return boolean
+function Indicator:containsPoint(x, y)
+  return self.panel:containsPoint(x, y)
+end
+
+InfoPanel.style = {
+  keyBox = {
+    width = 24,
+    height = 24,
+    fillColor = { red = 1, green = 1, blue = 1, alpha = 0.2 },
+    borderRadius = 5,
+  },
+  keyText = {
+    size = 17,
+    font = hs.styledtext.defaultFonts.boldSystem,
+  },
+  descText = {
+    size = 13,
+    color = { red = 0.1, green = 0.1, blue = 0.1, alpha = 1 },
+    width = 200,
+  },
+  keySymbols = {
+    enter = "↩",
+    escape = "⎋",
+    space = "␣",
+    tab = "⇥",
+  }
+}
+
+---@return InfoPanel
+function InfoPanel.new()
+  local self = setmetatable({}, InfoPanel)
+  self.panel = Panel.new()
+  self.autoShowTimer = nil
+  return self
+end
+
+---@param children Node[]
+---@param path string[]
+---@param relativeTo Indicator
+function InfoPanel:show(children, path, relativeTo)
+  self:update(children, path)
+  self.panel:position(Panel.pos.relativeTo(relativeTo.panel, { x = 16 }))
+  self.panel:show()
+end
+
+---@param children Node[]
+---@param path string[]
+function InfoPanel:update(children, path)
+  local elements = {}
+  local yOffset = 0
+  local padding = 8
+
+  if path and #path > 0 then
+    table.insert(elements, {
+      type = "text",
+      text = table.concat(path, " › "),
+      textSize = 12,
+      textColor = { red = 0.4, green = 0.4, blue = 0.4, alpha = 1 },
+      textAlignment = "center",
+      frame = { x = 0, y = yOffset, w = InfoPanel.style.keyBox.width + padding + InfoPanel.style.descText.width, h = 16 }
+    })
+    yOffset = yOffset + 24
+  end
+
+  for _, child in ipairs(children) do
+    local displayKey = InfoPanel.style.keySymbols[child.key] or child.key
+
+    -- Key box background
+    table.insert(elements, {
+      type = "rectangle",
+      action = "fill",
+      fillColor = InfoPanel.style.keyBox.fillColor,
+      roundedRectRadii = { xRadius = InfoPanel.style.keyBox.borderRadius, yRadius = InfoPanel.style.keyBox.borderRadius },
+      frame = { x = 0, y = yOffset, w = InfoPanel.style.keyBox.width, h = InfoPanel.style.keyBox.height }
+    })
+
+    -- Key text
+    table.insert(elements, {
+      type = "text",
+      text = hs.styledtext.new(displayKey, {
+        font = InfoPanel.style.keyText.font,
+        paragraphStyle = { alignment = "center", minimumLineHeight = 20 }
+      }),
+      textSize = InfoPanel.style.keyText.size,
+      textAlignment = "center",
+      frame = { x = 0, y = yOffset + 2, w = InfoPanel.style.keyBox.width, h = InfoPanel.style.keyBox.height - 4 }
+    })
+
+    -- Description
+    table.insert(elements, {
+      type = "text",
+      text = next(child.children) and "› " .. child.desc or child.desc,
+      textSize = InfoPanel.style.descText.size,
+      textColor = InfoPanel.style.descText.color,
+      textAlignment = "left",
+      frame = { x = InfoPanel.style.keyBox.width + padding, y = yOffset + 4, w = InfoPanel.style.descText.width, h = 16 }
+    })
+
+    yOffset = yOffset + InfoPanel.style.keyBox.height + padding
+  end
+
+  self.panel:setElements(elements, { padding = 8 })
+end
+
+---@return any|nil
+function InfoPanel:hide()
+  return self.panel:hide()
+end
+
+---@return boolean
+function InfoPanel:isVisible()
+  return self.panel:isShowing()
+end
+
+---@param x number
+---@param y number
+---@return boolean
+function InfoPanel:containsPoint(x, y)
+  return self.panel:containsPoint(x, y)
+end
+
+---@param delay number
+---@param callback function
+function InfoPanel:startAutoShow(delay, callback)
+  self:cancelAutoShow()
+  self.autoShowTimer = hs.timer.doAfter(delay, function()
+    if callback then callback() end
+    self.autoShowTimer = nil
+  end)
+end
+
+function InfoPanel:cancelAutoShow()
+  if self.autoShowTimer then
+    self.autoShowTimer:stop()
+    self.autoShowTimer = nil
+  end
+end
+
+function InfoPanel:onUserActivity()
+  self:cancelAutoShow()
+end
+
+return LeaderKey

@@ -44,6 +44,14 @@ function exports.map(tbl, fn)
   return rv
 end
 
+function exports.pluck(list, key)
+  local rv = {}
+  for _, item in ipairs(list) do
+    table.insert(rv, item[key])
+  end
+  return rv
+end
+
 function exports.split(str, sep)
   local rv = {}
   for chunk in string.gmatch(str, '([^' .. sep .. ']+)') do

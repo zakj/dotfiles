@@ -11,7 +11,7 @@ end
 return {
   new = function(from, to, duration, fn)
     local delta = to - from
-    local onComplete = function() end
+    local onComplete = {}
     local start
     local timer
 
@@ -20,7 +20,9 @@ return {
       if elapsed >= duration then
         timer:stop()
         fn(to)
-        onComplete()
+        for _, completeFn in ipairs(onComplete) do
+          completeFn()
+        end
       else
         fn(smootherstep(0, duration, elapsed) * delta + from)
       end
@@ -33,7 +35,7 @@ return {
         timer:start()
       end,
       cancel = function(self) timer:stop() end,
-      onComplete = function(self, fn) onComplete = fn end,
+      onComplete = function(self, fn) table.insert(onComplete, fn) end,
       running = function(self) return timer:running() end,
     }
   end
