@@ -19,7 +19,7 @@ local externalLayout = {
   Finder = { w = 900, h = 450 },
   Ghostty = { x = browserW + gap, y = gap, right = gap, bottom = gap },
   Messages = { x = gap, bottom = gap, w = 850, h = 850 },
-  Obsidian = { w = 900, h = 1100, center = true },
+  Obsidian = { x = "center", y = "center", w = 900, h = 1100 },
   Slack = function(app, win)
     if win ~= layout.widestVisibleWindow(app) then
       return { x = 1100 + gap, y = 1 / 5, w = 550, h = 950 }
@@ -29,12 +29,12 @@ local externalLayout = {
 }
 
 local laptopLayout = hs.fnutils.copy(externalLayout)
-laptopLayout.Ghostty = {right = 0, w = 1100, y = 0, bottom = 0}
+laptopLayout.Ghostty = { right = 0, w = 1100, y = 0, bottom = 0 }
 laptopLayout.Slack = function(app, win)
   if win ~= layout.widestVisibleWindow(app) then
     return { x = 1100, y = gap, right = 0, bottom = 0 }
   end
-  return {x = 0, y = gap, w = 1100, bottom = 0 }
+  return { x = 0, y = gap, w = 1100, bottom = 0 }
 end
 
 hs.urlevent.bind('autolayout', function()

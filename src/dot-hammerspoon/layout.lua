@@ -55,14 +55,15 @@ local function normalizeRect(rect, winFrame, screenFrame)
   -- Convert bottom/right values to x/y/w/h.
   if rect.right then
     if rect.x then
-      rv.w = screenFrame.w - rect.right - rect.x
+      rv.w = screenFrame.w - rect.right - rv.x
     elseif rect.w then
+      -- TODO consider this logic, why check rect.w twice. rv.w? same in bottom below
       rv.x = screenFrame.w - rect.right - (rect.w or winFrame.w)
     end
   end
   if rect.bottom then
     if rect.y then
-      rv.h = screenFrame.h - rect.bottom - rect.y
+      rv.h = screenFrame.h - rect.bottom - rv.y
     elseif rect.h then
       rv.y = screenFrame.h - rect.bottom - (rect.h or winFrame.h)
     end
