@@ -1,10 +1,50 @@
 local layout = require 'layout'
+local LeaderKey = require 'leaderkey'
 local modtap = require 'modtap'
 local reload = require 'reload'
 local toast = require 'toast'
 
 modtap:start('cmd', { 'ctrl', 'option', 'cmd', 'shift' }, '1', 0.15)
 reload:start()
+
+-- TODO some raycast nits:
+-- running toggle system appearance loses focus on the frontmost window
+-- running window-specific window management commands can't find the frontmost window
+local focusGroup = {
+  { 'a', app = 'Arc' },
+  { 'f', app = 'Finder' },
+  { 'h', app = 'Hammerspoon' },
+  { 'l', app = 'Slack' },
+  { 'm', app = 'Messages' },
+  { 'n', app = 'Obsidian' },
+  { 't', app = 'Ghostty' },
+  { 'a', app = 'Arc' },
+}
+local systemGroup = {
+  { 'a', desc = 'Toggle system appearance', url = 'raycast://extensions/raycast/system/toggle-system-appearance' },
+  { 'c', desc = 'Toggle caffeinate',        url = 'raycast://extensions/mooxl/coffee/caffeinateToggle' },
+  { 'l', desc = 'Lock screen',              url = 'raycast://extensions/raycast/system/lock-screen' },
+  { ',', app = 'System Settings' },
+  { 'h', desc = 'Reload Hammerspoon',       fn = hs.reload },
+}
+local windowGroup = {
+  { 'a', desc = 'Auto layout',     url = 'hammerspoon://autolayout' },
+  { 'c', desc = 'Center',          url = 'raycast://customWindowManagementCommand?&name=Center%20(shifted%20up)&position=center&relativeYOffset=-0.05' },
+  { 'm', desc = 'Maximize',        url = 'raycast://extensions/raycast/window-management/maximize' },
+  { 'r', desc = 'Restore',         url = 'raycast://extensions/raycast/window-management/restore' },
+  { 's', desc = 'Reasonable size', url = 'raycast://customWindowManagementCommand?&name=Comfortable%20size&position=center&absoluteWidth=1320.0&absoluteHeight=945.0&relativeYOffset=-0.05' },
+  { 't', desc = 'Wide terminal',   url = 'hammerspoon://wide-terminal' },
+}
+local keymap = {
+  { 'e', desc = 'Emoji picker', url = "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols" },
+  { 't', app = 'Ghostty' },
+  { '`', desc = '→ quick', url = "hammerspoon://quick-terminal" },
+  { 'tab', desc = 'Window switcher', url = "raycast://extensions/raycast/navigation/switch-windows" },
+  { 'f', desc = "Focus", children = focusGroup },
+  { 's', desc = 'System', children = systemGroup, },
+  { 'w', desc = 'Windows', children = windowGroup },
+}
+LeaderKey.new({ 'cmd', 'option', 'shift' }, 'l', keymap)
 
 local function isProgrammableKeyboard(device) return device.productName == 'Keychron K7 Pro' end
 if not hs.fnutils.some(hs.usb.attachedDevices(), isProgrammableKeyboard) then
