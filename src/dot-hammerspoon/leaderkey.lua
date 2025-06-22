@@ -332,7 +332,10 @@ function Navigator:_buildNodes(keymap, parent)
     elseif item.app then
       node.fn = function() hs.application.launchOrFocus(item.app) end
     elseif item.url then
-      node.fn = function() hs.urlevent.openURL(item.url) end
+      -- hs.urlevent.openURL is the right thing here, but that foregrounds
+      -- whatever app handles the event, which means we lose focus for
+      -- non-interactive apps. Trying this as a workaround.
+      node.fn = function() hs.task.new('/usr/bin/open', nil, {'-g', item.url}):start() end
     end
 
     parent.children[key] = node

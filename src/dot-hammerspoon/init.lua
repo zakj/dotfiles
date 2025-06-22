@@ -7,9 +7,6 @@ local toast = require 'toast'
 modtap:start('cmd', { 'ctrl', 'option', 'cmd', 'shift' }, '1', 0.15)
 reload:start()
 
--- TODO some raycast nits:
--- running toggle system appearance loses focus on the frontmost window
--- running window-specific window management commands can't find the frontmost window
 local focusGroup = {
   { 'a', app = 'Arc' },
   { 'f', app = 'Finder' },
