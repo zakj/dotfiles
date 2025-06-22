@@ -147,7 +147,7 @@ function LeaderKey:_createStateMap()
         self.navigator:start()
         self.keyDownTap:start()
         self.clickTap:start()
-        self.indicator:show(pluck(self.navigator:getPath(), "key"))
+        self.indicator:show(self.navigator:getPath())
         self.infoPanel:startAutoShow(1, function()
           if self.navigator.current then
             self:_dispatch(Message.INFO_TIMER)
@@ -165,30 +165,27 @@ function LeaderKey:_createStateMap()
         return exitToInactive()
       end,
       [Message.NAVIGATE] = function()
-        self.indicator:update(pluck(self.navigator:getPath(), "key"))
+        self.indicator:update(self.navigator:getPath())
       end,
       [Message.GO_BACK] = function()
         if self.navigator:back() then
-          self.indicator:update(pluck(self.navigator:getPath(), "key"))
+          self.indicator:update(self.navigator:getPath())
         end
       end,
       [Message.TOGGLE_INFO] = function()
         local children = self.navigator:getChildren()
-        local path = pluck(self.navigator:getPath(), "desc")
-        self.infoPanel:show(children, path, self.indicator)
+        self.infoPanel:show(children, self.navigator:getPath(), self.indicator)
         return State.ACTIVE_INFO
       end,
       [Message.INVALID_KEY] = function()
         local children = self.navigator:getChildren()
-        local path = pluck(self.navigator:getPath(), "desc")
-        self.infoPanel:show(children, path, self.indicator)
+        self.infoPanel:show(children, self.navigator:getPath(), self.indicator)
         self.indicator:shake()
         return State.ACTIVE_INFO
       end,
       [Message.INFO_TIMER] = function()
         local children = self.navigator:getChildren()
-        local path = pluck(self.navigator:getPath(), "desc")
-        self.infoPanel:show(children, path, self.indicator)
+        self.infoPanel:show(children, self.navigator:getPath(), self.indicator)
         return State.ACTIVE_INFO
       end,
     },
@@ -201,17 +198,15 @@ function LeaderKey:_createStateMap()
         return exitToInactive()
       end,
       [Message.NAVIGATE] = function()
-        self.indicator:update(pluck(self.navigator:getPath(), "key"))
+        self.indicator:update(self.navigator:getPath())
         local children = self.navigator:getChildren()
-        local path = pluck(self.navigator:getPath(), "desc")
-        self.infoPanel:update(children, path)
+        self.infoPanel:update(children, self.navigator:getPath())
       end,
       [Message.GO_BACK] = function()
         if self.navigator:back() then
-          self.indicator:update(pluck(self.navigator:getPath(), "key"))
+          self.indicator:update(self.navigator:getPath())
           local children = self.navigator:getChildren()
-          local path = pluck(self.navigator:getPath(), "desc")
-          self.infoPanel:update(children, path)
+          self.infoPanel:update(children, self.navigator:getPath())
         end
       end,
       [Message.TOGGLE_INFO] = function()
@@ -409,15 +404,16 @@ function Indicator.new()
   return self
 end
 
----@param keyPath string[]
-function Indicator:show(keyPath)
-  self:update(keyPath)
+---@param pathNodes Node[]
+function Indicator:show(pathNodes)
+  self:update(pathNodes)
   self.panel:position(Panel.pos.center())
   self.panel:show()
 end
 
----@param keyPath string[]
-function Indicator:update(keyPath)
+---@param pathNodes Node[]
+function Indicator:update(pathNodes)
+  local keyPath = pluck(pathNodes, "key")
   local text = #keyPath == 0 and "●" or table.concat(keyPath)
   local size = 92
 
@@ -425,7 +421,7 @@ function Indicator:update(keyPath)
     font = { name = hs.styledtext.defaultFonts.boldSystem.name, size = 24 },
     color = { black = 1, alpha = 0.9 },
     paragraphStyle = { alignment = "center" }
-  }), { x = 0, y = 0 })
+  }))
 
   element.frame.w = size
   self.panel:setElements({ element }, { yPadding = (size - element.frame.h) / 2 })
@@ -456,17 +452,17 @@ function InfoPanel.new()
 end
 
 ---@param children Node[]
----@param path string[]
+---@param pathNodes Node[]
 ---@param relativeTo Indicator
-function InfoPanel:show(children, path, relativeTo)
-  self:update(children, path)
+function InfoPanel:show(children, pathNodes, relativeTo)
+  self:update(children, pathNodes)
   self.panel:position(Panel.pos.relativeTo(relativeTo.panel, { x = 16 }))
   self.panel:show()
 end
 
 ---@param children Node[]
----@param path string[]
-function InfoPanel:update(children, path)
+---@param pathNodes Node[]
+function InfoPanel:update(children, pathNodes)
   local fonts = hs.styledtext.defaultFonts
   local padding = 8
   local keyBoxSize = 24
@@ -478,6 +474,7 @@ function InfoPanel:update(children, path)
   }
   local elements = {}
   local headerHeight = 0
+  local path = pluck(pathNodes, "desc")
 
   if path and #path > 0 then
     local headerElement = self.panel:textElement(

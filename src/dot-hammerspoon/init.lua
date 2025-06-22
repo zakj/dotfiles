@@ -11,6 +11,7 @@ local focusGroup = {
   { 'a', app = 'Arc' },
   { 'f', app = 'Finder' },
   { 'h', app = 'Hammerspoon' },
+  { 'i', app = 'Music' },
   { 'l', app = 'Slack' },
   { 'm', app = 'Messages' },
   { 'n', app = 'Obsidian' },
@@ -41,7 +42,7 @@ local keymap = {
   { 's', desc = 'System', children = systemGroup, },
   { 'w', desc = 'Windows', children = windowGroup },
 }
-LeaderKey.new({ 'cmd', 'option', 'shift' }, 'l', keymap)
+LeaderKey.new({ 'cmd', 'ctrl', 'option', 'shift' }, '1', keymap)
 
 local function isProgrammableKeyboard(device) return device.productName == 'Keychron K7 Pro' end
 if not hs.fnutils.some(hs.usb.attachedDevices(), isProgrammableKeyboard) then
