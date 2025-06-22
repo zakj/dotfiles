@@ -19,8 +19,8 @@ function Panel.new()
   -- Position and size will be adjusted later based on content.
   self.canvas = hs.canvas.new({ x = 0, y = 0, w = 0, h = 0 })
 
-  -- We want a subtle border, but canvas doesn't support that directly. Fake it
-  -- by adding another box underneath.
+  -- We want a subtle border, but canvas does a bad job rendering stroke and
+  -- fill with border radius. We fake it by adding another box underneath.
   self.canvas:appendElements({
     {
       type = "rectangle",
@@ -44,7 +44,7 @@ function Panel.new()
 end
 
 ---@param elements table[]
----@param options? {padding?: number}
+---@param options? {padding?: number, xPadding?: number, yPadding?: number}
 ---@return nil
 function Panel:setElements(elements, options)
   if not self.canvas then error('no canvas on panel') end
@@ -57,21 +57,33 @@ function Panel:setElements(elements, options)
   end
 
   local padding = options.padding or 0
+  local xPadding = options.xPadding
+  local yPadding = options.yPadding
   local width = 0
   local height = 0
   for _, src in ipairs(elements) do
     local element = hs.fnutils.copy(src)
     if element.frame then
-      width = math.max(width, element.frame.x + element.frame.w)
-      height = math.max(height, element.frame.y + element.frame.h)
-      element.frame.x = element.frame.x + padding + Panel.SHADOW_PADDING
-      element.frame.y = element.frame.y + padding + Panel.SHADOW_PADDING
+      -- ignore percentage sizes for now
+      -- TODO: maybe we could post-process things with percentages based on the previously-computed size?
+      if type(element.frame.x) == 'number' then
+        if type(element.frame.w) == 'number' then
+          width = math.max(width, element.frame.x + element.frame.w)
+        end
+        element.frame.x = element.frame.x + (xPadding or padding) + Panel.SHADOW_PADDING
+      end
+      if type(element.frame.y) == 'number' then
+        if type(element.frame.h) == 'number' then
+          height = math.max(height, element.frame.y + element.frame.h)
+        end
+        element.frame.y = element.frame.y + (yPadding or padding) + Panel.SHADOW_PADDING
+      end
     end
     self.canvas:appendElements(element)
   end
 
-  width = width + padding * 2
-  height = height + padding * 2
+  width = width + (xPadding or padding) * 2
+  height = height + (yPadding or padding) * 2
 
   self.canvas:size({ w = width + Panel.SHADOW_PADDING * 2, h = height + Panel.SHADOW_PADDING * 2 })
   self.canvas[1].frame = { x = Panel.SHADOW_PADDING, y = Panel.SHADOW_PADDING, w = width, h = height }
@@ -161,6 +173,22 @@ end
 function Panel:isShowing()
   return self.canvas and self.canvas:isShowing()
 end
+
+-- Converts a styledText into a canvas element whose frame size is the minimum
+-- necessary to fit the text.
+---@generic X (number | string)
+---@generic Y (number | string)
+---@param styledText any
+---@param position {x: `X`, y: `Y`}
+---@return {type: "text", text: any, frame: {x: X, y: Y, w: number, h: number}}
+function Panel:textElement(styledText, position)
+  position = position or {}
+  local frame = self.canvas:minimumTextSize(styledText)
+  frame.x = position.x or 0
+  frame.y = position.y or 0
+  return { type = "text", text = styledText, frame = frame }
+end
+
 
 -- Position helpers ----
 

@@ -19,7 +19,7 @@ local focusGroup = {
 }
 local systemGroup = {
   { 'a', desc = 'Toggle system appearance', url = 'raycast://extensions/raycast/system/toggle-system-appearance' },
-  { 'c', desc = 'Toggle caffeinate',        url = 'raycast://extensions/mooxl/coffee/caffeinateToggle' },
+  { 'c', desc = 'Toggle caffeinate',        url = 'raycast://extensions/mooxl/coffee/caffeinateToggle?launchType=background' },
   { 'l', desc = 'Lock screen',              url = 'raycast://extensions/raycast/system/lock-screen' },
   { ',', app = 'System Settings' },
   { 'h', desc = 'Reload Hammerspoon',       fn = hs.reload },

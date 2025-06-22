@@ -335,7 +335,7 @@ function Navigator:_buildNodes(keymap, parent)
       -- hs.urlevent.openURL is the right thing here, but that foregrounds
       -- whatever app handles the event, which means we lose focus for
       -- non-interactive apps. Trying this as a workaround.
-      node.fn = function() hs.task.new('/usr/bin/open', nil, {'-g', item.url}):start() end
+      node.fn = function() hs.task.new('/usr/bin/open', nil, { '-g', item.url }):start() end
     end
 
     parent.children[key] = node
@@ -419,20 +419,16 @@ end
 ---@param keyPath string[]
 function Indicator:update(keyPath)
   local text = #keyPath == 0 and "●" or table.concat(keyPath)
-  local size = 60
+  local size = 92
 
-  -- TODO/HACK: vertical centering is a nightmare, this 14 value is eyeballed
-  self.panel:setElements({
-    {
-      type = "text",
-      text = hs.styledtext.new(text, {
-        font = { name = hs.styledtext.defaultFonts.boldSystem.name, size = 24 },
-        color = { red = 0.1, green = 0.1, blue = 0.1, alpha = 1 },
-        paragraphStyle = { alignment = "center" }
-      }),
-      frame = { x = 0, y = 14, w = size, h = size - 14 }
-    }
-  }, { padding = 16 })
+  local element = self.panel:textElement(hs.styledtext.new(text, {
+    font = { name = hs.styledtext.defaultFonts.boldSystem.name, size = 24 },
+    color = { black = 1, alpha = 0.9 },
+    paragraphStyle = { alignment = "center" }
+  }), { x = 0, y = 0 })
+
+  element.frame.w = size
+  self.panel:setElements({ element }, { yPadding = (size - element.frame.h) / 2 })
 end
 
 function Indicator:shake()
@@ -450,30 +446,6 @@ end
 function Indicator:containsPoint(x, y)
   return self.panel:containsPoint(x, y)
 end
-
-InfoPanel.style = {
-  keyBox = {
-    width = 24,
-    height = 24,
-    fillColor = { red = 1, green = 1, blue = 1, alpha = 0.2 },
-    borderRadius = 5,
-  },
-  keyText = {
-    size = 17,
-    font = hs.styledtext.defaultFonts.boldSystem,
-  },
-  descText = {
-    size = 13,
-    color = { red = 0.1, green = 0.1, blue = 0.1, alpha = 1 },
-    width = 200,
-  },
-  keySymbols = {
-    enter = "↩",
-    escape = "⎋",
-    space = "␣",
-    tab = "⇥",
-  }
-}
 
 ---@return InfoPanel
 function InfoPanel.new()
@@ -495,60 +467,63 @@ end
 ---@param children Node[]
 ---@param path string[]
 function InfoPanel:update(children, path)
-  local elements = {}
-  local yOffset = 0
+  local fonts = hs.styledtext.defaultFonts
   local padding = 8
+  local keyBoxSize = 24
+  local keySymbols = {
+    enter = "↩",
+    escape = "⎋",
+    space = "␣",
+    tab = "⇥",
+  }
+  local elements = {}
+  local headerHeight = 0
 
   if path and #path > 0 then
-    table.insert(elements, {
-      type = "text",
-      text = table.concat(path, " › "),
-      textSize = 12,
-      textColor = { red = 0.4, green = 0.4, blue = 0.4, alpha = 1 },
-      textAlignment = "center",
-      frame = { x = 0, y = yOffset, w = InfoPanel.style.keyBox.width + padding + InfoPanel.style.descText.width, h = 16 }
-    })
-    yOffset = yOffset + 24
+    local headerElement = self.panel:textElement(
+      hs.styledtext.new(table.concat(path, " › "), {
+        color = { red = 0.4, green = 0.4, blue = 0.4 },
+        font = { name = fonts.system.name, size = 12 },
+      }),
+      { x = keyBoxSize + padding }
+    )
+    table.insert(elements, headerElement)
+    headerHeight = headerElement.frame.h + padding
   end
 
-  for _, child in ipairs(children) do
-    local displayKey = InfoPanel.style.keySymbols[child.key] or child.key
+  for i, child in ipairs(children) do
+    local yOffset = headerHeight + (keyBoxSize + padding) * (i - 1)
+    local displayKey = keySymbols[child.key] or child.key
 
     -- Key box background
     table.insert(elements, {
       type = "rectangle",
-      action = "fill",
-      fillColor = InfoPanel.style.keyBox.fillColor,
-      roundedRectRadii = { xRadius = InfoPanel.style.keyBox.borderRadius, yRadius = InfoPanel.style.keyBox.borderRadius },
-      frame = { x = 0, y = yOffset, w = InfoPanel.style.keyBox.width, h = InfoPanel.style.keyBox.height }
+      strokeColor = { alpha = 0.2 },
+      fillColor = { white = 1, alpha = 0.5 },
+      roundedRectRadii = { xRadius = 5, yRadius = 5 },
+      frame = { x = 0, y = yOffset, w = keyBoxSize, h = keyBoxSize }
     })
 
-    -- Key text
-    table.insert(elements, {
-      type = "text",
-      text = hs.styledtext.new(displayKey, {
-        font = InfoPanel.style.keyText.font,
-        paragraphStyle = { alignment = "center", minimumLineHeight = 20 }
-      }),
-      textSize = InfoPanel.style.keyText.size,
-      textAlignment = "center",
-      frame = { x = 0, y = yOffset + 2, w = InfoPanel.style.keyBox.width, h = InfoPanel.style.keyBox.height - 4 }
-    })
+    local keyElement = self.panel:textElement(hs.styledtext.new(displayKey, {
+      font = fonts.boldSystem,
+      paragraphStyle = { alignment = "center" }
+    }))
+    keyElement.frame.y = yOffset + (keyBoxSize - keyElement.frame.h) / 2
+    keyElement.frame.w = keyBoxSize
+    table.insert(elements, keyElement)
 
-    -- Description
-    table.insert(elements, {
-      type = "text",
-      text = next(child.children) and "› " .. child.desc or child.desc,
-      textSize = InfoPanel.style.descText.size,
-      textColor = InfoPanel.style.descText.color,
-      textAlignment = "left",
-      frame = { x = InfoPanel.style.keyBox.width + padding, y = yOffset + 4, w = InfoPanel.style.descText.width, h = 16 }
-    })
-
-    yOffset = yOffset + InfoPanel.style.keyBox.height + padding
+    local descElement = self.panel:textElement(
+      hs.styledtext.new(
+        next(child.children) and "› " .. child.desc or child.desc,
+        { font = fonts.system }
+      ),
+      { x = keyBoxSize + padding }
+    )
+    descElement.frame.y = yOffset + (keyBoxSize - descElement.frame.h) / 2
+    table.insert(elements, descElement)
   end
 
-  self.panel:setElements(elements, { padding = 8 })
+  self.panel:setElements(elements, { padding = 16 })
 end
 
 ---@return any|nil
