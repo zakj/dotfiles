@@ -5,16 +5,8 @@ end
 if status is-interactive
     fish_config theme choose 'Solarized Dark'
     set fish_color_valid_path # Reset theme's underlines on paths.
-    starship init fish | source # Set prompt.
-
     fish_hybrid_key_bindings # vi mode but with emacs-style bindings.
     set fish_cursor_insert line # Use cursor to distinguish insert/normal modes.
-
-    # TODO remove this when fish supports ghostty
-    if string match -q -- '*ghostty*' $TERM
-        set -g fish_vi_force_cursor 1
-    end
-
     set fish_greeting # Shhh.
     set __fish_ls_command ls -F # Avoid default ls colors added by fish.
 
@@ -72,4 +64,42 @@ if status is-interactive
         end
     end
     bind . -M insert _rationalise-dot
+end
+
+function fish_mode_prompt
+    set -l color (test $status = 0; and echo brwhite; or echo brred)
+    set -l char (test $fish_bind_mode = insert; and echo '➜'; or echo ':')
+    echo -ns (set_color --bold $color) $char (set_color normal) " "
+end
+
+function fish_prompt
+    set -l suffix (fish_is_root_user; and echo '#'; or echo '%')
+    set -l read_only (not test -w .; and echo '🔒')
+    echo -ns (prompt_pwd) $read_only $suffix " "
+end
+
+function fish_right_prompt
+    set -l jj (jj log -r @ -T prompt --ignore-working-copy --no-graph --no-pager --color always 2>/dev/null)
+    if test $status = 0
+        echo -ns $jj " "
+    else
+        echo -ns (set_color brblack) (fish_vcs_prompt) (set_color normal) " "
+    end
+end
+
+# Truncate jj root and home prefixes, and truncate all but the last two elements.
+function prompt_pwd
+    set -l dir $PWD
+
+    set -l jj_root (jj root 2>/dev/null)
+    if test -n "$jj_root"
+        set dir (string replace -r (string escape --style=regex -- $jj_root)/? '' $dir)
+        set jj_root (basename $jj_root)
+    end
+
+    set dir (string replace ~ '~' $dir)
+    set components (string split -r / $dir)
+    set components (string match -v '' $components)
+    set components (string sub -l 1 $components[1..-3]) $components[-2..-1]
+    echo -n (string join / $jj_root $components)
 end
