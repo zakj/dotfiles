@@ -7,7 +7,7 @@ default-command = "log"
 diff-editor = ":builtin"
 
 [git]
-private-commits = 'description(glob:"private:*")'
+private-commits = 'description(glob:"private:*") | description(glob:"wip[: ]*")'
 
 [colors]
 # https://github.com/jj-vcs/jj/blob/main/cli/src/config/colors.toml
