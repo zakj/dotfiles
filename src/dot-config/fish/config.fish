@@ -99,7 +99,7 @@ function prompt_pwd
 
     set dir (string replace ~ '~' $dir)
     set components (string split -r / $dir)
-    set components (string match -v '' $components)
+    set components (string match -v '' -- $components)
     set components (string sub -l 1 $components[1..-3]) $components[-2..-1]
-    echo -n (string join / $jj_root $components)
+    echo -n (string join / -- $jj_root $components)
 end
