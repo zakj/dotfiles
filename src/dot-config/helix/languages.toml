@@ -18,6 +18,10 @@ config.typescript.tsdk = "/opt/homebrew/lib/node_modules/@astrojs/language-serve
 config.environment = "node"
 
 [[language]]
+name = "lua"
+auto-format = true
+
+[[language]]
 name = "python"
 auto-format = true
 language-servers = ["basedpyright", "ruff"]
