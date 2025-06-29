@@ -8,6 +8,7 @@ local pluck = require('util').pluck
 ---  app?: string,
 ---  url?: string,
 ---  fn?: function,
+---  sticky?: boolean,
 ---  children?: KeyMap[],
 ---}
 
@@ -19,6 +20,7 @@ local pluck = require('util').pluck
 ---  order: number,
 ---  children: Node[],
 ---  desc: string,
+---  sticky: boolean,
 ---  fn: function,
 ---}
 
@@ -141,6 +143,21 @@ function LeaderKey:_createStateMap()
     return State.INACTIVE
   end
 
+  ---@param node Node
+  ---@param sticky boolean
+  ---@return State|nil
+  local function execute(node, sticky)
+    node.fn()
+    if sticky ~= node.sticky then return end
+    return exitToInactive()
+  end
+
+  local function showInfo()
+    self.infoPanel:update(self.navigator:getChildren(), self.navigator:getPath())
+    self.infoPanel:show(self.indicator.panel)
+    return State.ACTIVE_INFO
+  end
+
   return {
     [State.INACTIVE] = {
       [Message.ENTER] = function()
@@ -160,11 +177,9 @@ function LeaderKey:_createStateMap()
     [State.ACTIVE] = {
       [Message.EXIT] = exitToInactive,
       [Message.CLICK_OUTSIDE] = exitToInactive,
-      [Message.EXECUTE] = function(node)
-        node.fn()
-        return exitToInactive()
-      end,
-      [Message.NAVIGATE] = function()
+      [Message.EXECUTE] = execute,
+      [Message.NAVIGATE] = function(node)
+        self.navigator:go(node)
         self.indicator:update(self.navigator:getPath())
       end,
       [Message.GO_BACK] = function()
@@ -172,41 +187,27 @@ function LeaderKey:_createStateMap()
           self.indicator:update(self.navigator:getPath())
         end
       end,
-      [Message.TOGGLE_INFO] = function()
-        local children = self.navigator:getChildren()
-        self.infoPanel:show(children, self.navigator:getPath(), self.indicator)
-        return State.ACTIVE_INFO
-      end,
+      [Message.TOGGLE_INFO] = showInfo,
       [Message.INVALID_KEY] = function()
-        local children = self.navigator:getChildren()
-        self.infoPanel:show(children, self.navigator:getPath(), self.indicator)
         self.indicator:shake()
-        return State.ACTIVE_INFO
+        return showInfo()
       end,
-      [Message.INFO_TIMER] = function()
-        local children = self.navigator:getChildren()
-        self.infoPanel:show(children, self.navigator:getPath(), self.indicator)
-        return State.ACTIVE_INFO
-      end,
+      [Message.INFO_TIMER] = showInfo,
     },
 
     [State.ACTIVE_INFO] = {
       [Message.EXIT] = exitToInactive,
       [Message.CLICK_OUTSIDE] = exitToInactive,
-      [Message.EXECUTE] = function(node)
-        node.fn()
-        return exitToInactive()
-      end,
-      [Message.NAVIGATE] = function()
+      [Message.EXECUTE] = execute,
+      [Message.NAVIGATE] = function(node)
+        self.navigator:go(node)
         self.indicator:update(self.navigator:getPath())
-        local children = self.navigator:getChildren()
-        self.infoPanel:update(children, self.navigator:getPath())
+        self.infoPanel:update(self.navigator:getChildren(), self.navigator:getPath())
       end,
       [Message.GO_BACK] = function()
         if self.navigator:back() then
           self.indicator:update(self.navigator:getPath())
-          local children = self.navigator:getChildren()
-          self.infoPanel:update(children, self.navigator:getPath())
+          self.infoPanel:update(self.navigator:getChildren(), self.navigator:getPath())
         end
       end,
       [Message.TOGGLE_INFO] = function()
@@ -272,12 +273,12 @@ function LeaderKey:_onKeyEvent(event)
     return true
   end
 
-  local node = self.navigator:go(key)
+  local node = self.navigator:get(key)
   if node then
     if next(node.children) then
-      self:_dispatch(Message.NAVIGATE)
+      self:_dispatch(Message.NAVIGATE, node)
     else
-      self:_dispatch(Message.EXECUTE, node)
+      self:_dispatch(Message.EXECUTE, node, flags:containExactly({ 'cmd' }))
     end
   else
     self:_dispatch(Message.INVALID_KEY)
@@ -319,6 +320,7 @@ function Navigator:_buildNodes(keymap, parent)
       order = i,
       children = {},
       desc = item.desc or item.app or "",
+      sticky = item.sticky and true or false,
     }
 
     -- Normalize all actions to fn
@@ -349,17 +351,19 @@ function Navigator:stop()
   self.current = nil
 end
 
--- Navigate to the node represented by the given key, or nil if that doesn't exist..
+-- Return the node for the given key in the current context, or nil if that doesn't exist.
 ---@param key string
 ---@return Node|nil
-function Navigator:go(key)
+function Navigator:get(key)
   if not self.current then return nil end
+  return self.current.children[key]
+end
 
-  local child = self.current.children[key]
-  if not child then return nil end
-
-  self.current = child
-  return child
+-- Navigate to the given node.
+---@param node Node
+---@return nil
+function Navigator:go(node)
+  self.current = node
 end
 
 -- Navigate one layer up the stack; returns whether it was successful.
@@ -451,12 +455,9 @@ function InfoPanel.new()
   return self
 end
 
----@param children Node[]
----@param pathNodes Node[]
----@param relativeTo Indicator
-function InfoPanel:show(children, pathNodes, relativeTo)
-  self:update(children, pathNodes)
-  self.panel:position(Panel.pos.relativeTo(relativeTo.panel, { x = 16 }))
+---@param relativeTo Panel
+function InfoPanel:show(relativeTo)
+  self.panel:position(Panel.pos.relativeTo(relativeTo, { x = 16 }))
   self.panel:show()
 end
 

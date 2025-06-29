@@ -7,6 +7,16 @@ local toast = require 'toast'
 modtap:start('cmd', { 'ctrl', 'option', 'cmd', 'shift' }, '1', 0.15)
 reload:start()
 
+local function systemKey(name)
+  return function()
+    -- HACK: without this delay, emitted system key events seem to get lost sometimes.
+    hs.timer.doAfter(0.001, function()
+      hs.eventtap.event.newSystemKeyEvent(name, true):post()
+      hs.eventtap.event.newSystemKeyEvent(name, false):post()
+    end)
+  end
+end
+
 local focusGroup = {
   { 'a', app = 'Arc' },
   { 'f', app = 'Finder' },
@@ -33,13 +43,22 @@ local windowGroup = {
   { 's', desc = 'Reasonable size', url = 'raycast://customWindowManagementCommand?&name=Comfortable%20size&position=center&absoluteWidth=1320.0&absoluteHeight=945.0&relativeYOffset=-0.05' },
   { 't', desc = 'Wide terminal',   url = 'hammerspoon://wide-terminal' },
 }
+local audioGroup = {
+  { 'space', desc = 'Play/pause',      fn = systemKey('PLAY') },
+  { 'h',     desc = 'Previous track',  fn = systemKey('PREVIOUS') },
+  { 'l',     desc = 'Next track',      fn = systemKey('NEXT') },
+  { 'k',     desc = 'Increase volume', fn = systemKey('SOUND_UP'),   sticky = true },
+  { 'j',     desc = 'Decrease volume', fn = systemKey('SOUND_DOWN'), sticky = true },
+  { 'm',     desc = 'Mute',            fn = systemKey('MUTE') },
+}
 local keymap = {
   { 'e', desc = 'Emoji picker', url = "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols" },
   { 't', app = 'Ghostty' },
   { '`', desc = '→ quick', url = "hammerspoon://quick-terminal" },
   { 'tab', desc = 'Window switcher', url = "raycast://extensions/raycast/navigation/switch-windows" },
-  { 'f', desc = "Focus", children = focusGroup },
+  { 'f', desc = 'Focus', children = focusGroup },
   { 's', desc = 'System', children = systemGroup, },
+  { 'v', desc = 'Audio', children = audioGroup },
   { 'w', desc = 'Windows', children = windowGroup },
 }
 LeaderKey.new({ 'cmd', 'ctrl', 'option', 'shift' }, '1', keymap)
@@ -70,6 +89,7 @@ local laptopLayout = hs.fnutils.copy(externalLayout)
 laptopLayout.Ghostty = { right = 0, w = 1100, y = 0, bottom = 0 }
 laptopLayout.Slack = function(app, win)
   if win ~= layout.widestVisibleWindow(app) then
+    -- TODO maybe w = 550 and align right?
     return { x = 1100, y = gap, right = 0, bottom = 0 }
   end
   return { x = 0, y = gap, w = 1100, bottom = 0 }
