@@ -125,6 +125,7 @@ function LeaderKey.new(mods, key, keymap)
     return self:_onKeyEvent(event)
   end)
 
+  -- TODO could we replace this with a standard mouse handler on Panel, and a separate overlay canvas here?
   self.clickTap = hs.eventtap.new({ hs.eventtap.event.types.leftMouseDown }, function(event)
     return self:_onClickEvent(event)
   end)

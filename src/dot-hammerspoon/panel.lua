@@ -1,8 +1,15 @@
 local tween = require("tween")
 
+---@alias Position {x: number, y: number}
+---@alias Positioner fun(panel: Panel): Position
+
 ---@class Panel
----@field header string
----@field content {type: "text" | "symbol" | "table"}
+-- The tween for any currently-running animation.
+---@field currentTween any|nil
+-- A function used to calculate this panel's visual position.
+---@field positionFunc Positioner
+-- Desired absolute position (vs actual position, which varies during animations).
+---@field topLeft Position
 local Panel = { pos = {}, anim = {} }
 Panel.__index = Panel
 
@@ -11,16 +18,17 @@ Panel.SHADOW_PADDING = 30
 
 function Panel.new()
   local self = setmetatable({}, Panel)
-  local cornerRadius = 12
-  local borderWidth = 1
   self.currentTween = nil
   self.positionFunc = nil
+  self.topLeft = { x = 0, y = 0 }
 
   -- Position and size will be adjusted later based on content.
   self.canvas = hs.canvas.new({ x = 0, y = 0, w = 0, h = 0 })
 
   -- We want a subtle border, but canvas does a bad job rendering stroke and
   -- fill with border radius. We fake it by adding another box underneath.
+  local cornerRadius = 12
+  local borderWidth = 1
   self.canvas:appendElements({
     {
       type = "rectangle",
@@ -47,7 +55,6 @@ end
 ---@param options? {padding?: number, xPadding?: number, yPadding?: number}
 ---@return nil
 function Panel:setElements(elements, options)
-  if not self.canvas then error('no canvas on panel') end
   options = options or {}
 
   -- Clear previous content elements (skip border and background).
@@ -89,31 +96,61 @@ function Panel:setElements(elements, options)
   self.canvas[1].frame = { x = Panel.SHADOW_PADDING, y = Panel.SHADOW_PADDING, w = width, h = height }
   self.canvas[2].frame = { x = Panel.SHADOW_PADDING + 1, y = Panel.SHADOW_PADDING + 1, w = width - 2, h = height - 2 }
 
-  if self.positionFunc then self.positionFunc(self) end
+  if self.positionFunc then self:position() end
 end
 
+---@param positionFunc Positioner|nil
 function Panel:position(positionFunc)
-  self.positionFunc = positionFunc
+  local isInitialPosition = self.positionFunc == nil
+  if positionFunc then self.positionFunc = positionFunc end
+  assert(self.positionFunc, 'missing a positionFunc')
+
+  local oldPos = self:frame()
+  local newPos = self.positionFunc(self)
+  assert(newPos and newPos.x and newPos.y)
+
+  if isInitialPosition then
+    self:setTopLeft(newPos)
+  elseif oldPos.x ~= newPos.x or oldPos.y ~= newPos.y then
+    self:animate(function()
+      return tween.new(0, 1, 0.2, function(progress)
+        self:moveCanvas({
+          x = oldPos.x + (newPos.x - oldPos.x) * progress,
+          y = oldPos.y + (newPos.y - oldPos.y) * progress
+        })
+      end):onComplete(function() self:setTopLeft(newPos) end)
+    end)
+  end
 end
 
--- Helper methods for visual coordinates (excludes shadow)
-function Panel:getVisualFrame()
+-- Returns the *visual* frame of the panel, ignoring box-shadow padding.
+---@return {x: number, y: number, w: number, h: number}
+function Panel:frame()
   local canvasFrame = self.canvas:frame()
   return {
-    x = canvasFrame.x + Panel.SHADOW_PADDING,
-    y = canvasFrame.y + Panel.SHADOW_PADDING,
+    x = self.topLeft.x,
+    y = self.topLeft.y,
     w = canvasFrame.w - Panel.SHADOW_PADDING * 2,
-    h = canvasFrame.h - Panel.SHADOW_PADDING * 2
+    h = canvasFrame.h - Panel.SHADOW_PADDING * 2,
   }
 end
 
-function Panel:setVisualPosition(x, y)
-  self.canvas:topLeft({ x = x - Panel.SHADOW_PADDING, y = y - Panel.SHADOW_PADDING })
+-- Sets the *visual* top left point of the panel, accounting for box-shadow padding.
+---@param point Position
+function Panel:setTopLeft(point)
+  self.topLeft = hs.fnutils.copy(point)
+  self:moveCanvas(point)
+end
+
+-- A helper for positioning the *visual* top left point of the panel without
+-- caching the new position; useful for using inside animation tweens.
+---@param point Position
+function Panel:moveCanvas(point)
+  self.canvas:topLeft({ x = point.x - Panel.SHADOW_PADDING, y = point.y - Panel.SHADOW_PADDING })
 end
 
 function Panel:show(animationFunc)
   if self:isShowing() then return nil end
-  if self.positionFunc then self.positionFunc(self) end
   self.canvas:show()
   animationFunc = animationFunc or Panel.anim.popIn
   return self:animate(animationFunc)
@@ -121,7 +158,6 @@ end
 
 function Panel:hide(animationFunc)
   if not self:isShowing() then return nil end
-
   animationFunc = animationFunc or Panel.anim.popOut
   local anim = self:animate(animationFunc)
   if anim then
@@ -154,9 +190,9 @@ function Panel:delete()
 end
 
 function Panel:animate(createTweenCallback)
-  if not self.canvas then return nil end
   if self.currentTween then self.currentTween:cancel() end
-  local newTween = createTweenCallback(self.canvas)
+  local newTween = createTweenCallback(self)
+  newTween:onComplete(function() self.currentTween = nil end)
   newTween:start()
   self.currentTween = newTween
   return newTween
@@ -165,7 +201,7 @@ end
 function Panel:containsPoint(x, y)
   if not self:isShowing() then return false end
 
-  local frame = self:getVisualFrame()
+  local frame = self:frame()
   return x >= frame.x and x <= frame.x + frame.w and
       y >= frame.y and y <= frame.y + frame.h
 end
@@ -189,95 +225,91 @@ function Panel:textElement(styledText, position)
   return { type = "text", text = styledText, frame = frame }
 end
 
-
 -- Position helpers ----
 
----@return function
+---@return Positioner
 function Panel.pos.center()
   return function(panel)
     local screen = hs.screen.mainScreen()
     local screenFrame = screen:frame()
-    local visualFrame = panel:getVisualFrame()
+    local visualFrame = panel:frame()
 
-    panel:setVisualPosition(
-      (screenFrame.w - visualFrame.w) / 2,
-      (screenFrame.h * 0.4) - (visualFrame.h / 2)
-    )
+    return {
+      x = (screenFrame.w - visualFrame.w) / 2,
+      y = (screenFrame.h * 0.4) - (visualFrame.h / 2),
+    }
   end
 end
 
----@return function
+---@return Positioner
 function Panel.pos.absolute(x, y)
-  return function(panel)
-    panel:setVisualPosition(x, y)
+  return function()
+    return { x = x, y = y }
   end
 end
 
 ---@param other Panel
 ---@param offset {x: number, y: number, align?: "center"}
----@return function
+---@return Positioner
 function Panel.pos.relativeTo(other, offset)
   offset = offset or {}
   return function(panel)
-    local visualFrame = other:getVisualFrame()
+    local visualFrame = other:frame()
     local x = visualFrame.x + visualFrame.w + (offset.x or 0)
     local y = visualFrame.y + (offset.y or 0)
 
     -- TODO maybe y = "center" instead?
     if offset.align == "center" then
-      local targetFrame = panel:getVisualFrame()
+      local targetFrame = panel:frame()
       y = visualFrame.y + visualFrame.h / 2 - targetFrame.h / 2
     end
 
-    panel:setVisualPosition(x, y)
+    return { x = x, y = y }
   end
 end
 
 -- Animation helpers ----
 
-function Panel.anim.popIn(canvas)
-  local finalPos = canvas:topLeft()
-  canvas:alpha(0)
-  canvas:topLeft({ x = finalPos.x, y = finalPos.y + 10 })
+---@param panel Panel
+function Panel.anim.popIn(panel)
+  local finalPos = panel.topLeft
+  panel.canvas:alpha(0)
+  panel:moveCanvas({ x = finalPos.x, y = finalPos.y + 10 })
 
   return tween.new(0, 1, 0.15, function(progress)
-    if canvas then
-      canvas:alpha(progress)
-      canvas:topLeft({ x = finalPos.x, y = (finalPos.y + 10) + progress * -10 })
-    end
+    panel.canvas:alpha(progress)
+    panel:moveCanvas({ x = finalPos.x, y = (finalPos.y + 10) - progress * 10 })
   end)
 end
 
-function Panel.anim.popOut(canvas)
-  local startPos = canvas:topLeft()
+---@param panel Panel
+function Panel.anim.popOut(panel)
+  local startPos = panel.topLeft
 
   return tween.new(0, 1, 0.12, function(progress)
-    if canvas then
-      canvas:alpha(1 - progress)
-      canvas:topLeft({ x = startPos.x, y = startPos.y + progress * 8 })
-    end
+    panel.canvas:alpha(1 - progress)
+    panel:moveCanvas({ x = startPos.x, y = startPos.y + progress * 8 })
   end)
 end
 
-function Panel.anim.shake(canvas)
-  local originalPos = canvas:topLeft()
+---@param panel Panel
+function Panel.anim.shake(panel)
+  local originalPos = panel.topLeft
   local shakeDistance = 8
 
   return tween.new(0, 1, 0.6, function(progress)
-    if canvas then
-      local cycles = 3
-      local rampUpTime = 0.1
-      local amplitude = progress < rampUpTime and (progress / rampUpTime) or 1
+    local cycles = 3
+    local rampUpTime = 0.1
+    local amplitude = progress < rampUpTime and (progress / rampUpTime) or 1
 
-      -- Calculate damping based on cycles, but after ramp-up
-      local adjustedProgress = math.max(0, (progress - rampUpTime) / (1 - rampUpTime))
-      local cycleProgress = adjustedProgress * cycles
-      local completedCycles = math.floor(cycleProgress)
-      local damping = math.max(0.1, 1 - (completedCycles / cycles)) -- Keep some minimum amplitude
+    -- Calculate damping based on cycles, but after ramp-up
+    local adjustedProgress = math.max(0, (progress - rampUpTime) / (1 - rampUpTime))
+    local cycleProgress = adjustedProgress * cycles
+    local completedCycles = math.floor(cycleProgress)
+    local damping = math.max(0.1, 1 - (completedCycles / cycles)) -- Keep some minimum amplitude
 
-      local offset = math.sin(progress * cycles * 2 * math.pi) * shakeDistance * amplitude * damping
-      canvas:topLeft({ x = originalPos.x + offset, y = originalPos.y })
-    end
+    local offset = math.sin(progress * cycles * 2 * math.pi) * shakeDistance * amplitude * damping
+    panel:moveCanvas({ x = originalPos.x + offset, y = originalPos.y })
   end)
 end
 
