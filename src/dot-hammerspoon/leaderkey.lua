@@ -490,9 +490,9 @@ function InfoPanel:update(children, pathNodes)
     headerHeight = headerElement.frame.h + padding
   end
 
-  for i, child in ipairs(children) do
+  for i, node in ipairs(children) do
     local yOffset = headerHeight + (keyBoxSize + padding) * (i - 1)
-    local displayKey = keySymbols[child.key] or child.key
+    local displayKey = keySymbols[node.key] or node.key
 
     -- Key box background
     table.insert(elements, {
@@ -502,6 +502,16 @@ function InfoPanel:update(children, pathNodes)
       roundedRectRadii = { xRadius = 5, yRadius = 5 },
       frame = { x = 0, y = yOffset, w = keyBoxSize, h = keyBoxSize }
     })
+    if node.sticky then
+      local radius = keyBoxSize / 6
+      table.insert(elements, {
+        type = "circle",
+        radius = radius,
+        action = "fill",
+        fillColor = { alpha = 0.3 },
+        center = { x = keyBoxSize - radius / 2, y = yOffset + keyBoxSize - radius / 2 },
+      })
+    end
 
     local keyElement = self.panel:textElement(hs.styledtext.new(displayKey, {
       font = fonts.boldSystem,
@@ -513,7 +523,7 @@ function InfoPanel:update(children, pathNodes)
 
     local descElement = self.panel:textElement(
       hs.styledtext.new(
-        next(child.children) and "› " .. child.desc or child.desc,
+        next(node.children) and "› " .. node.desc or node.desc,
         { font = fonts.system }
       ),
       { x = keyBoxSize + padding }

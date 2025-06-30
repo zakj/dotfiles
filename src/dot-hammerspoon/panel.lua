@@ -87,6 +87,13 @@ function Panel:setElements(elements, options)
         end
         element.frame.y = element.frame.y + (yPadding or padding) + Panel.SHADOW_PADDING
       end
+    elseif element.center then
+      if type(element.center.x) == 'number' then
+        element.center.x = element.center.x + (xPadding or padding) + Panel.SHADOW_PADDING
+      end
+      if type(element.center.x) == 'number' then
+        element.center.y = element.center.y + (yPadding or padding) + Panel.SHADOW_PADDING
+      end
     end
     self.canvas:appendElements(element)
   end

@@ -94,6 +94,7 @@ function exports.apply(layout)
         local rect = rectOrFn
         if type(rectOrFn) == "function" then
           rect = rectOrFn(app, win)
+          if not rect then return end
         end
         rect = normalizeRect(rect, win:frame(), screenFrame)
         -- TODO should we cap size to screen frame?

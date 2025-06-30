@@ -4,8 +4,13 @@ local modtap = require 'modtap'
 local reload = require 'reload'
 local toast = require 'toast'
 
-modtap:start('cmd', { 'ctrl', 'option', 'cmd', 'shift' }, '1', 0.15)
 reload:start()
+
+modtap:start('cmd', { 'ctrl', 'option', 'cmd', 'shift' }, '1', 0.15)
+local function isProgrammableKeyboard(device) return device.productName == 'Keychron K7 Pro' end
+if not hs.fnutils.some(hs.usb.attachedDevices(), isProgrammableKeyboard) then
+  modtap:start('ctrl', {}, 'escape', 0.3)
+end
 
 local function systemKey(name)
   return function()
@@ -26,7 +31,6 @@ local focusGroup = {
   { 'm', app = 'Messages' },
   { 'n', app = 'Obsidian' },
   { 't', app = 'Ghostty' },
-  { 'a', app = 'Arc' },
 }
 local systemGroup = {
   { 'a', desc = 'Toggle system appearance', url = 'raycast://extensions/raycast/system/toggle-system-appearance' },
@@ -63,16 +67,13 @@ local keymap = {
 }
 LeaderKey.new({ 'cmd', 'ctrl', 'option', 'shift' }, '1', keymap)
 
-local function isProgrammableKeyboard(device) return device.productName == 'Keychron K7 Pro' end
-if not hs.fnutils.some(hs.usb.attachedDevices(), isProgrammableKeyboard) then
-  modtap:start('ctrl', {}, 'escape', 0.3)
-end
-
--- TODO specify size for Arc popups separately from the largest window
 local gap = 10
 local browserW = 1440
 local externalLayout = {
-  Arc = { x = 0, y = 0, w = browserW, bottom = 0 },
+  Arc = function(app, win)
+    if win ~= layout.widestVisibleWindow(app) then return end
+    return { x = 0, y = 0, w = browserW, bottom = 0 }
+  end,
   Finder = { w = 900, h = 450 },
   Ghostty = { x = browserW + gap, y = gap, right = gap, bottom = gap },
   Messages = { x = gap, bottom = gap, w = 850, h = 850 },
@@ -89,12 +90,12 @@ local laptopLayout = hs.fnutils.copy(externalLayout)
 laptopLayout.Ghostty = { right = 0, w = 1100, y = 0, bottom = 0 }
 laptopLayout.Slack = function(app, win)
   if win ~= layout.widestVisibleWindow(app) then
-    -- TODO maybe w = 550 and align right?
-    return { x = 1100, y = gap, right = 0, bottom = 0 }
+    return { y = gap, w = 550, right = 0, bottom = 0 }
   end
   return { x = 0, y = gap, w = 1100, bottom = 0 }
 end
 
+-- TODO clean this up, move inline where appropriate
 hs.urlevent.bind('autolayout', function()
   local currentLayout = externalLayout
   if layout.isBuiltinDisplay() then currentLayout = laptopLayout end
@@ -107,6 +108,11 @@ hs.urlevent.bind('wide-terminal', function()
   layout.apply({ Ghostty = { right = 10, y = 10, bottom = 10, w = 1770 } })
 end)
 hs.urlevent.bind('reload', hs.reload)
+
+hs.urlevent.bind('toast', function(_, params)
+  params = params or {}
+  toast(params.msg, tonumber(params.duration))
+end)
 
 -- Make sure garbage collection doesn't break new functionality.
 hs.timer.doAfter(2, collectgarbage)
