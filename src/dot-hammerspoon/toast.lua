@@ -1,10 +1,6 @@
 local Panel = require 'panel'
-local module = {}
 
----@type Panel[]
-local toasts = {}
-local timers = {} -- prevent GC
-
+local toasts = {} ---@type Toast[]
 local baseText = hs.styledtext.new(' ', {
   color = { black = 1 },
   font = { name = hs.styledtext.defaultFonts.system, size = 16 },
@@ -15,48 +11,56 @@ local function repositionToasts()
   local screen = hs.screen.mainScreen():fullFrame()
 
   for i, toast in ipairs(toasts) do
-    local frame = toast:frame()
+    local frame = toast.panel:frame()
     if i == 1 then
-      toast:position(Panel.pos.absolute(screen.w - margin - frame.w, screen.h - margin - frame.h))
+      toast.panel:position(Panel.pos.absolute(screen.w - margin - frame.w, screen.h - margin - frame.h))
     else
-      toast:position(Panel.pos.relativeTo(toasts[i - 1], 'top', { align = "end", offset = { y = -12 } }))
+      toast.panel:position(Panel.pos.relativeTo(toasts[i - 1].panel, 'top', { align = "end", offset = { y = -12 } }))
     end
   end
 end
 
-module.add = function(msg, duration)
-  local panel = Panel.new()
-  table.insert(toasts, panel)
+---@class Toast
+---@field panel Panel
+---@field timer? any
+local Toast = {}
+Toast.__index = Toast
+
+---@param msg any
+---@param duration? number
+---@return Toast
+function Toast.new(msg, duration)
+  local self = setmetatable({}, Toast)
+  self.panel = Panel.new()
+  self.timer = nil
 
   if type(msg) ~= 'string' then
     msg = hs.inspect(msg)
   end
   local text = baseText:setString(msg)
-  local element = panel:textElement(text, { x = 0, y = 0 })
-  panel:setElements({ element }, { xPadding = 16, yPadding = 8 })
-  panel:mouseCallback(function() module.remove(panel) end)
+  local element = self.panel:textElement(text, { x = 0, y = 0 })
+  self.panel:setElements({ element }, { xPadding = 16, yPadding = 8 })
+  self.panel:mouseCallback(function() self:delete() end)
 
+  table.insert(toasts, self)
   repositionToasts()
+  self.panel:show()
 
   if duration ~= nil then
-    -- TODO memory leak
-    table.insert(timers, hs.timer.doAfter(duration, function()
-      module.remove(panel)
-    end))
+    self.timer = hs.timer.doAfter(duration, function() self:delete() end)
   end
 
-  panel:show()
-  return panel
+  return self
 end
 
-module.remove = function(panel)
-  for i, item in ipairs(toasts) do
-    if item == panel then
-      table.remove(toasts, i)
-    end
+function Toast:delete()
+  for i, toast in ipairs(toasts) do
+    if toast == self then table.remove(toasts, i) end
   end
   repositionToasts()
-  panel:delete()
+  self.panel:delete()
+  self.panel = nil
+  self.timer = nil
 end
 
-return setmetatable(module, { __call = function(_, ...) return module.add(...) end })
+return Toast.new
