@@ -96,7 +96,10 @@ function Panel:setElements(elements, options)
   self.canvas[1].frame = { x = Panel.SHADOW_PADDING, y = Panel.SHADOW_PADDING, w = width, h = height }
   self.canvas[2].frame = { x = Panel.SHADOW_PADDING + 1, y = Panel.SHADOW_PADDING + 1, w = width - 2, h = height - 2 }
 
-  if self.positionFunc then self:position() end
+  -- Reposition without animation, in case a new size would cause us to calculate a different position.
+  if self.positionFunc then
+    self:setTopLeft(self:positionFunc())
+  end
 end
 
 ---@param positionFunc Positioner|nil
@@ -118,8 +121,8 @@ function Panel:position(positionFunc)
           x = oldPos.x + (newPos.x - oldPos.x) * progress,
           y = oldPos.y + (newPos.y - oldPos.y) * progress
         })
-      end):onComplete(function() self:setTopLeft(newPos) end)
-    end)
+      end)
+    end):onComplete(function() self:setTopLeft(newPos) end)
   end
 end
 
@@ -249,22 +252,45 @@ function Panel.pos.absolute(x, y)
 end
 
 ---@param other Panel
----@param offset {x: number, y: number, align?: "center"}
+---@param side "top"|"bottom"|"left"|"right"
+---@param options? {align?: "start"|"middle"|"end", offset?: {x?: number, y?: number}}
 ---@return Positioner
-function Panel.pos.relativeTo(other, offset)
-  offset = offset or {}
-  return function(panel)
-    local visualFrame = other:frame()
-    local x = visualFrame.x + visualFrame.w + (offset.x or 0)
-    local y = visualFrame.y + (offset.y or 0)
+function Panel.pos.relativeTo(other, side, options)
+  options = options or {}
+  local align = options.align or "start"
+  local offset = options.offset or {}
 
-    -- TODO maybe y = "center" instead?
-    if offset.align == "center" then
-      local targetFrame = panel:frame()
-      y = visualFrame.y + visualFrame.h / 2 - targetFrame.h / 2
+  return function(panel)
+    local otherFrame = other:frame()
+    local frame = panel:frame()
+    local x, y = otherFrame.x, otherFrame.y
+
+    if side == "top" then
+      y = y - frame.h
+    elseif side == "bottom" then
+      y = y + otherFrame.h
+    elseif side == "left" then
+      x = x - frame.w
+    elseif side == "right" then
+      x = x + otherFrame.w
     end
 
-    return { x = x, y = y }
+    -- Nothing to do for align start.
+    if align == "middle" then
+      if side == "top" or side == "bottom" then
+        x = x + (otherFrame.w - frame.w) / 2
+      else
+        y = y + (otherFrame.h - frame.h) / 2
+      end
+    elseif align == "end" then
+      if side == "top" or side == "bottom" then
+        x = x + otherFrame.w - frame.w
+      else
+        y = y + otherFrame.h - frame.h
+      end
+    end
+
+    return { x = x + (offset.x or 0), y = y + (offset.y or 0) }
   end
 end
 

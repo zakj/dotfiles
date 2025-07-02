@@ -458,7 +458,7 @@ end
 
 ---@param relativeTo Panel
 function InfoPanel:show(relativeTo)
-  self.panel:position(Panel.pos.relativeTo(relativeTo, { x = 16 }))
+  self.panel:position(Panel.pos.relativeTo(relativeTo, 'right', { offset = { x = 16 } }))
   self.panel:show()
 end
 
