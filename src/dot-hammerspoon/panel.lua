@@ -44,9 +44,11 @@ function Panel.new()
       action = "fill",
       fillColor = { red = .9, green = .9, blue = .9, alpha = 0.95 },
       roundedRectRadii = { xRadius = cornerRadius - borderWidth, yRadius = cornerRadius - borderWidth },
-      frame = { x = borderWidth, y = borderWidth, w = 0, h = 0 }
+      frame = { x = borderWidth, y = borderWidth, w = 0, h = 0 },
+      trackMouseDown = true,
     }
   })
+  self.canvas:clickActivating(false)
 
   return self
 end
@@ -115,6 +117,7 @@ function Panel:position(positionFunc)
   if isInitialPosition then
     self:setTopLeft(newPos)
   elseif oldPos.x ~= newPos.x or oldPos.y ~= newPos.y then
+    self.topLeft = newPos
     self:animate(function()
       return tween.new(0, 1, 0.2, function(progress)
         self:moveCanvas({
@@ -122,7 +125,7 @@ function Panel:position(positionFunc)
           y = oldPos.y + (newPos.y - oldPos.y) * progress
         })
       end)
-    end):onComplete(function() self:setTopLeft(newPos) end)
+    end)
   end
 end
 
@@ -169,6 +172,10 @@ function Panel:hide(animationFunc)
     self.canvas:hide()
   end
   return anim
+end
+
+function Panel:mouseCallback(callback)
+  self.canvas:mouseCallback(callback)
 end
 
 function Panel:delete()

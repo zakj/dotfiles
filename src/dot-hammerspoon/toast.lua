@@ -1,97 +1,62 @@
+local Panel = require 'panel'
 local module = {}
 
-local tween = require 'tween'
-
-local fadeTime = .2
-local margin = 20
-local minWidth = 200
-local paddingX = 15
-local paddingY = 10
+---@type Panel[]
 local toasts = {}
+local timers = {} -- prevent GC
 
--- TODO should append the rectangle here, but then copy fails?
-local baseCanvas = hs.canvas.new({ x = 0, y = 0, w = 0, h = 0 })
-    :canvasMouseEvents(true)
-    :clickActivating(false)
 local baseText = hs.styledtext.new(' ', {
-  color = { white = 1 },
-  font = { name = hs.styledtext.defaultFonts.label, size = 20 },
+  color = { black = 1 },
+  font = { name = hs.styledtext.defaultFonts.system, size = 16 },
 })
 
+local function repositionToasts()
+  local margin = 20
+  local screen = hs.screen.mainScreen():fullFrame()
 
-local function reposition(inserted)
-  local screen = hs.screen.mainScreen()
-  local frame = screen:fullFrame()
-  local yOffset = margin
-
-  for i = #toasts, 1, -1 do
-    local canvas = toasts[i]
-    local size = canvas:frame()
-    local curPos = canvas:topLeft()
-    local pos = {
-      x = frame.w - margin - size.w,
-      y = frame.h - yOffset - size.h
-    }
-    yOffset = yOffset + size.h + margin
-
-    if canvas == inserted then
-      canvas:topLeft(screen:localToAbsolute(pos))
+  for i, toast in ipairs(toasts) do
+    local frame = toast:frame()
+    if i == 1 then
+      toast:position(Panel.pos.absolute(screen.w - margin - frame.w, screen.h - margin - frame.h))
     else
-      tween.new(curPos.x, pos.x, fadeTime, function(x) pos.x = x end):start()
-      tween.new(curPos.y, pos.y, fadeTime, function(y)
-        pos.y = y
-        canvas:topLeft(screen:localToAbsolute(pos))
-      end):start()
+      toast:position(Panel.pos.relativeTo(toasts[i - 1], 'top', { align = "end", offset = { y = -12 } }))
     end
   end
 end
 
 module.add = function(msg, duration)
-  local canvas = baseCanvas:copy()
-  table.insert(toasts, canvas)
-  canvas:mouseCallback(function() module.remove(canvas) end)
+  local panel = Panel.new()
+  table.insert(toasts, panel)
 
   if type(msg) ~= 'string' then
     msg = hs.inspect(msg)
   end
   local text = baseText:setString(msg)
-  local textSize = canvas:minimumTextSize(text)
-  canvas:size({ w = math.max(minWidth, textSize.w + paddingX * 2), h = textSize.h + paddingY * 2 })
-  reposition(canvas)
+  local element = panel:textElement(text, { x = 0, y = 0 })
+  panel:setElements({ element }, { xPadding = 16, yPadding = 8 })
+  panel:mouseCallback(function() module.remove(panel) end)
+
+  repositionToasts()
 
   if duration ~= nil then
-    local timer
-    timer = hs.timer.doAfter(duration, function()
-      module.remove(canvas)
-      timer = nil -- prevent GC
-    end)
+    -- TODO memory leak
+    table.insert(timers, hs.timer.doAfter(duration, function()
+      module.remove(panel)
+    end))
   end
 
-  return canvas
-      :appendElements(
-        {
-          type = 'rectangle',
-          action = 'fill',
-          fillColor = { black = 1, alpha = 2 / 3 },
-          roundedRectRadii = { xRadius = 7, yRadius = 7 }
-        },
-        {
-          type = 'text',
-          text = text,
-          frame = { x = paddingX, y = paddingY, w = "100%", h = "100%" }
-        })
-      :show(fadeTime)
+  panel:show()
+  return panel
 end
 
-module.remove = function(canvas)
+module.remove = function(panel)
   for i, item in ipairs(toasts) do
-    if item == canvas then
+    if item == panel then
       table.remove(toasts, i)
     end
   end
-  reposition()
-  canvas:hide(fadeTime)
-  hs.timer.doAfter(fadeTime, function() canvas:delete() end)
+  repositionToasts()
+  panel:delete()
 end
 
 return setmetatable(module, { __call = function(_, ...) return module.add(...) end })
