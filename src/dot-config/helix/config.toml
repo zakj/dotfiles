@@ -3,6 +3,7 @@ theme = "mourning"
 [editor]
 bufferline = "multiple"
 color-modes = true
+completion-timeout = 5           # TODO testing
 end-of-line-diagnostics = "hint" # TODO may be enabled by default in future
 lsp.auto-signature-help = false
 scroll-lines = 1
@@ -53,14 +54,7 @@ C-y = "scroll_up"
   "search_next",
 ]
 
-# TODO: remove these nags once I get used to it
-# A-c = ":sh echo '-> C (A-c is change selection noyank)'"
-C-r = ":sh echo '-> U'"
-D = ":sh echo '-> t<ret>d'"
-G = [":sh echo '-> ge'", "goto_line"] # TODO remove this, it's built in
-
 [keys.normal.space]
-o = ":sh echo '--> <space>F'" # TODO remove; this is built in
 # TODO this steps on the jumplist picker... but I never use it
 j = ":sh zellij run -ic -n jjui -- sh -c jjui" # TODO would be nice not to rely on zellij for this. also evaluate the key
 x = ":buffer-close"
