@@ -3,6 +3,12 @@ layout {
         pane size=1 borderless=true {
             plugin location="zjstatus" 
         }
-        children
+        children;
+    }
+
+    swap_tiled_layout {
+        tab min_panes=2 {
+            pane stacked=true { children; }
+        }
     }
 }

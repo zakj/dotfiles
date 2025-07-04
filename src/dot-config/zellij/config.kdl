@@ -1,11 +1,15 @@
 keybinds clear-defaults=true {
     locked {
-        bind "Alt f" { ToggleFloatingPanes; }
+        bind "Super f" { ToggleFloatingPanes; }
         bind "Super t" { NewPane; }
         bind "Super Shift [" { GoToPreviousTab; }
         bind "Super Shift ]" { GoToNextTab; }
         bind "Super [" { FocusPreviousPane; }
         bind "Super ]" { FocusNextPane; }
+        bind "Alt h" { MoveFocus "Left"; }
+        bind "Alt j" { MoveFocus "Down"; }
+        bind "Alt k" { MoveFocus "Up"; }
+        bind "Alt l" { MoveFocus "Right"; }
         bind "Alt -" { Resize "Decrease"; }
         bind "Alt =" { Resize "Increase"; }
         bind "Ctrl g" { SwitchToMode "Pane"; }
@@ -16,6 +20,9 @@ keybinds clear-defaults=true {
     }
 
     pane {
+        bind "f" { TogglePaneEmbedOrFloating; SwitchToMode "Locked"; }
+        bind "Ctrl j" { NewPane "Down"; SwitchToMode "Locked"; }
+        bind "Ctrl l" { NewPane "Right"; SwitchToMode "Locked"; }
         bind "p" { TogglePanePinned; SwitchToMode "Locked"; }
         bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
         bind "t" { NewTab; SwitchToMode "Locked"; }
