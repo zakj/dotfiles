@@ -28,12 +28,12 @@ local pluck = require('util').pluck
 ---@field activationMods string[]
 ---@field activationKeyCode number
 ---@field navigator Navigator
+---@field backdrop any
 ---@field indicator Indicator
 ---@field infoPanel InfoPanel
 ---@field state State
 ---@field stateMap table
 ---@field keyDownTap any
----@field clickTap any
 local LeaderKey = {}
 LeaderKey.__index = LeaderKey
 
@@ -119,16 +119,22 @@ function LeaderKey.new(mods, key, keymap)
   -- I'd love to toggle here instead, but we consume key events before the
   -- hotkey has a chance to fire. we have to detect the mods/key manually in our
   -- key event handler.
+  -- TODO if we ignore non-sticky mods in keydown handler, could we leave toggling as a responsibility of the consumer?
   hs.hotkey.bind(mods, key, function() self:_dispatch(Message.ENTER) end)
 
   self.keyDownTap = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(event)
     return self:_onKeyEvent(event)
   end)
 
-  -- TODO could we replace this with a standard mouse handler on Panel, and a separate overlay canvas here?
-  self.clickTap = hs.eventtap.new({ hs.eventtap.event.types.leftMouseDown }, function(event)
-    return self:_onClickEvent(event)
-  end)
+  -- TODO hammerspoon type annotations??
+
+  self.backdrop = hs.canvas.new(hs.screen.mainScreen():frame())
+      :clickActivating(false)
+      :canvasMouseEvents(true)
+      :mouseCallback(function() self:_dispatch(Message.CLICK_OUTSIDE) end)
+  -- Ignore clicks on panels; a non-nil callback is needed to prevent fall-through to backdrop.
+  self.indicator.panel.canvas:mouseCallback(function() end)
+  self.infoPanel.panel.canvas:mouseCallback(function() end)
 
   return self
 end
@@ -137,8 +143,8 @@ function LeaderKey:_createStateMap()
   local function exitToInactive()
     self.navigator:stop()
     self.keyDownTap:stop()
-    self.clickTap:stop()
     self.infoPanel:cancelAutoShow()
+    self.backdrop:hide()
     self.indicator:hide()
     self.infoPanel:hide()
     return State.INACTIVE
@@ -164,7 +170,7 @@ function LeaderKey:_createStateMap()
       [Message.ENTER] = function()
         self.navigator:start()
         self.keyDownTap:start()
-        self.clickTap:start()
+        self.backdrop:show()
         self.indicator:show(self.navigator:getPath())
         self.infoPanel:startAutoShow(1, function()
           if self.navigator.current then
