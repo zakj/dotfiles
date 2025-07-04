@@ -14,7 +14,21 @@ local Panel = { pos = {}, anim = {} }
 Panel.__index = Panel
 
 -- Needed to avoid clipping the box shadow on the outer frame.
-Panel.SHADOW_PADDING = 30
+Panel.SHADOW_BLUR = 10
+Panel.SHADOW_OFFSET = { h = -5, w = 0 }
+
+---@generic T: {x: number, y: number}
+---@param rect `T`
+---@param options? {invert?: boolean, padding?: {x: number, y: number}}
+---@return T
+local function addShadowPos(rect, options)
+  local mult = (options and options.invert and -1) or 1
+  local padding = (options and options.padding) or { x = 0, y = 0 }
+  local adj = hs.fnutils.copy(rect)
+  if adj.x then adj.x = adj.x + (Panel.SHADOW_BLUR + Panel.SHADOW_OFFSET.w + padding.x) * mult end
+  if adj.y then adj.y = adj.y + (Panel.SHADOW_BLUR + Panel.SHADOW_OFFSET.h + padding.y) * mult end
+  return adj
+end
 
 function Panel.new()
   local self = setmetatable({}, Panel)
@@ -36,7 +50,7 @@ function Panel.new()
       fillColor = { alpha = 0.15 },
       roundedRectRadii = { xRadius = cornerRadius, yRadius = cornerRadius },
       withShadow = true,
-      shadow = { blurRadius = 10, color = { alpha = 2 / 3 }, offset = { h = -8, w = 0 } },
+      shadow = { blurRadius = Panel.SHADOW_BLUR, color = { alpha = 3 / 3 }, offset = Panel.SHADOW_OFFSET },
       frame = { x = 0, y = 0, w = 0, h = 0 }
     },
     {
@@ -44,9 +58,8 @@ function Panel.new()
       action = "fill",
       fillColor = { red = .9, green = .9, blue = .9, alpha = 0.95 },
       roundedRectRadii = { xRadius = cornerRadius - borderWidth, yRadius = cornerRadius - borderWidth },
-      frame = { x = borderWidth, y = borderWidth, w = 0, h = 0 },
       trackMouseDown = true,
-    }
+    },
   })
   self.canvas:clickActivating(false)
 
@@ -58,52 +71,39 @@ end
 ---@return nil
 function Panel:setElements(elements, options)
   options = options or {}
+  local firstContentIndex = 3
+  local padding = {
+    x = options.xPadding or options.padding or 0,
+    y = options.yPadding or options.padding or 0,
+  }
+  local width = 0
+  local height = 0
 
   -- Clear previous content elements (skip border and background).
   -- Iterate backwards because hs.canvas forbids sparse tables.
-  for i = #self.canvas, 3, -1 do
+  for i = #self.canvas, firstContentIndex, -1 do
     self.canvas[i] = nil
   end
 
-  local padding = options.padding or 0
-  local xPadding = options.xPadding
-  local yPadding = options.yPadding
-  local width = 0
-  local height = 0
-  for _, src in ipairs(elements) do
-    local element = hs.fnutils.copy(src)
-    if element.frame then
-      -- ignore percentage sizes for now
-      -- TODO: maybe we could post-process things with percentages based on the previously-computed size?
-      if type(element.frame.x) == 'number' then
-        if type(element.frame.w) == 'number' then
-          width = math.max(width, element.frame.x + element.frame.w)
-        end
-        element.frame.x = element.frame.x + (xPadding or padding) + Panel.SHADOW_PADDING
-      end
-      if type(element.frame.y) == 'number' then
-        if type(element.frame.h) == 'number' then
-          height = math.max(height, element.frame.y + element.frame.h)
-        end
-        element.frame.y = element.frame.y + (yPadding or padding) + Panel.SHADOW_PADDING
-      end
-    elseif element.center then
-      if type(element.center.x) == 'number' then
-        element.center.x = element.center.x + (xPadding or padding) + Panel.SHADOW_PADDING
-      end
-      if type(element.center.x) == 'number' then
-        element.center.y = element.center.y + (yPadding or padding) + Panel.SHADOW_PADDING
-      end
+  self.canvas:appendElements(elements)
+  for i = firstContentIndex, #self.canvas do
+    local bounds = self.canvas:elementBounds(i)
+    width = math.max(width, bounds.x + bounds.w)
+    height = math.max(height, bounds.y + bounds.h)
+    local element = self.canvas[i]
+    if element.type == 'circle' then
+      element.center = addShadowPos(element.center, { padding = padding })
+    elseif element.frame then
+      element.frame = addShadowPos(element.frame, { padding = padding })
     end
-    self.canvas:appendElements(element)
   end
 
-  width = width + (xPadding or padding) * 2
-  height = height + (yPadding or padding) * 2
+  width = width + padding.x * 2
+  height = height + padding.y * 2
 
-  self.canvas:size({ w = width + Panel.SHADOW_PADDING * 2, h = height + Panel.SHADOW_PADDING * 2 })
-  self.canvas[1].frame = { x = Panel.SHADOW_PADDING, y = Panel.SHADOW_PADDING, w = width, h = height }
-  self.canvas[2].frame = { x = Panel.SHADOW_PADDING + 1, y = Panel.SHADOW_PADDING + 1, w = width - 2, h = height - 2 }
+  self.canvas:size({ w = width + Panel.SHADOW_BLUR * 2, h = height + Panel.SHADOW_BLUR * 2 })
+  self.canvas[1].frame = addShadowPos({ x = 0, y = 0, w = width, h = height })
+  self.canvas[2].frame = addShadowPos({ x = 1, y = 1, w = width - 2, h = height - 2 })
 
   -- Reposition without animation, in case a new size would cause us to calculate a different position.
   if self.positionFunc then
@@ -143,8 +143,8 @@ function Panel:frame()
   return {
     x = self.topLeft.x,
     y = self.topLeft.y,
-    w = canvasFrame.w - Panel.SHADOW_PADDING * 2,
-    h = canvasFrame.h - Panel.SHADOW_PADDING * 2,
+    w = canvasFrame.w - Panel.SHADOW_BLUR * 2,
+    h = canvasFrame.h - Panel.SHADOW_BLUR * 2,
   }
 end
 
@@ -159,7 +159,7 @@ end
 -- caching the new position; useful for using inside animation tweens.
 ---@param point Position
 function Panel:moveCanvas(point)
-  self.canvas:topLeft({ x = point.x - Panel.SHADOW_PADDING, y = point.y - Panel.SHADOW_PADDING })
+  self.canvas:topLeft(addShadowPos(point, { invert = true }))
 end
 
 function Panel:show(animationFunc)
