@@ -508,7 +508,7 @@ function InfoPanel:update(children, pathNodes)
         type = "circle",
         radius = radius,
         action = "fill",
-        fillColor = { alpha = 0.3 },
+        fillColor = { white = 0.6 },
         center = { x = keyBoxSize - radius / 2, y = yOffset + keyBoxSize - radius / 2 },
       })
     end
