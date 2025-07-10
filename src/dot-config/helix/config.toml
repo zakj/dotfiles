@@ -55,6 +55,7 @@ C-y = "scroll_up"
 ]
 
 [keys.normal.space]
+b = ":echo %sh{jj file annotate %{buffer_name} -T blame | sed -n %{cursor_line}p}"
 # TODO this steps on the jumplist picker... but I never use it
 j = ":sh zellij run -ic -n jjui -- sh -c jjui" # TODO would be nice not to rely on zellij for this. also evaluate the key
 x = ":buffer-close"
