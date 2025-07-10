@@ -27,16 +27,10 @@ if status is-interactive
 
     # Abbreviations are like bash/zsh aliases, but expand in place.
     abbr --add gf --command jj git fetch
-    abbr --add cl --command jj --set-cursor git clone --colocate git@github.com:%.git
     abbr --add mr mise run
+    abbr -a L --position anywhere --set-cursor "%| less"
     abbr --add np --function _node-package-managers
     abbr --add psg pgrep -lf
-    abbr --add vi --function _EDITOR
-
-    # Allow `vi` abbr to respond to changes to $EDITOR.
-    function _EDITOR
-        echo $EDITOR
-    end
 
     # Normalize fancy grep tools.
     function g
@@ -47,6 +41,11 @@ if status is-interactive
         else
             grep -R $argv . | less -FX
         end
+    end
+
+    # Grep and edit matches.
+    function ge
+        $EDITOR (rg --column $argv | cut -d : -f -3)
     end
 
     # Normalize node package management.
