@@ -39,6 +39,7 @@ C-k = ["select_line_above"]
 Z = { Z = ":write-quit" }
 C-e = "scroll_down"
 C-y = "scroll_up"
+g = { q = ":reflow" }
 "{" = "goto_prev_paragraph"
 "}" = "goto_next_paragraph"
 "*" = [
