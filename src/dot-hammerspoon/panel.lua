@@ -215,14 +215,6 @@ function Panel:animate(createTweenCallback)
   return newTween
 end
 
-function Panel:containsPoint(x, y)
-  if not self:isShowing() then return false end
-
-  local frame = self:frame()
-  return x >= frame.x and x <= frame.x + frame.w and
-      y >= frame.y and y <= frame.y + frame.h
-end
-
 function Panel:isShowing()
   return self.canvas and self.canvas:isShowing()
 end

@@ -294,15 +294,6 @@ function LeaderKey:_onKeyEvent(event)
   return true
 end
 
-function LeaderKey:_onClickEvent(event)
-  local clickPos = event:location()
-  local clickedOnPanel = (
-    self.indicator:containsPoint(clickPos.x, clickPos.y) or
-    self.infoPanel:containsPoint(clickPos.x, clickPos.y))
-  if not clickedOnPanel then self:_dispatch(Message.CLICK_OUTSIDE) end
-  return clickedOnPanel
-end
-
 ---@param keymap KeyMap[]
 ---@return Navigator
 function Navigator.new(keymap)
@@ -447,13 +438,6 @@ function Indicator:hide()
   return self.panel:hide()
 end
 
----@param x number
----@param y number
----@return boolean
-function Indicator:containsPoint(x, y)
-  return self.panel:containsPoint(x, y)
-end
-
 ---@return InfoPanel
 function InfoPanel.new()
   local self = setmetatable({}, InfoPanel)
@@ -549,13 +533,6 @@ end
 ---@return boolean
 function InfoPanel:isVisible()
   return self.panel:isShowing()
-end
-
----@param x number
----@param y number
----@return boolean
-function InfoPanel:containsPoint(x, y)
-  return self.panel:containsPoint(x, y)
 end
 
 ---@param delay number
