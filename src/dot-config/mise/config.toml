@@ -1,4 +1,5 @@
 [tools]
+difftastic = "latest"
 fd = "latest"
 github-cli = "latest"
 helix = "latest"
