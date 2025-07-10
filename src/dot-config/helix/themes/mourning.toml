@@ -60,6 +60,7 @@
 "warning" = "ansi-yellow" # also HACK WARN WARNING TEST etc
 "error" = "ansi-red"      # also XXX FIXME FIX etc
 
+"diagnostic" = { underline = { color = "ansi-purple", style = "curl" } }
 "diagnostic.hint" = { underline = { color = "ansi-blue", style = "curl" } }
 "diagnostic.info" = { underline = { color = "ansi-bblue", style = "curl" } }
 "diagnostic.warning" = { underline = { color = "ansi-yellow", style = "curl" } }
