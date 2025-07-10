@@ -1,0 +1,5 @@
+[keys]
+quit = ["q", "esc"]
+
+[ui.colors]
+selected = { bg = "#272a36" }
