@@ -20,6 +20,15 @@ tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
 'closest_bookmark(to)' = 'heads(::to & bookmarks())'
 
 [template-aliases]
+blame = '''
+  separate(
+    " ",
+    truncate_end(30, commit.author().name(), "…") ++ ",",
+    commit_timestamp(commit).local().ago(),
+    surround("[", "]", commit.change_id().shortest()),
+    commit.description().first_line(),
+  ) ++ "\n"
+'''
 prompt = '''
   separate(
     " ",
