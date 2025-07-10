@@ -126,8 +126,6 @@ function LeaderKey.new(mods, key, keymap)
     return self:_onKeyEvent(event)
   end)
 
-  -- TODO hammerspoon type annotations??
-
   self.backdrop = hs.canvas.new(hs.screen.mainScreen():frame())
       :clickActivating(false)
       :canvasMouseEvents(true)
@@ -170,6 +168,7 @@ function LeaderKey:_createStateMap()
       [Message.ENTER] = function()
         self.navigator:start()
         self.keyDownTap:start()
+        self.backdrop:frame(hs.screen.mainScreen():frame())
         self.backdrop:show()
         self.indicator:show(self.navigator:getPath())
         self.infoPanel:startAutoShow(1, function()
@@ -409,6 +408,7 @@ end
 ---@param pathNodes Node[]
 function Indicator:show(pathNodes)
   self:update(pathNodes)
+  self.panel.screen = hs.screen.mainScreen()
   self.panel:position(Panel.pos.center())
   self.panel:show()
 end
@@ -448,6 +448,7 @@ end
 
 ---@param relativeTo Panel
 function InfoPanel:show(relativeTo)
+  self.panel.screen = hs.screen.mainScreen()
   self.panel:position(Panel.pos.relativeTo(relativeTo, 'right', { offset = { x = 16 } }))
   self.panel:show()
 end

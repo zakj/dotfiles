@@ -10,6 +10,8 @@ local tween = require("tween")
 ---@field positionFunc Positioner
 -- Desired absolute position (vs actual position, which varies during animations).
 ---@field topLeft Position
+-- The screen on which to display this panel (defaults to the same as the currently-focused window).
+---@field screen any
 local Panel = { pos = {}, anim = {} }
 Panel.__index = Panel
 
@@ -22,12 +24,19 @@ Panel.SHADOW_OFFSET = { h = -5, w = 0 }
 ---@param options? {invert?: boolean, padding?: {x: number, y: number}}
 ---@return T
 local function addShadowPos(rect, options)
-  local mult = (options and options.invert and -1) or 1
+  local invert = (options and options.invert and -1) or 1
   local padding = (options and options.padding) or { x = 0, y = 0 }
-  local adj = hs.fnutils.copy(rect)
-  if adj.x then adj.x = adj.x + (Panel.SHADOW_BLUR + Panel.SHADOW_OFFSET.w + padding.x) * mult end
-  if adj.y then adj.y = adj.y + (Panel.SHADOW_BLUR + Panel.SHADOW_OFFSET.h + padding.y) * mult end
-  return adj
+  local adj = hs.geometry.copy(rect)
+  adj.x = adj.x + (Panel.SHADOW_BLUR + Panel.SHADOW_OFFSET.w + padding.x) * invert
+  adj.y = adj.y + (Panel.SHADOW_BLUR + Panel.SHADOW_OFFSET.h + padding.y) * invert
+  -- Setting a canvas element's frame to a geometry.rect doesn't work for some
+  -- undocumented reason, so we convert to a plain table before returning.
+  rect = {}
+  if type(adj.x) == 'number' then rect.x = adj.x end
+  if type(adj.y) == 'number' then rect.y = adj.y end
+  if type(adj.w) == 'number' then rect.w = adj.w end
+  if type(adj.h) == 'number' then rect.h = adj.h end
+  return rect
 end
 
 function Panel.new()
@@ -35,6 +44,7 @@ function Panel.new()
   self.currentTween = nil
   self.positionFunc = nil
   self.topLeft = { x = 0, y = 0 }
+  self.screen = hs.screen.mainScreen()
 
   -- Position and size will be adjusted later based on content.
   self.canvas = hs.canvas.new({ x = 0, y = 0, w = 0, h = 0 })
@@ -151,7 +161,7 @@ end
 -- Sets the *visual* top left point of the panel, accounting for box-shadow padding.
 ---@param point Position
 function Panel:setTopLeft(point)
-  self.topLeft = hs.fnutils.copy(point)
+  self.topLeft = hs.geometry.copy(point)
   self:moveCanvas(point)
 end
 
@@ -159,7 +169,9 @@ end
 -- caching the new position; useful for using inside animation tweens.
 ---@param point Position
 function Panel:moveCanvas(point)
-  self.canvas:topLeft(addShadowPos(point, { invert = true }))
+  local corrected = addShadowPos(point, { invert = true })
+  corrected = self.screen:localToAbsolute(corrected)
+  self.canvas:topLeft(corrected)
 end
 
 function Panel:show(animationFunc)
@@ -239,8 +251,7 @@ end
 ---@return Positioner
 function Panel.pos.center()
   return function(panel)
-    local screen = hs.screen.mainScreen()
-    local screenFrame = screen:frame()
+    local screenFrame = panel.screen:frame()
     local visualFrame = panel:frame()
 
     return {
