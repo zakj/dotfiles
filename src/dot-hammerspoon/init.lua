@@ -59,7 +59,6 @@ local keymap = {
   { 'e', desc = 'Emoji picker', url = "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols" },
   { 't', app = 'Ghostty' },
   { '`', desc = '→ quick', url = "hammerspoon://quick-terminal" },
-  { 'tab', desc = 'Window switcher', url = "raycast://extensions/raycast/navigation/switch-windows" },
   { 'f', desc = 'Focus', children = focusGroup },
   { 's', desc = 'System', children = systemGroup, },
   { 'v', desc = 'Audio', children = audioGroup },
