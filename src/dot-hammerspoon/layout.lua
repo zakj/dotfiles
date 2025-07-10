@@ -94,14 +94,15 @@ function exports.apply(layout)
         local rect = rectOrFn
         if type(rectOrFn) == "function" then
           rect = rectOrFn(app, win)
-          if not rect then return end
         end
-        rect = normalizeRect(rect, win:frame(), screenFrame)
-        -- TODO should we cap size to screen frame?
-        if rect.x ~= nil and rect.y ~= nil then
-          win:setFrame(localToAbsolute(rect, screenFrame))
-        else
-          win:setSize(rect)
+        if rect then
+          rect = normalizeRect(rect, win:frame(), screenFrame)
+          -- TODO should we cap size to screen frame?
+          if rect.x ~= nil and rect.y ~= nil then
+            win:setFrame(localToAbsolute(rect, screenFrame))
+          else
+            win:setSize(rect)
+          end
         end
       end
     end
