@@ -3,8 +3,9 @@ theme = "mourning"
 [editor]
 bufferline = "multiple"
 color-modes = true
-completion-timeout = 5           # TODO testing
-end-of-line-diagnostics = "hint" # TODO may be enabled by default in future
+completion-timeout = 5
+end-of-line-diagnostics = "hint"
+inline-diagnostics.cursor-line = "warning"
 lsp.auto-signature-help = false
 scroll-lines = 1
 soft-wrap.enable = true
@@ -12,10 +13,6 @@ soft-wrap.enable = true
 [editor.cursor-shape]
 insert = "bar"
 select = "underline"
-
-# TODO new inline diagnostics config, disabled by default but enabled in future:
-[editor.inline-diagnostics]
-cursor-line = "warning"
 
 [editor.statusline]
 right = [
@@ -35,7 +32,6 @@ right = [
 esc = ["collapse_selection", "keep_primary_selection"]
 Cmd-s = ":write"
 Cmd-z = ":reset-diff-change"
-# TODO trying this out; do I need these, or should I just swap to select mode?
 C-j = ["select_line_below"]
 C-k = ["select_line_above"]
 
@@ -43,7 +39,6 @@ C-k = ["select_line_above"]
 Z = { Z = ":write-quit" }
 C-e = "scroll_down"
 C-y = "scroll_up"
-# TODO replace { / } with [p / ]p followed by A-. (repeat last motion)
 "{" = "goto_prev_paragraph"
 "}" = "goto_next_paragraph"
 "*" = [
@@ -55,11 +50,10 @@ C-y = "scroll_up"
 ]
 
 [keys.normal.space]
-b = ":echo %sh{jj file annotate %{buffer_name} -T blame | sed -n %{cursor_line}p}"
-# TODO this steps on the jumplist picker... but I never use it
-j = ":sh zellij run -ic -n jjui -- sh -c jjui" # TODO would be nice not to rely on zellij for this. also evaluate the key
+B = ":echo %sh{jj file annotate %{buffer_name} -T blame | sed -n %{cursor_line}p}"
+j = ":sh zellij run -ic -n jjui -- jjui ."
 x = ":buffer-close"
-F = "file_picker_in_current_buffer_directory"  # TODO consider: default is current_directory, but this is more useful
+F = "file_picker_in_current_buffer_directory"
 
 [keys.insert]
 Cmd-s = ":write"
