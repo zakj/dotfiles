@@ -40,7 +40,7 @@
 "ui.background.separator" = "shroom"                     # Picker separator below input line.
 "ui.text.focus" = { bg = "soil" }                        # The currently-selected line in the picker.
 "ui.text.inactive" = { modifiers = ["dim"] }             # Suggestions in prompt/picker.
-"ui.text.directory" = "ansi-blue"
+"ui.text.directory" = "ash"                              # Directories in prompt/picker.
 "ui.help" = "shroom"                                     # Description box for commands.
 "ui.menu" = { fg = "bone", bg = "black" }
 "ui.menu.selected" = { fg = "calla", bg = "shroom-dim" }
@@ -94,7 +94,8 @@ lichen = "#5fff87"     # Primary cursor.
 shroom = "#8b7e70"     # UI highlights.
 shroom-dim = "#514539" # UI highlights background, virtual text.
 fog = "#6c6c6c"        # Dim text: comments and inactive states.
-bone = "#acacac"       # Primary text.  # TODO tmp from zb
+ash = "#8b8b8b"        # Slightly darker text for de-emphasis.
+bone = "#acacac"       # Primary text.
 talc = "#bebebe"       # Slightly brighter text for some emphasis.
 calla = "#e4e4e4"      # Brightest text for active/selection.
 
