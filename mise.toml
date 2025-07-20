@@ -1,34 +1,38 @@
-[env]
-_.path = "/opt/homebrew/bin"
+[vars]
+# Explicit paths to homebrew-installed utilities, since we might not have
+# homebrew in our PATH when bootstrapping.
+brew = "/opt/homebrew/bin/brew"
+fish = "/opt/homebrew/bin/fish"
+mas = "/opt/homebrew/bin/mas"
+stow = "/opt/homebrew/bin/stow"
 
 [tasks.stow]
 description = "Link dotfiles with stow."
-run = "stow --target=$HOME --dotfiles --no-folding --restow src"
+run = "{{vars.stow}} --target=$HOME --dotfiles --no-folding --restow src"
 
 [tasks.clean]
 description = "Remove dotfile links."
-run = "stow --target=$HOME --dotfiles --no-folding --delete src"
+run = "{{vars.stow}} --target=$HOME --dotfiles --no-folding --delete src"
 
 [tasks.brew]
 description = "Install applications from Homebrew."
-depends = "install-brew"
-# TODO puma-dev; or maybe give up on it? coredns / dnsmasq
+wait_for = "install-brew"
 run = [
-  "brew install fish",
-  "brew install mas",
-  "brew install stow",
-  "brew install trash",
-  "brew install --cask 1password",
-  "brew install --cask arc",
-  "brew install --cask ghostty",
-  "brew install --cask hammerspoon",
-  "brew install --cask logi-options+",
-  "brew install --cask obsidian",
-  "brew install --cask raycast",
+  "{{vars.brew}} install fish",
+  "{{vars.brew}} install mas",
+  "{{vars.brew}} install stow",
+  "{{vars.brew}} install trash",
+  "{{vars.brew}} install --cask 1password",
+  "{{vars.brew}} install --cask arc",
+  "{{vars.brew}} install --cask ghostty",
+  "{{vars.brew}} install --cask hammerspoon",
+  "{{vars.brew}} install --cask logi-options+",
+  "{{vars.brew}} install --cask obsidian",
+  "{{vars.brew}} install --cask raycast",
   # Parcel
-  "mas install 639968404",
+  "{{vars.mas}} install 639968404",
   # Pixelmator Pro
-  "mas install 1289583905",
+  "{{vars.mas}} install 1289583905",
 ]
 
 [tasks.bootstrap]
@@ -61,17 +65,16 @@ fi
 description = "Install Homebrew."
 depends = "xcode"
 hide = true
-run = "false"
+run = '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
 
 [tasks.setup-fish]
 description = "Make fish my login shell."
 depends = "brew"
 hide = true
 run = """
-  fish=$(which fish)
-  if ! grep -q "$fish" /etc/shells; then
-    echo "$fish" | sudo tee -a /etc/shells
-    chsh -s "$fish"
+  if ! grep -q "{{vars.fish}}" /etc/shells; then
+    echo "{{vars.fish}}" | sudo tee -a /etc/shells
+    chsh -s "{{vars.fish}}"
   fi
 """
 

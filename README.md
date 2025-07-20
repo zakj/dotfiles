@@ -4,7 +4,7 @@ Get a copy of this repository and install mise.
 Because git is not included on a clean install, we have to download a tarball.
 
 ```
-https://github.com/zakj/dotfiles/archive/refs/heads/main.tar.gz | tar xzf -
+curl -L https://github.com/zakj/dotfiles/archive/refs/heads/main.tar.gz | tar xzf -
 curl https://mise.run | sh
 eval "$(~/.local/bin/mise activate bash)"
 ```
