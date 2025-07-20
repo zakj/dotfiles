@@ -4,7 +4,7 @@ end
 
 if test -x ~/.local/bin/mise
     ~/.local/bin/mise activate | source
-    ~/.local/bin/mise completion | source
+    ~/.local/bin/mise completion fish | source
 end
 
 if status is-interactive
