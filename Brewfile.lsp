@@ -1,8 +1,0 @@
-brew "basedpyright"
-brew "lua-language-server"
-brew "prettier"
-brew "ruff"
-brew "taplo"
-brew "typescript-language-server"
-brew "vscode-langservers-extracted"
-brew "vue-language-server"

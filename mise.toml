@@ -1,0 +1,104 @@
+[env]
+_.path = "/opt/homebrew/bin"
+
+[tasks.stow]
+description = "Link dotfiles with stow."
+run = "stow --target=$HOME --dotfiles --no-folding --restow src"
+
+[tasks.clean]
+description = "Remove dotfile links."
+run = "stow --target=$HOME --dotfiles --no-folding --delete src"
+
+[tasks.brew]
+description = "Install applications from Homebrew."
+depends = "install-brew"
+# TODO puma-dev; or maybe give up on it? coredns / dnsmasq
+run = [
+  "brew install fish",
+  "brew install mas",
+  "brew install stow",
+  "brew install trash",
+  "brew install --cask 1password",
+  "brew install --cask arc",
+  "brew install --cask ghostty",
+  "brew install --cask hammerspoon",
+  "brew install --cask logi-options+",
+  "brew install --cask obsidian",
+  "brew install --cask raycast",
+  # Parcel
+  "mas install 639968404",
+  # Pixelmator Pro
+  "mas install 1289583905",
+]
+
+[tasks.bootstrap]
+description = "Bootstrap a new machine."
+depends = [
+  "brew",
+  "convert-repo",
+  "setup-fish",
+  "ssh-key",
+  "system-settings",
+  "xcode",
+]
+
+[tasks.convert-repo]
+description = "Convert a downloaded copy into a jj+git repository."
+depends = "xcode"
+hide = true
+run = """
+if test ! -d .jj; then
+  jj git init --colocate .
+  jj git remote add origin git@github.com:zakj/dotfiles.git
+  jj git fetch
+  jj bookmark track main@origin
+  jj abandon
+  jj new main
+fi
+"""
+
+[tasks.install-brew]
+description = "Install Homebrew."
+depends = "xcode"
+hide = true
+run = "false"
+
+[tasks.setup-fish]
+description = "Make fish my login shell."
+depends = "brew"
+hide = true
+run = """
+  fish=$(which fish)
+  if ! grep -q "$fish" /etc/shells; then
+    echo "$fish" | sudo tee -a /etc/shells
+    chsh -s "$fish"
+  fi
+"""
+
+[tasks.ssh-key]
+description = "Generate a new ssh key."
+hide = true
+run = "test -e ~/.ssh/id_ed25519 || ssh-keygen -t ed25519 -a 100"
+
+[tasks.system-settings]
+description = "Update various system settings."
+hide = true
+run = [
+  # Appearance: Show scroll bars when scrolling
+  "defaults write NSGlobalDomain AppleShowScrollBars -string WhenScrolling",
+  # Desktop & Dock: Auto-hide dock and disable recent apps
+  "defaults write com.apple.dock autohide -bool true",
+  "defaults write com.apple.dock show-recents -bool false",
+  "killall Dock",
+  # Keyboard: Disable auto-correct/capitalize
+  "defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false",
+  "defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false",
+  # Trackpad: Tap to click
+  "defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true",
+  "defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true",
+]
+
+[tasks.xcode]
+description = "Install Xcode."
+hide = true
+run = "xcode-select --version || xcode-select --install"

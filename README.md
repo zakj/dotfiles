@@ -1,22 +1,25 @@
 # Configuring a new machine
 
+Get a copy of this repository and install mise. 
+Because git is not included on a clean install, we have to download a tarball.
+
 ```
-xcode-select --install
-make ssh-key    # generate a new ssh key
-make bootstrap  # install homebrew and formulae
-make            # link dotfiles
+https://github.com/zakj/dotfiles/archive/refs/heads/main.tar.gz | tar xzf -
+curl https://mise.run | sh
+eval "$(~/.local/bin/mise activate bash)"
 ```
 
-## Sequoia
+Bootstrap everything else with mise:
 
-* System settings:
-    * Appearance: Show scroll bars: When scrolling
-    * Desktop & Dock: Automatically hide and show the Dock
-    * Desktop & Dock: Turn off "Show suggested and recent apps Dock"
-    * Keyboard: Text Input: Turn off "Correct spelling automatically"
-    * Keyboard: Text Input: Turn off "Capitalize words automatically"
-    * Trackpad: Tap to click
-    * General: Set Name to something reasonable
+```
+mise run bootstrap
+mise run stow
+```
+
+## Settings
+
+System settings are handled by `mise bootstrap`, but there are a few other changes to make by hand:
+
 * Hammerspoon:
   * Launch Hammerspoon at login
   * Turn off "Show menu icon"

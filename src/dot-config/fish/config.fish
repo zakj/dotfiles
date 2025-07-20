@@ -2,6 +2,11 @@ if test -x /opt/homebrew/bin/brew
     eval (/opt/homebrew/bin/brew shellenv)
 end
 
+if test -x ~/.local/bin/mise
+    ~/.local/bin/mise activate | source
+    ~/.local/bin/mise completion | source
+end
+
 if status is-interactive
     fish_config theme choose 'Solarized Dark'
     set fish_color_valid_path # Reset theme's underlines on paths.
@@ -23,6 +28,7 @@ if status is-interactive
     # Abbreviations are like bash/zsh aliases, but expand in place.
     abbr --add gf --command jj git fetch
     abbr --add cl --command jj --set-cursor git clone --colocate git@github.com:%.git
+    abbr --add mr mise run
     abbr --add np --function _node-package-managers
     abbr --add psg pgrep -lf
     abbr --add vi --function _EDITOR
