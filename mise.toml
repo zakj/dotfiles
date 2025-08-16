@@ -37,13 +37,13 @@ run = [
 
 [tasks.bootstrap]
 description = "Bootstrap a new machine."
+hide = true
 depends = [
   "brew",
   "convert-repo",
   "setup-fish",
   "ssh-key",
   "system-settings",
-  "xcode",
 ]
 
 [tasks.convert-repo]
@@ -85,7 +85,6 @@ run = "test -e ~/.ssh/id_ed25519 || ssh-keygen -t ed25519 -a 100"
 
 [tasks.system-settings]
 description = "Update various system settings."
-hide = true
 run = [
   # Appearance: Show scroll bars when scrolling
   "defaults write NSGlobalDomain AppleShowScrollBars -string WhenScrolling",
