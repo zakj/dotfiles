@@ -10,10 +10,12 @@ end
 if status is-interactive
     fish_config theme choose 'Solarized Dark'
     set fish_color_valid_path # Reset theme's underlines on paths.
-    fish_hybrid_key_bindings # vi mode but with emacs-style bindings.
-    set fish_cursor_insert line # Use cursor to distinguish insert/normal modes.
     set fish_greeting # Shhh.
     set __fish_ls_command ls -F # Avoid default ls colors added by fish.
+    # Set a line cursor at the prompt, but fall back to block elsewhere.
+    set fish_cursor_default line
+    set fish_cursor_external block
+    fish_vi_cursor
 
     # Configure some environment variables for other utilities.
     if not set -q EDITOR
@@ -68,19 +70,15 @@ if status is-interactive
             commandline --insert .
         end
     end
-    bind . -M insert _rationalise-dot
-end
-
-function fish_mode_prompt
-    set -l color (test $status = 0; and echo brwhite; or echo brred)
-    set -l char (test $fish_bind_mode = insert; and echo '➜'; or echo ':')
-    echo -ns (set_color --bold $color) $char (set_color normal) " "
+    bind . _rationalise-dot
 end
 
 function fish_prompt
+    set -l color (test $status = 0; and echo brwhite; or echo brred)
+    set -l prefix (echo -ns (set_color --bold $color) '➜' (set_color normal))
     set -l suffix (fish_is_root_user; and echo '#'; or echo '%')
-    set -l read_only (not test -w .; and echo '🔒')
-    echo -ns (prompt_pwd) $read_only $suffix " "
+    set -l read_only (test -w .; or echo '🔒')
+    echo -ns $prefix " " (prompt_pwd) $read_only $suffix " "
 end
 
 function fish_right_prompt
