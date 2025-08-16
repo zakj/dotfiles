@@ -98,13 +98,11 @@ function prompt_pwd
 
     set -l jj_root (jj root 2>/dev/null)
     if test -n "$jj_root"
-        set dir (string replace -r (string escape --style=regex -- $jj_root)/? '' $dir)
-        set jj_root (basename $jj_root)
+        set dir (string replace $jj_root (basename $jj_root) $dir)
     end
 
-    set dir (string replace ~ '~' $dir)
+    set dir (string replace $HOME '~' $dir)
     set components (string split -r / $dir)
-    set components (string match -v '' -- $components)
     set components (string sub -l 1 $components[1..-3]) $components[-2..-1]
-    echo -n (string join / -- $jj_root $components)
+    echo -n (string join / -- $components)
 end
