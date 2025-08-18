@@ -29,10 +29,28 @@ if status is-interactive
 
     # Abbreviations are like bash/zsh aliases, but expand in place.
     abbr --add gf --command jj git fetch
+    abbr --add L --position anywhere --set-cursor "%| less"
     abbr --add mr mise run
-    abbr -a L --position anywhere --set-cursor "%| less"
     abbr --add np --function _node-package-managers
     abbr --add psg pgrep -lf
+    abbr --add ... --position anywhere --regex '[./]*\.\.\.' --function _rationalise-dot
+    bind . self-insert expand-abbr
+
+    # Normalize node package management.
+    function _node-package-managers
+        if test -f "package-lock.json"
+            echo npm
+        else if test -f "yarn.lock"
+            echo yarn
+        else
+            echo pnpm
+        end
+    end
+
+    # Allow for easier upward directory traversal.
+    function _rationalise-dot
+        string replace '...' '../..' (commandline -t)
+    end
 
     # Normalize fancy grep tools.
     function g
@@ -49,28 +67,6 @@ if status is-interactive
     function ge
         $EDITOR (rg --column $argv | cut -d : -f -3)
     end
-
-    # Normalize node package management.
-    function _node-package-managers
-        if test -f "package-lock.json"
-            echo npm
-        else if test -f "yarn.lock"
-            echo yarn
-        else
-            echo pnpm
-        end
-    end
-
-    # Allow for easier upward directory traversal.
-    function _rationalise-dot
-        set -l words (string split ' ' (commandline --cut-at-cursor))
-        if string match -q --regex '^(\.\./)*\.\.$' -- $words[-1]
-            commandline --insert /..
-        else
-            commandline --insert .
-        end
-    end
-    bind . _rationalise-dot
 end
 
 function fish_prompt
