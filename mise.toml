@@ -3,7 +3,6 @@
 # homebrew in our PATH when bootstrapping.
 brew = "/opt/homebrew/bin/brew"
 fish = "/opt/homebrew/bin/fish"
-mas = "/opt/homebrew/bin/mas"
 stow = "/opt/homebrew/bin/stow"
 
 [tasks.stow]
@@ -17,23 +16,22 @@ run = "{{vars.stow}} --target=$HOME --dotfiles --no-folding --delete src"
 [tasks.brew]
 description = "Install applications from Homebrew."
 wait_for = "install-brew"
-run = [
-  "{{vars.brew}} install fish",
-  "{{vars.brew}} install mas",
-  "{{vars.brew}} install stow",
-  "{{vars.brew}} install trash",
-  "{{vars.brew}} install --cask 1password",
-  "{{vars.brew}} install --cask arc",
-  "{{vars.brew}} install --cask ghostty",
-  "{{vars.brew}} install --cask hammerspoon",
-  "{{vars.brew}} install --cask logi-options+",
-  "{{vars.brew}} install --cask obsidian",
-  "{{vars.brew}} install --cask raycast",
-  # Parcel
-  "{{vars.mas}} install 639968404",
-  # Pixelmator Pro
-  "{{vars.mas}} install 1289583905",
-]
+run = """
+cat <<EOF | {{vars.brew}} bundle --file=-
+  brew "fish"
+  brew "stow"
+  brew "trash"
+  cask "1password"
+  cask "arc"
+  cask "ghostty"
+  cask "hammerspoon"
+  cask "logi-options+"
+  cask "obsidian"
+  cask "raycast"
+  mas "Parcel", id: 639968404
+  mas "Pixelmator Pro", id: 1289583905
+EOF
+"""
 
 [tasks.bootstrap]
 description = "Bootstrap a new machine."
