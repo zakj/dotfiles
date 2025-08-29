@@ -56,6 +56,10 @@ j = ":sh zellij run -ic -n jjui -- jjui ."
 x = ":buffer-close"
 F = "file_picker_in_current_buffer_directory"
 
+[keys.normal.tab]
+h = ":toggle-option file-picker.hidden"
+i = ":toggle-option file-picker.git-ignore"
+
 [keys.insert]
 Cmd-s = ":write"
 C-c = "signature_help" # hidden by default, this makes C-c a toggle
