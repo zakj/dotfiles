@@ -20,6 +20,8 @@ keybind = cmd+shift+right_bracket=unbind
 keybind = cmd+left_bracket=unbind
 keybind = cmd+right_bracket=unbind
 keybind = cmd+t=unbind
+# Helix
+keybind = cmd+z=unbind
 
 # For Claude.
 keybind = shift+enter=text:\n
