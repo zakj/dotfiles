@@ -55,6 +55,7 @@ x = ":buffer-close"
 [keys.normal.tab]
 h = ":toggle-option file-picker.hidden"
 i = ":toggle-option file-picker.git-ignore"
+w = ":toggle-option whitespace.render all none"
 
 [keys.insert]
 Cmd-s = ":write"
