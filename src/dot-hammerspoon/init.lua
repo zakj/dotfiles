@@ -74,7 +74,11 @@ local externalLayout = {
     return { x = 0, y = 0, w = browserW, bottom = 0 }
   end,
   Finder = { w = 900, h = 450 },
-  Ghostty = { x = browserW + gap, y = gap, right = gap, bottom = gap },
+  Ghostty = function(app, win)
+    if win == layout.widestVisibleWindow(app) then
+      return { x = browserW + gap, y = gap, right = gap, bottom = gap }
+    end
+  end,
   Messages = { x = gap, bottom = gap, w = 850, h = 850 },
   Obsidian = { x = "center", y = "center", w = 900, h = 1100 },
   Slack = function(app, win)
