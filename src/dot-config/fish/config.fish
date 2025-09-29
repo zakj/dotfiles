@@ -9,6 +9,7 @@ end
 
 if status is-interactive
     fish_config theme choose 'Solarized Dark'
+    set fish_transient_prompt 1
     set fish_color_valid_path # Reset theme's underlines on paths.
     set fish_greeting # Shhh.
     set __fish_ls_command ls -F # Avoid default ls colors added by fish.
@@ -81,11 +82,13 @@ function fish_prompt
 end
 
 function fish_right_prompt
-    set -l jj (jj log -r @ -T prompt --ignore-working-copy --no-graph --no-pager --color always 2>/dev/null)
-    if test $status = 0
-        echo -ns $jj " "
-    else
-        echo -ns (set_color brblack) (fish_vcs_prompt) (set_color normal) " "
+    if not contains -- --final-rendering $argv
+        set -l jj (jj log -r @ -T prompt --ignore-working-copy --no-graph --no-pager --color always 2>/dev/null)
+        if test $status = 0
+            echo -ns $jj " "
+        else
+            echo -ns (set_color brblack) (fish_vcs_prompt) (set_color normal) " "
+        end
     end
 end
 
