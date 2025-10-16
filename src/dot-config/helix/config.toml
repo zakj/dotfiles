@@ -1,6 +1,7 @@
 theme = "mourning"
 
 [editor]
+auto-info = false
 bufferline = "multiple"
 color-modes = true
 cursor-shape.insert = "bar"
@@ -54,6 +55,7 @@ J = [":write-all", ":sh zellij run -ic -n jjui -- jjui .", ":reload-all"]
 x = ":buffer-close"
 
 [keys.normal.tab]
+a = ":toggle-option auto-info"
 h = ":toggle-option file-picker.hidden"
 i = ":toggle-option file-picker.git-ignore"
 w = ":toggle-option whitespace.render all none"
