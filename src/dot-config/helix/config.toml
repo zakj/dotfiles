@@ -50,8 +50,7 @@ g = { q = ":reflow" }
 [keys.normal.space]
 B = ":echo %sh{jj file annotate %{buffer_name} -T blame | sed -n %{cursor_line}p}"
 F = "file_picker_in_current_buffer_directory"
-j = ":sh zellij run -ic -n jjui -- jjui ."
-J = [":write-all", ":sh zellij run -ic -n jjui -- jjui .", ":reload-all"]
+j = ':sh kitten @ launch --title jjui --type overlay --cwd current --copy-env --no-response jjui'
 x = ":buffer-close"
 
 [keys.normal.tab]

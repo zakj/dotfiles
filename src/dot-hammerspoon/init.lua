@@ -30,7 +30,7 @@ local focusGroup = {
   { 'l', app = 'Slack' },
   { 'm', app = 'Messages' },
   { 'n', app = 'Obsidian' },
-  { 't', app = 'Ghostty' },
+  { 't', app = 'Kitty' },
 }
 local systemGroup = {
   { 'a', desc = 'Toggle system appearance', url = 'raycast://extensions/raycast/system/toggle-system-appearance' },
@@ -57,7 +57,7 @@ local audioGroup = {
 }
 local keymap = {
   { 'e', desc = 'Emoji picker', url = "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols" },
-  { 't', app = 'Ghostty' },
+  { 't', app = 'Kitty' },
   { '`', desc = '→ quick', url = "hammerspoon://quick-terminal" },
   { 'f', desc = 'Focus', children = focusGroup },
   { 's', desc = 'System', children = systemGroup, },
@@ -75,6 +75,11 @@ local externalLayout = {
   end,
   Finder = { w = 900, h = 450 },
   Ghostty = function(app, win)
+    if win == layout.widestVisibleWindow(app) then
+      return { x = browserW + gap, y = gap, right = gap, bottom = gap }
+    end
+  end,
+  kitty = function(app, win)
     if win == layout.widestVisibleWindow(app) then
       return { x = browserW + gap, y = gap, right = gap, bottom = gap }
     end
