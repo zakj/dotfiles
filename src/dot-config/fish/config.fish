@@ -49,6 +49,13 @@ if status is-interactive
         end
     end
 
+    # Construct a co-authored-by header from a github username.
+    function coauth --argument-names username
+        test -n "$username" || read -l username
+        gh api users/$username -q '.id, .name' | read -Ll id name
+        echo "Co-authored-by: $name <$id+$username@users.noreply.github.com>"
+    end
+
     # Allow for easier upward directory traversal.
     function _rationalise-dot
         string replace '...' '../..' (commandline -t)
