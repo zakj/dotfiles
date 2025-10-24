@@ -96,6 +96,7 @@ local externalLayout = {
 
 local laptopLayout = hs.fnutils.copy(externalLayout)
 laptopLayout.Ghostty = { right = 0, w = 1100, y = 0, bottom = 0 }
+laptopLayout.kitty = { right = 0, w = 1100, y = 0, bottom = 0 }
 laptopLayout.Slack = function(app, win)
   if win ~= layout.widestVisibleWindow(app) then
     return { y = gap, w = 550, right = 0, bottom = 0 }
@@ -113,7 +114,10 @@ hs.urlevent.bind('quick-terminal', function()
   hs.eventtap.keyStroke({}, 'f19', 0, hs.application.get('Ghostty'))
 end)
 hs.urlevent.bind('wide-terminal', function()
-  layout.apply({ Ghostty = { right = 10, y = 10, bottom = 10, w = 1770 } })
+  layout.apply({
+    Ghostty = { right = 10, y = 10, bottom = 10, w = 1770 },
+    kitty = { right = 10, y = 10, bottom = 10, w = 1770 },
+  })
 end)
 hs.urlevent.bind('reload', hs.reload)
 
