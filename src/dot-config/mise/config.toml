@@ -1,4 +1,5 @@
 [tools]
+claude = "latest"
 difftastic = "latest"
 fd = "latest"
 github-cli = "latest"
