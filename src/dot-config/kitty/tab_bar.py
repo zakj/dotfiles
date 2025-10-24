@@ -26,15 +26,17 @@ def color_as_rgb(val) -> str:
 def draw_tab(
     draw_data,
     screen,
-    tab,
+    tab_data,
     _before: int,
     max_tab_length: int,
     index: int,
     is_last: bool,
     extra_data,
 ) -> int:
-    tm = get_boss().active_tab_manager
+    boss = get_boss()
+    tab = boss.tab_for_id(tab_data.tab_id)
     sep, soft_sep = "", "╱"
+
     tab_bg = screen.cursor.bg
     if extra_data.next_tab:
         next_tab_bg = color_as_rgb(draw_data.tab_bg(extra_data.next_tab))
@@ -44,15 +46,15 @@ def draw_tab(
         needs_soft_separator = False
 
     prefix = ""
-    if tab.needs_attention:
+    if tab_data.needs_attention:
         prefix = draw_data.bell_on_tab
-    elif tab.has_activity_since_last_focus:
+    elif tab_data.has_activity_since_last_focus:
         prefix = draw_data.tab_activity_symbol
+
     # If the tab has a custom title, show it; otherwise fall back to the tab
     # number. No need to show the active window's title in the tab, since we're
     # showing all of them later.
-    title = prefix + (tm.tabs[index - 1].name or str(index))
-
+    title = prefix + (tab.name or str(index))
     extra_width = 3  # leading/trailing spaces, separator/edge symbol
     screen.draw(" ")
     screen.draw(truncate(title, max_tab_length - extra_width))
@@ -68,13 +70,14 @@ def draw_tab(
     if is_last:
         # Traverse groups to get windows in layout order. Exclude windows which
         # have an overlay above them, and therefore cannot be made active.
-        windows = [w for group in get_boss().active_tab.windows.groups for w in group]
+        groups = boss.os_window_map[tab.os_window_id].active_tab.windows.groups
+        windows = [w for group in groups for w in group]
         overlay_parents = {w.overlay_parent for w in windows}
         panes = [
             Pane(w.title, w.is_active) for w in windows if w not in overlay_parents
         ]
-
         screen.draw(" ")
+
         width = screen.columns - screen.cursor.x
         pane_sep = f" {soft_sep} "
         panes = truncate_titles(panes, width, sep_width=len(pane_sep))
@@ -95,7 +98,7 @@ def draw_tab(
 
 
 def truncate_titles(panes: list[Pane], width: int, sep_width: int) -> list[Pane]:
-    full_width = sum(len(t.title) for t in panes)
+    full_width = sum(len(t.title) for t in panes) + (len(panes) - 1) * sep_width
     if full_width <= width:
         return panes
 
