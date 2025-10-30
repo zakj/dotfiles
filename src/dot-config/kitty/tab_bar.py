@@ -8,6 +8,7 @@ from kitty.tab_bar import (
     as_rgb,
     color_as_int,
     get_boss,
+    wcswidth,
 )
 
 
@@ -80,7 +81,7 @@ def draw_tab(
 
         width = screen.columns - screen.cursor.x
         pane_sep = f" {soft_sep} "
-        panes = truncate_titles(panes, width, sep_width=len(pane_sep))
+        panes = truncate_titles(panes, width, sep_width=wcswidth(pane_sep))
         last = panes[-1]
 
         active_color = color_as_rgb(draw_data.active_bg)
@@ -98,11 +99,11 @@ def draw_tab(
 
 
 def truncate_titles(panes: list[Pane], width: int, sep_width: int) -> list[Pane]:
-    full_width = sum(len(t.title) for t in panes) + (len(panes) - 1) * sep_width
+    full_width = sum(wcswidth(t.title) for t in panes) + (len(panes) - 1) * sep_width
     if full_width <= width:
         return panes
 
-    active_width = len(next(p.title for p in panes if p.is_active))
+    active_width = wcswidth(next(p.title for p in panes if p.is_active))
     remaining_width = width - active_width - (len(panes) - 1) * sep_width
     inactive_count = len(panes) - 1
     inactive_width = remaining_width // inactive_count if inactive_count else 0
@@ -124,8 +125,8 @@ def truncate_titles(panes: list[Pane], width: int, sep_width: int) -> list[Pane]
     for i, pane in enumerate(panes):
         if pane.is_active:
             widths[i] = active_width
-        elif len(pane.title) <= inactive_width:
-            widths[i] = len(pane.title)
+        elif wcswidth(pane.title) <= inactive_width:
+            widths[i] = wcswidth(pane.title)
             unused += inactive_width - widths[i]
         else:
             truncated_indices.append(i)
@@ -143,7 +144,7 @@ def truncate_titles(panes: list[Pane], width: int, sep_width: int) -> list[Pane]
 
 
 def truncate(text: str, maxlen: int | None = None) -> str:
-    if maxlen is None or len(text) <= maxlen:
+    if maxlen is None or wcswidth(text) <= maxlen:
         return text
     if maxlen < 1:
         return ""
