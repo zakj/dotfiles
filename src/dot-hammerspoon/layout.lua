@@ -15,10 +15,10 @@ function exports.isFirstUserDesktop()
 end
 
 -- Used to detect the "main" window for a given app.
--- TODO: should be largestVisibleWindow, w * h
-function exports.widestVisibleWindow(app)
-  return hs.fnutils.reduce(app:visibleWindows(), function(a, b)
-    return a:frame().w > b:frame().w and a or b
+function exports.isLargestVisible(win)
+  return win == hs.fnutils.reduce(win:application():visibleWindows(), function(a, b)
+    local aFrame, bFrame = a:frame(), b:frame()
+    return (aFrame.w * aFrame.h) > (bFrame.w * bFrame.h) and a or b
   end)
 end
 
@@ -44,12 +44,12 @@ local function normalizeRect(rect, winFrame, screenFrame)
   if rv.h and rv.h > 0 and rv.h <= 1 then rv.h = rv.h * screenFrame.h end
   if rv.w and rv.w > 0 and rv.w <= 1 then rv.w = rv.w * screenFrame.w end
 
-  -- Center.
+  -- Center, biased slightly toward the top of the screen for vertical.
   if rect.x == 'center' then
-    rv.x = screenFrame.w / 2 - rv.w / 2
+    rv.x = (screenFrame.w - rv.w) / 2
   end
   if rect.y == 'center' then
-    rv.y = screenFrame.h / 2 - rv.h / 2
+    rv.y = (screenFrame.h - rv.h) / 3
   end
 
   -- Convert bottom/right values to x/y/w/h.
@@ -57,15 +57,14 @@ local function normalizeRect(rect, winFrame, screenFrame)
     if rect.x then
       rv.w = screenFrame.w - rect.right - rv.x
     elseif rect.w then
-      -- TODO consider this logic, why check rect.w twice. rv.w? same in bottom below
-      rv.x = screenFrame.w - rect.right - (rect.w or winFrame.w)
+      rv.x = screenFrame.w - rect.right - rv.w
     end
   end
   if rect.bottom then
     if rect.y then
       rv.h = screenFrame.h - rect.bottom - rv.y
     elseif rect.h then
-      rv.y = screenFrame.h - rect.bottom - (rect.h or winFrame.h)
+      rv.y = screenFrame.h - rect.bottom - rv.h
     end
   end
 
@@ -80,30 +79,42 @@ local function localToAbsolute(rect, frame)
   return abs
 end
 
--- layout is a table keyed by application name, whose values are either a table
--- or a function (accepting application and window arguments) returning a table.
--- The value table is a partial hs.geometry.rect, where w and h are required and
--- x and y are optional. x and y are relative to the screen's coordinates.
-function exports.apply(layout)
+local function set(win, rectOrFn)
   local screenFrame = hs.screen.mainScreen():frame()
+  local rect = rectOrFn
+  if type(rectOrFn) == "function" then
+    rect = rectOrFn(win)
+  end
+  if rect then
+    rect = normalizeRect(rect, win:frame(), screenFrame)
+    -- Clamp to screenFrame.
+    rect.w = math.min(rect.w, screenFrame.w)
+    rect.h = math.min(rect.h, screenFrame.h)
+    rect.x = math.max(0, math.min(rect.x, screenFrame.w - rect.w))
+    rect.y = math.max(0, math.min(rect.y, screenFrame.h - rect.h))
+    win:setFrame(localToAbsolute(rect, screenFrame))
+  end
+end
+
+-- For leaderkey bindings; returns a function so we don't have to wrap in the
+-- leaderkey configuration.
+function exports.setCurrentWin(rectOrFn)
+  return function()
+    set(hs.window.focusedWindow(), rectOrFn)
+  end
+end
+
+-- layout is a table keyed by application name, whose values are either a table
+-- or a function (taking a window argument) returning a table. The value table
+-- is a partial hs.geometry.rect, where missing values are filled from the
+-- existing window's frame.
+function exports.apply(layout)
   for appName, rectOrFn in pairs(layout) do
     local app = hs.application.find(appName, true)
     if app and app:isRunning() then
       -- TODO: visibleWindows includes from all active spaces, not just current screen
       for _, win in pairs(app:visibleWindows()) do
-        local rect = rectOrFn
-        if type(rectOrFn) == "function" then
-          rect = rectOrFn(app, win)
-        end
-        if rect then
-          rect = normalizeRect(rect, win:frame(), screenFrame)
-          -- TODO should we cap size to screen frame?
-          if rect.x ~= nil and rect.y ~= nil then
-            win:setFrame(localToAbsolute(rect, screenFrame))
-          else
-            win:setSize(rect)
-          end
-        end
+        set(win, rectOrFn)
       end
     end
   end

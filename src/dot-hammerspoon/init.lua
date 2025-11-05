@@ -41,10 +41,10 @@ local systemGroup = {
 }
 local windowGroup = {
   { 'a', desc = 'Auto layout',     url = 'hammerspoon://autolayout' },
-  { 'c', desc = 'Center',          url = 'raycast://customWindowManagementCommand?&name=Center%20(shifted%20up)&position=center&relativeYOffset=-0.05' },
+  { 'c', desc = 'Center',          fn = layout.setCurrentWin({ x = "center", y = "center" }) },
   { 'm', desc = 'Maximize',        url = 'raycast://extensions/raycast/window-management/maximize' },
   { 'r', desc = 'Restore',         url = 'raycast://extensions/raycast/window-management/restore' },
-  { 's', desc = 'Reasonable size', url = 'raycast://customWindowManagementCommand?&name=Comfortable%20size&position=center&absoluteWidth=1320.0&absoluteHeight=945.0&relativeYOffset=-0.05' },
+  { 's', desc = 'Reasonable size', fn = layout.setCurrentWin({ w = 1320, h = 945, x = "center", y = "center" }) },
   { 't', desc = 'Wide terminal',   url = 'hammerspoon://wide-terminal' },
 }
 local audioGroup = {
@@ -69,25 +69,25 @@ LeaderKey.new({ 'cmd', 'ctrl', 'option', 'shift' }, '1', keymap)
 local gap = 10
 local browserW = 1440
 local externalLayout = {
-  Arc = function(app, win)
-    if win ~= layout.widestVisibleWindow(app) then return end
+  Arc = function(win)
+    if not layout.isLargestVisible(win) then return end
     return { x = 0, y = 0, w = browserW, bottom = 0 }
   end,
   Finder = { w = 900, h = 450 },
-  Ghostty = function(app, win)
-    if win == layout.widestVisibleWindow(app) then
+  Ghostty = function(win)
+    if layout.isLargestVisible(win) then
       return { x = browserW + gap, y = gap, right = gap, bottom = gap }
     end
   end,
-  kitty = function(app, win)
-    if win == layout.widestVisibleWindow(app) then
+  kitty = function(win)
+    if layout.isLargestVisible(win) then
       return { x = browserW + gap, y = gap, right = gap, bottom = gap }
     end
   end,
   Messages = { x = gap, bottom = gap, w = 850, h = 850 },
   Obsidian = { x = "center", y = "center", w = 900, h = 1100 },
-  Slack = function(app, win)
-    if win ~= layout.widestVisibleWindow(app) then
+  Slack = function(win)
+    if not layout.isLargestVisible(win) then
       return { x = 1100 + gap, y = 1 / 5, w = 550, h = 950 }
     end
     return { x = 0, y = 1 / 5, w = 1100, bottom = 0 }
@@ -97,8 +97,8 @@ local externalLayout = {
 local laptopLayout = hs.fnutils.copy(externalLayout)
 laptopLayout.Ghostty = { right = 0, w = 1100, y = 0, bottom = 0 }
 laptopLayout.kitty = { right = 0, w = 1100, y = 0, bottom = 0 }
-laptopLayout.Slack = function(app, win)
-  if win ~= layout.widestVisibleWindow(app) then
+laptopLayout.Slack = function(win)
+  if not layout.isLargestVisible(win) then
     return { y = gap, w = 550, right = 0, bottom = 0 }
   end
   return { x = 0, y = gap, w = 1100, bottom = 0 }
