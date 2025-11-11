@@ -51,6 +51,7 @@ g = { q = ":reflow" }
 B = ":echo %sh{jj file annotate %{buffer_name} -T blame | sed -n %{cursor_line}p}"
 F = "file_picker_in_current_buffer_directory"
 j = ':sh kitten @ launch --title jjui --type overlay --cwd last_reported --copy-env --no-response jjui'
+l = ':sh ~/etc/bin/gh-link %{buffer_name} %{selection_line_start} %{selection_line_end} | pbcopy'
 x = ":buffer-close"
 
 [keys.normal.tab]

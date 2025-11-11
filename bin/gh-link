@@ -1,0 +1,6 @@
+#!/bin/sh
+BOOKMARK=$(jj -r 'closest_bookmark(@)' -T 'coalesce(bookmarks)' --no-graph)
+URL=$(gh browse -n -b $BOOKMARK $1)
+test -n "$2" && URL="$URL#L$2"
+test -n "$3" -a "$3" != "$2" && URL="$URL-L$3"
+echo $URL
