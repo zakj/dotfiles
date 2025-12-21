@@ -56,6 +56,7 @@ x = ":buffer-close"
 
 [keys.normal.tab]
 a = ":toggle-option auto-info"
+f = ":toggle-option auto-format"
 h = ":toggle-option file-picker.hidden"
 i = ":toggle-option file-picker.git-ignore"
 w = ":toggle-option whitespace.render all none"
