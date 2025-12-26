@@ -23,8 +23,8 @@ cat <<EOF | {{vars.brew}} bundle --file=-
   brew "trash"
   cask "1password"
   cask "arc"
-  cask "ghostty"
   cask "hammerspoon"
+  cask "kitty"
   cask "logi-options+"
   cask "obsidian"
   cask "raycast"
@@ -36,13 +36,7 @@ EOF
 [tasks.bootstrap]
 description = "Bootstrap a new machine."
 hide = true
-depends = [
-  "brew",
-  "convert-repo",
-  "setup-fish",
-  "ssh-key",
-  "system-settings",
-]
+depends = ["brew", "convert-repo", "setup-fish", "ssh-key", "system-settings"]
 
 [tasks.convert-repo]
 description = "Convert a downloaded copy into a jj+git repository."
