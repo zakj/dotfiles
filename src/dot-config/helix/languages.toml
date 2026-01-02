@@ -1,5 +1,19 @@
 # Defaults: https://github.com/helix-editor/helix/blob/master/languages.toml
 
+[language-server.astro-ls]
+command = "astro-ls"
+args = ["--stdio"]
+config.typescript.tsdk = "/opt/homebrew/lib/node_modules/@astrojs/language-server/node_modules/typescript/lib"
+config.environment = "node"
+
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+[language-server.ty]
+command = "ty"
+args = ["server"]
+
 [[language]]
 name = "astro"
 auto-format = true
@@ -11,12 +25,6 @@ formatter = { command = "prettier", args = [
 ] }
 language-servers = ["astro-ls"]
 
-[language-server.astro-ls]
-command = "astro-ls"
-args = ["--stdio"]
-config.typescript.tsdk = "/opt/homebrew/lib/node_modules/@astrojs/language-server/node_modules/typescript/lib"
-config.environment = "node"
-
 [[language]]
 name = "lua"
 auto-format = true
@@ -26,10 +34,6 @@ name = "python"
 auto-format = true
 language-servers = ["basedpyright", "ruff"]
 
-# TODO auto-organize imports on save
-[language-server.ruff]
-command = "ruff"
-args = ["server"]
 
 [[language]]
 name = "svelte"
