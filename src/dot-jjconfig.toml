@@ -18,6 +18,7 @@ private-commits = 'description(glob:"private:*") | description(glob:"wip[: ]*")'
 "diff token" = { underline = false }
 
 [aliases]
+difft = ["diff", "--tool", "difft"]
 tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
 
 [revset-aliases]
