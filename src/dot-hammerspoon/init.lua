@@ -57,12 +57,11 @@ local audioGroup = {
 }
 local keymap = {
   { 'e', desc = 'Emoji picker', url = "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols" },
-  { 't', app = 'Kitty' },
-  { '`', desc = '→ quick', url = "hammerspoon://quick-terminal" },
-  { 'f', desc = 'Focus', children = focusGroup },
-  { 's', desc = 'System', children = systemGroup, },
-  { 'v', desc = 'Audio', children = audioGroup },
-  { 'w', desc = 'Windows', children = windowGroup },
+  { 't', desc = 'Terminal',     app = 'Kitty' },
+  { 'f', desc = 'Focus',        children = focusGroup },
+  { 's', desc = 'System',       children = systemGroup, },
+  { 'v', desc = 'Audio',        children = audioGroup },
+  { 'w', desc = 'Windows',      children = windowGroup },
 }
 LeaderKey.new({ 'cmd', 'ctrl', 'option', 'shift' }, '1', keymap)
 
@@ -109,9 +108,6 @@ hs.urlevent.bind('autolayout', function()
   local currentLayout = externalLayout
   if layout.isBuiltinDisplay() then currentLayout = laptopLayout end
   layout.apply(currentLayout)
-end)
-hs.urlevent.bind('quick-terminal', function()
-  hs.eventtap.keyStroke({}, 'f19', 0, hs.application.get('Ghostty'))
 end)
 hs.urlevent.bind('wide-terminal', function()
   layout.apply({
