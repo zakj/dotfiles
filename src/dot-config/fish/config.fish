@@ -7,6 +7,16 @@ if test -x ~/.local/bin/mise
     ~/.local/bin/mise completion fish | source
 end
 
+# Configure some environment variables for other utilities.
+if not set -q EDITOR
+    set -l editors (
+        for x in hx nvim vim vi; which $x; end | path filter -x | path basename
+    )
+    set -x EDITOR $editors[1]
+end
+set -x LESS gij5MR
+set -x RIPGREP_CONFIG_PATH ~/.config/ripgrep.conf
+
 if status is-interactive
     fish_config theme choose 'Solarized Dark'
     set fish_transient_prompt 1
@@ -17,16 +27,6 @@ if status is-interactive
     set fish_cursor_default line
     set fish_cursor_external block
     fish_vi_cursor
-
-    # Configure some environment variables for other utilities.
-    if not set -q EDITOR
-        set -l editors (
-            for x in hx nvim vim vi; which $x; end | path filter -x | path basename
-        )
-        set -x EDITOR $editors[1]
-    end
-    set -x LESS gij5MR
-    set -x RIPGREP_CONFIG_PATH ~/.config/ripgrep.conf
 
     # cd to any ~/src/* without repetition.
     test -d ~/src; and set CDPATH . ~/src
