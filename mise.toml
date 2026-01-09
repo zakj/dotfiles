@@ -23,12 +23,14 @@ cat <<EOF | {{vars.brew}} bundle --file=-
   brew "trash"
   cask "1password"
   cask "arc"
+  cask "bettermouse"
   cask "hammerspoon"
+  cask "keka"
+  cask "kekaexternalhelper"
   cask "kitty"
-  cask "logi-options+"
   cask "obsidian"
   cask "raycast"
-  mas "Parcel", id: 639968404
+  mas "Parcel", id: 375589283
   mas "Pixelmator Pro", id: 1289583905
 EOF
 """
