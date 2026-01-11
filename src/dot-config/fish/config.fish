@@ -8,12 +8,7 @@ if test -x ~/.local/bin/mise
 end
 
 # Configure some environment variables for other utilities.
-if not set -q EDITOR
-    set -l editors (
-        for x in hx nvim vim vi; which $x; end | path filter -x | path basename
-    )
-    set -x EDITOR $editors[1]
-end
+set -x EDITOR (for x in hx nvim vim vi; type -q $x && echo $x; end)[1]
 set -x LESS gij5MR
 set -x RIPGREP_CONFIG_PATH ~/.config/ripgrep.conf
 
@@ -89,7 +84,7 @@ end
 
 function fish_right_prompt
     if not contains -- --final-rendering $argv
-        set -l jj (jj log -r @ -T prompt --ignore-working-copy --no-graph --no-pager --color always 2>/dev/null)
+        set -l jj (type -q jj && jj log -r @ -T prompt --ignore-working-copy --no-graph --no-pager --color always 2>/dev/null)
         if test $status = 0
             echo -ns $jj " "
         else
@@ -102,7 +97,7 @@ end
 function prompt_pwd
     set -l dir $PWD
 
-    set -l jj_root (jj root 2>/dev/null)
+    set -l jj_root (type -q jj && jj root 2>/dev/null)
     if test -n "$jj_root"
         set dir (string replace $jj_root (basename $jj_root) $dir)
     end
