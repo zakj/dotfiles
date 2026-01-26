@@ -1,0 +1,29 @@
+{
+  "buffer_font_size": 13.0,
+  "cursor_blink": false,
+  "helix_mode": true,
+
+  "agent": {
+    "default_model": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-5-latest"
+    },
+  },
+  "auto_install_extensions": {
+    "html": true,
+    "lua": true,
+    "vue": true,
+  },
+  "collaboration_panel": { "button": false },
+  "git": { "inline_blame": { "enabled": false } },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "terminal": {
+    "env": {
+      "VISUAL": "zed --wait"
+    },
+  },
+  "title_bar": { "show_user_picture": false },
+}
