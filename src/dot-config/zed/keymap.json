@@ -1,0 +1,33 @@
+[
+  {
+    "bindings": {
+      "cmd-j": ["task::Spawn", { "task_name": "jjui" }],
+      "cmd-t": "workspace::NewCenterTerminal",
+    },
+  },
+  {
+    "context": "Pane || Editor",
+    "bindings": {
+      "cmd-]": "pane::ActivateNextItem",
+      "cmd-[": "pane::ActivatePreviousItem",
+    },
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "cmd-z": "git::Restore",
+    },
+  },
+  {
+    "context": "!AgentPanel",
+    "bindings": {
+      "cmd-n": "workspace::NewFile"
+    }
+  },
+  {
+    "context": "((vim_mode == helix_normal || vim_mode == helix_select) && !menu)",
+      "bindings": {
+      "space b": "tab_switcher::ToggleAll"
+    }
+  }
+]

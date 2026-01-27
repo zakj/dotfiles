@@ -1,12 +1,18 @@
 {
-  "buffer_font_size": 13.0,
-  "cursor_blink": false,
+  "theme": "Teak",
   "helix_mode": true,
+
+  "agent_buffer_font_size": 14.0,
+  "agent_ui_font_size": 18.0,
+  "buffer_font_size": 14.0,
+  "current_line_highlight": "none",
+  "cursor_blink": false,
+  "selection_highlight": false,
 
   "agent": {
     "default_model": {
       "provider": "anthropic",
-      "model": "claude-sonnet-4-5-latest"
+      "model": "claude-sonnet-4-5-latest",
     },
   },
   "auto_install_extensions": {
@@ -14,16 +20,38 @@
     "lua": true,
     "vue": true,
   },
-  "collaboration_panel": { "button": false },
-  "git": { "inline_blame": { "enabled": false } },
+  "collaboration_panel": {
+    "button": false,
+  },
+  "diagnostics": {
+    "inline": {
+      "enabled": true,
+      "min_column": 60,
+    },
+  },
+  "edit_predictions": {
+    "mode": "subtle",
+  },
+  "git": {
+    "inline_blame": {
+      "enabled": false,
+    },
+  },
+  "tab_bar": {
+    "show_nav_history_buttons": false,
+  },
   "telemetry": {
     "diagnostics": false,
     "metrics": false,
   },
   "terminal": {
-    "env": {
-      "VISUAL": "zed --wait"
-    },
+    "button": false,
+    "detect_venv": "off",
+    "env": { "VISUAL": "zed --wait" },
+    "minimum_contrast": 0,
+    "option_as_meta": true,
   },
-  "title_bar": { "show_user_picture": false },
+  "title_bar": {
+    "show_user_picture": false,
+  },
 }
