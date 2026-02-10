@@ -97,4 +97,4 @@ run = [
 [tasks.xcode]
 description = "Install Xcode."
 hide = true
-run = "xcode-select --version || xcode-select --install"
+run = "xcode-select -p &>/dev/null || xcode-select --install"
