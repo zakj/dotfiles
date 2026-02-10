@@ -73,11 +73,6 @@ local externalLayout = {
     return { x = 0, y = 0, w = browserW, bottom = 0 }
   end,
   Finder = { w = 900, h = 450 },
-  Ghostty = function(win)
-    if layout.isLargestVisible(win) then
-      return { x = browserW + gap, y = gap, right = gap, bottom = gap }
-    end
-  end,
   kitty = function(win)
     if layout.isLargestVisible(win) then
       return { x = browserW + gap, y = gap, right = gap, bottom = gap }
@@ -94,7 +89,6 @@ local externalLayout = {
 }
 
 local laptopLayout = hs.fnutils.copy(externalLayout)
-laptopLayout.Ghostty = { right = 0, w = 1100, y = 0, bottom = 0 }
 laptopLayout.kitty = { right = 0, w = 1100, y = 0, bottom = 0 }
 laptopLayout.Slack = function(win)
   if not layout.isLargestVisible(win) then
@@ -111,7 +105,6 @@ hs.urlevent.bind('autolayout', function()
 end)
 hs.urlevent.bind('wide-terminal', function()
   layout.apply({
-    Ghostty = { right = 10, y = 10, bottom = 10, w = 1770 },
     kitty = { right = 10, y = 10, bottom = 10, w = 1770 },
   })
 end)
