@@ -67,7 +67,10 @@ end
 
 function Toast:delete()
   for i, toast in ipairs(toasts) do
-    if toast == self then table.remove(toasts, i) end
+    if toast == self then
+      table.remove(toasts, i)
+      break
+    end
   end
   repositionToasts()
   self.panel:delete()
