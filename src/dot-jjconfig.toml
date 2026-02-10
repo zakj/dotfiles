@@ -6,9 +6,6 @@ email = "me@zakj.net"
 default-command = "log"
 diff-editor = ":builtin"
 
-[merget-tools.difft]
-diff-args = ["--color=always", "$left", "$right"]
-
 [git]
 colocate = true
 private-commits = 'description(glob:"private:*") | description(glob:"wip[: ]*")'
