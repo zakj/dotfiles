@@ -71,11 +71,15 @@ def draw_tab(
     if is_last:
         # Traverse groups to get windows in layout order. Exclude windows which
         # have an overlay above them, and therefore cannot be made active.
-        groups = boss.os_window_map[tab.os_window_id].active_tab.windows.groups
+        active_tab = boss.os_window_map[tab.os_window_id].active_tab
+        groups = active_tab.windows.groups
         windows = [w for group in groups for w in group]
         overlay_parents = {w.overlay_parent for w in windows}
+        active_window = active_tab.active_window
         panes = [
-            Pane(w.title, w.is_active) for w in windows if w not in overlay_parents
+            Pane(w.title, w is active_window)
+            for w in windows
+            if w not in overlay_parents
         ]
         screen.draw(" ")
 
@@ -103,7 +107,10 @@ def truncate_titles(panes: list[Pane], width: int, sep_width: int) -> list[Pane]
     if full_width <= width:
         return panes
 
-    active_width = wcswidth(next(p.title for p in panes if p.is_active))
+    active = next((p for p in panes if p.is_active), None)
+    if active is None:
+        return panes
+    active_width = wcswidth(active.title)
     remaining_width = width - active_width - (len(panes) - 1) * sep_width
     inactive_count = len(panes) - 1
     inactive_width = remaining_width // inactive_count if inactive_count else 0
