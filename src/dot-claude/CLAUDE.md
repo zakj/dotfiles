@@ -32,6 +32,10 @@
   - In the rare case that a subject line is insufficient, wrap the body at 72 characters. Describe what was done and perhaps why, but never how.
 - Never push on my behalf.
 
+## Task Tracking
+- If a `.beans/` directory exists in the project, run `beans prime` at session start and follow its guidance for task tracking.
+- Prefer `beans` over TodoWrite or markdown checklists when `.beans/` is present.
+
 ## Code Reviews
 - Always use the code-reviewer agent for PR reviews.
 - Exception to terseness: explain the *why* behind review feedback, not just the issue.
