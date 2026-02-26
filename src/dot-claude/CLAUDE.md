@@ -40,6 +40,7 @@
 - Before starting a new unit of work, ensure the working copy is clean: `jj log -r @ --no-graph -T 'empty'` returns `true` if clean. If dirty, `jj commit` or `jj new` first.
 - Always pass `-m` to jj commands (commit, squash, describe, etc.) to avoid opening an editor. Prefer `jj commit -m` over `jj describe -m` to advance the working copy in one step.
 - Always use `jj diff --git` for readable unified diffs. The default word-level format is ambiguous.
+- jj works from anywhere in the repo — don't `cd` to the root before running commands.
 - Never push on my behalf.
 
 ## Task Tracking
