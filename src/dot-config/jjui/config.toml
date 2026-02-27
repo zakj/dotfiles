@@ -1,5 +1,23 @@
 [keys]
 quit = ["q", "esc"]
 
+[custom_commands.copy-change-id]
+key = ["y"]
+desc = "copy change id"
+lua = '''copy_to_clipboard(context.change_id())
+flash("Copied: " .. context.change_id())'''
+
+[custom_commands.difft]
+key = ["t"]
+desc = "difft"
+args = ["difft", "-r", "$change_id"]
+show = "diff"
+
+[custom_commands.difft-file]
+key = ["t"]
+desc = "difft file"
+args = ["difft", "-r", "$change_id", "$file"]
+show = "diff"
+
 [ui.colors]
 selected = { bg = "#272a36" }
