@@ -1,23 +1,34 @@
 [keys]
 quit = ["q", "esc"]
 
-[custom_commands.copy-change-id]
-key = ["y"]
+[[actions]]
+name = "copy-change-id"
+lua = '''
+copy_to_clipboard(context.change_id())
+flash("Copied: " .. context.change_id())
+'''
+
+[[actions]]
+name = "difft"
+lua = '''diff.show(jj({ "difft", "-r", context.change_id(), context.file() }))'''
+
+[[bindings]]
+action = "copy-change-id"
+key = "y"
+scope = "revisions"
 desc = "copy change id"
-lua = '''copy_to_clipboard(context.change_id())
-flash("Copied: " .. context.change_id())'''
 
-[custom_commands.difft]
-key = ["t"]
+[[bindings]]
+action = "difft"
+key = "t"
+scope = "revisions"
 desc = "difft"
-args = ["difft", "-r", "$change_id"]
-show = "diff"
 
-[custom_commands.difft-file]
-key = ["t"]
-desc = "difft file"
-args = ["difft", "-r", "$change_id", "$file"]
-show = "diff"
+[[bindings]]
+action = "difft"
+key = "t"
+scope = "revisions.details"
+desc = "difft"
 
 [ui.colors]
 selected = { bg = "#272a36" }
