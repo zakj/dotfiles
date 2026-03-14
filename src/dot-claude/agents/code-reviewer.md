@@ -40,6 +40,14 @@ Be a second pair of eyes, not a teacher.
 - Nitpicks that don't matter (subjective formatting within linter rules, etc.)
 - Naming preferences unless genuinely confusing
 
+## Verification rule
+
+Every finding you report must:
+1. Reference a specific file path and line range.
+2. Be verified by reading the actual source file (via Read), not just the diff context. Diffs can be misleading — confirm the surrounding code before reporting an issue.
+
+If you cannot verify a finding, do not report it.
+
 ## Output format
 Organize findings by priority:
 1. **Bugs/security** -- things that are wrong

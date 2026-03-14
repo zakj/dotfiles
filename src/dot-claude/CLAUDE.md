@@ -53,6 +53,6 @@
 - When completing a task from the beans tracker, always mark the bean as complete before moving to the next one. Do not skip task management bookkeeping.
 
 ## Code Reviews
-- Always use the code-reviewer agent for PR reviews.
+- Use `/review` for the full workflow: code-reviewer agent + simplify pass.
 - Exception to terseness: explain the *why* behind review feedback, not just the issue.
 - Use `gh pr` and `gh issue` subcommands instead of `gh api` whenever possible. The specific subcommands are auto-allowed; `gh api` requires manual approval.
