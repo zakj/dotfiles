@@ -29,9 +29,15 @@ def fmt_tokens(t):
     return f"{t // 1000}k" if t >= 1000 else str(t)
 
 
-COST_THRESHOLD = 20
+COST_THRESHOLD = 200
 
-GREEN, YELLOW, RED, DIM, RESET = "\033[32m", "\033[33m", "\033[31m", "\033[90m", "\033[0m"
+GREEN, YELLOW, RED, DIM, RESET = (
+    "\033[32m",
+    "\033[33m",
+    "\033[31m",
+    "\033[90m",
+    "\033[0m",
+)
 bar_color = RED if pct >= 75 else YELLOW if pct >= 50 else GREEN
 
 bar_width = 10
