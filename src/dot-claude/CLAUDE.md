@@ -41,16 +41,12 @@
   - Limit the subject line to 50 characters, capitalizing only the first letter, and using the imperative mood.
   - In the rare case that a subject line is insufficient, wrap the body at 72 characters. Describe what was done and perhaps why, but never how.
 - Before starting a new unit of work, ensure the working copy is clean: `jj log -r @ --no-graph -T 'empty'` returns `true` if clean. If dirty, `jj commit` or `jj new` first.
-- Always pass `-m` to jj commands (commit, describe, etc.) to avoid opening an editor. Prefer `jj commit -m` over `jj describe -m` to advance the working copy in one step.
-- Never pass `-m` to `jj squash`; it overwrites the destination commit's description.
+- Never spawn an interactive editor. Always pass `-m` to `jj commit`, `jj describe`, and `jj new`. Prefer `jj commit -m` over `jj describe -m` to advance the working copy in one step.
+- Never use `jj split` (requires an interactive diff editor).
+- For `jj squash`: never pass `-m` (it overwrites the destination description). Always pass `-u` (`--use-destination-message`) to keep the destination description and avoid spawning an editor.
 - Always use `jj diff --git` for readable unified diffs. The default word-level format is ambiguous.
 - jj works from anywhere in the repo — don't `cd` to the root before running commands.
 - Never push on my behalf.
-
-## Task Tracking
-- If a `.beans/` directory exists in the project, run `beans prime` at session start and follow its guidance for task tracking.
-- Prefer `beans` over TodoWrite or markdown checklists when `.beans/` is present.
-- When completing a task from the beans tracker, always mark the bean as complete before moving to the next one. Do not skip task management bookkeeping.
 
 ## Code Reviews
 - Use `/review` for the full workflow: code-reviewer agent + simplify pass.
