@@ -3,33 +3,9 @@ import json
 import os
 import sys
 
-data = json.load(sys.stdin)
-
-model_id = data.get("model", {}).get("id", "")
-model_name = data.get("model", {}).get("display_name", "")
-project_dir = data.get("workspace", {}).get("project_dir") or data.get("cwd", "")
-project = os.path.basename(project_dir)
-
-pct = int(data.get("context_window", {}).get("used_percentage") or 0)
-ctx_size = data.get("context_window", {}).get("context_window_size") or 200000
-
-cu = data.get("context_window", {}).get("current_usage") or {}
-used = (
-    (cu.get("input_tokens") or 0)
-    + (cu.get("cache_creation_input_tokens") or 0)
-    + (cu.get("cache_read_input_tokens") or 0)
-)
-if used == 0 and pct > 0:
-    used = pct * ctx_size // 100
-
-cost = data.get("cost", {}).get("total_cost_usd") or 0
-
-
-def fmt_tokens(t):
-    return f"{t // 1000}k" if t >= 1000 else str(t)
-
-
+MAX_CTX = 250_000  # API reports up to 1M; real usable cap is lower
 COST_THRESHOLD = 200
+BAR_WIDTH = 10
 
 GREEN, YELLOW, RED, DIM, RESET = (
     "\033[32m",
@@ -38,16 +14,39 @@ GREEN, YELLOW, RED, DIM, RESET = (
     "\033[90m",
     "\033[0m",
 )
-bar_color = RED if pct >= 75 else YELLOW if pct >= 50 else GREEN
 
-bar_width = 10
-filled = pct * bar_width // 100
-bar = f"{bar_color}{'━' * filled}{DIM}{'─' * (bar_width - filled)}{RESET}"
+data = json.load(sys.stdin)
+
+
+def pluck(path: str):
+    val = data
+    for key in path.split("."):
+        if isinstance(val, dict):
+            val = val.get(key)
+        else:
+            return None
+    return val
+
+
+def fmt_tokens(t: int) -> str:
+    return f"{t // 1000}k" if t >= 1000 else str(t)
+
+
+model_id = pluck("model.id") or ""
+model_name = pluck("model.display_name") or ""
+project = os.path.basename(pluck("workspace.project_dir") or pluck("cwd") or "")
+
+TOKEN_KEYS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens")
+tokens_used = sum(pluck(f"context_window.current_usage.{k}") or 0 for k in TOKEN_KEYS)
+context_size = min(pluck("context_window.context_window_size") or 200_000, MAX_CTX)
+percent = tokens_used * 100 // context_size
+total_cost = pluck("cost.total_cost_usd") or 0
+
+bar_color = RED if percent >= 75 else YELLOW if percent >= 50 else GREEN
+filled = min(percent, 100) * BAR_WIDTH // 100
+bar = f"{bar_color}{'━' * filled}{DIM}{'─' * (BAR_WIDTH - filled)}{RESET}"
 
 model = "" if "opus" in model_id else f"  {model_name}"
+cost_label = f"  ${total_cost:.2f}" if total_cost >= COST_THRESHOLD else ""
 
-cost_fmt = f"  ${cost:.2f}" if cost >= COST_THRESHOLD else ""
-
-print(
-    f"{project}{model}  {bar} {DIM}{fmt_tokens(used)}/{fmt_tokens(ctx_size)}{cost_fmt}{RESET}"
-)
+print(f"{project}{model}  {bar} {DIM}{fmt_tokens(context_size)}{cost_label}{RESET}")
