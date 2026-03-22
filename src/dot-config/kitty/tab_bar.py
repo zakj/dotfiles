@@ -4,6 +4,7 @@
 from dataclasses import dataclass
 
 from kitty.colors import theme_colors
+from kitty.fast_data_types import current_focused_os_window_id
 from kitty.tab_bar import (
     as_rgb,
     color_as_int,
@@ -36,11 +37,20 @@ def draw_tab(
 ) -> int:
     boss = get_boss()
     tab = boss.tab_for_id(tab_data.tab_id)
+    is_os_window_focused = tab.os_window_id == current_focused_os_window_id()
     sep, soft_sep = "", "╱"
+
+    # When the OS window is unfocused, treat all tabs/panes as inactive.
+    if not is_os_window_focused:
+        screen.cursor.bg = color_as_rgb(draw_data.inactive_bg)
+        screen.cursor.fg = color_as_rgb(draw_data.inactive_fg)
 
     tab_bg = screen.cursor.bg
     if extra_data.next_tab:
-        next_tab_bg = color_as_rgb(draw_data.tab_bg(extra_data.next_tab))
+        if is_os_window_focused:
+            next_tab_bg = color_as_rgb(draw_data.tab_bg(extra_data.next_tab))
+        else:
+            next_tab_bg = tab_bg
         needs_soft_separator = next_tab_bg == tab_bg
     else:
         next_tab_bg = color_as_rgb(draw_data.default_bg)
@@ -93,7 +103,8 @@ def draw_tab(
         sep_color = color_as_rgb(draw_data.inactive_bg)
         screen.cursor.bold = False  # TODO: can I get this from draw_data somewhere?
         for pane in panes:
-            screen.cursor.fg = active_color if pane.is_active else inactive_color
+            is_active = pane.is_active and is_os_window_focused
+            screen.cursor.fg = active_color if is_active else inactive_color
             screen.draw(pane.title)
             if pane is not last:
                 screen.cursor.fg = sep_color
