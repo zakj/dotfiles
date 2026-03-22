@@ -15,12 +15,12 @@
 
 ## Code Philosophy
 - Simplicity first. Prefer explicit over clever. Don't abstract prematurely, but extract when a pattern has proven itself across multiple uses.
-- Write idiomatic code for the language and frameworks in use.
-- Follow surrounding conventions pragmatically, but look for opportunities to simplify and make things more idiomatic.
+- Write idiomatic code. Follow surrounding conventions pragmatically, but look for opportunities to simplify.
 - Prefer declarative over imperative. Express intent through data, structure, and platform features rather than manual control flow and procedural wiring.
+- Decompose complex logic into small, pure functions with explicit inputs and outputs. Keep side effects at the edges — confine I/O and mutation to orchestration layers.
 - Strongly prefer well-typed code. Don't add type-ignore directives or suppression comments; fix the underlying types instead.
-- Adopt new language features when they improve clarity, not for novelty.
-- When implementing UI components, always use the framework's built-in patterns or platform APIs first (native HTML APIs like popover) before reaching for custom CSS hacks or complex abstractions.
+- Design data models to make wrong states unrepresentable. Minimize optional fields, compose independent concepts rather than flattening, use distinct types to prevent misuse.
+- For UI components, prefer the framework's built-in patterns and platform APIs (e.g., native popover) over custom CSS hacks or complex abstractions.
 
 ## Comments & Documentation
 - Avoid over-commenting and over-documenting.
@@ -42,7 +42,7 @@
   - In the rare case that a subject line is insufficient, wrap the body at 72 characters. Describe what was done and perhaps why, but never how.
 - Before starting a new unit of work, ensure the working copy is clean: `jj log -r @ --no-graph -T 'empty'` returns `true` if clean. If dirty, `jj commit` or `jj new` first.
 - Never spawn an interactive editor. Always pass `-m` to `jj commit`, `jj describe`, and `jj new`. Prefer `jj commit -m` over `jj describe -m` to advance the working copy in one step.
-- Never use `jj split` (requires an interactive diff editor).
+- `jj split` requires filesets to avoid spawning an interactive diff editor. Always pass file paths: `jj split -r <rev> -m "message" <filesets>`. Never use `--interactive` or `--tool` flags.
 - For `jj squash`: never pass `-m` (it overwrites the destination description). Always pass `-u` (`--use-destination-message`) to keep the destination description and avoid spawning an editor.
 - Always use `jj diff --git` for readable unified diffs. The default word-level format is ambiguous.
 - jj works from anywhere in the repo — don't `cd` to the root before running commands.
