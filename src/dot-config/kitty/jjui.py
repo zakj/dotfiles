@@ -24,7 +24,7 @@ def handle_result(args, answer, target_window_id, boss) -> None:
         boss.call_remote_control(w, args)
 
     try:
-        at("focus-window", f"--match=title:jjui and cwd:{root}")
+        at("focus-window", f"--match=title:jjui and cwd:{root} and state:parent_active")
     except Exception:
         title = f"jjui {Path(root).name}"
         # Run with fish to get mise active and $EDITOR set.
