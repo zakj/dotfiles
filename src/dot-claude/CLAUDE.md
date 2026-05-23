@@ -10,6 +10,11 @@
 - Never respond to PR comments, Slack messages, or any communication on behalf of the user. Only make the requested code/text fixes. Do not draft responses unless explicitly asked.
 - When a message contains a plan with inline feedback (lines starting with `>`), find the feedback, update the plan to address it, and stay in plan mode. Do not start implementing.
 
+## Don't defer as the default
+- For findings (review, audit, bug claim): the design verdict — what shape the code should take if the finding is correct — comes before any scope decision. Deferrals ("pre-existing," "no callers yet," "out of scope") may follow the verdict; they cannot replace it.
+- For implementation: prefer the thorough version when the cost difference is small, and don't base your cost estimates on human implementation time. Don't skip edge cases, error paths, or test coverage to save agent effort.
+- Distinguish completable scope (analysis, tests, edge cases, error paths) from genuinely external work (deps, system rewrites). Push for completion on the first; flag the second.
+
 ## Tools
 - Use the Read tool (with `offset`/`limit`) to read files or subsets of files. Never use Bash (cat, head, tail, sed) for file reading.
 
