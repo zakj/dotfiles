@@ -30,7 +30,12 @@
 ## Comments & Documentation
 - Avoid over-commenting and over-documenting.
 - Function names, argument types, and return types should make purpose clear; don't add docstrings that just restate that.
-- Use comments sparingly, only to explain *why*, not *what*.
+- Use comments sparingly, only to explain *why*, not *what*. Restating the code in prose is still a *what*, even when it sounds explanatory (e.g. narrating CSS classes as "borderless, content-sized") — delete it.
+- A good *why* is timeless: it stays true for a reader who never saw the previous version, the review thread, or the ticket. Before writing a comment, ask "would I write this if the code had always looked this way?" If no, it's process or history — cut it, or put it in the commit message.
+- Never put process or history in comments/docstrings:
+  - Task/ticket IDs (e.g. `sd #NNN`) — they aren't in git, so they're dangling pointers.
+  - Reactions to review ("guards against reverting", "per review", "found by the audit").
+  - Comparisons to a past or alternative implementation ("unlike before", "as `main` did", "previously we…"). Describe what the code does now.
 - Document non-obvious preconditions and invariants, even when types are clear.
 
 ## Testing
