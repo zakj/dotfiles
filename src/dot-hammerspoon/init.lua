@@ -24,6 +24,7 @@ end
 
 local focusGroup = {
   { 'a', app = 'Arc' },
+  { 'c', app = 'Calendar' },
   { 'f', app = 'Finder' },
   { 'h', app = 'Hammerspoon' },
   { 'i', app = 'Music' },
@@ -31,6 +32,7 @@ local focusGroup = {
   { 'm', app = 'Messages' },
   { 'n', app = 'Obsidian' },
   { 't', app = 'Kitty' },
+  { 'z', app = 'zoom.us' },
 }
 local systemGroup = {
   { 'a', desc = 'Toggle system appearance', url = 'raycast://extensions/raycast/system/toggle-system-appearance' },
