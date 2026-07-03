@@ -25,6 +25,7 @@ local pluck = require('util').pluck
 ---}
 
 ---@class LeaderKey
+---@field keymap KeyMap[]
 ---@field activationMods string[]
 ---@field activationKeyCode number
 ---@field navigator Navigator
@@ -101,13 +102,35 @@ local function normalizeMods(mods)
   return result
 end
 
+-- Drop entries whose app the predicate rejects, plus any group left empty.
+---@param keymap KeyMap[]
+---@param keepApp fun(app: string): boolean
+---@return KeyMap[]
+local function pruneKeymap(keymap, keepApp)
+  local result = {}
+  for _, item in ipairs(keymap) do
+    if item.children then
+      local children = pruneKeymap(item.children, keepApp)
+      if #children > 0 then
+        item = hs.fnutils.copy(item)
+        item.children = children
+        table.insert(result, item)
+      end
+    elseif not item.app or keepApp(item.app) then
+      table.insert(result, item)
+    end
+  end
+  return result
+end
+
 ---@param mods (string | string[])
 ---@param key string
----@param keymap KeyMap
+---@param keymap KeyMap[]
 ---@return LeaderKey
 function LeaderKey.new(mods, key, keymap)
   local self = setmetatable({}, LeaderKey)
 
+  self.keymap = keymap
   self.activationMods = normalizeMods(mods)
   self.activationKeyCode = hs.keycodes.map[key]
   self.navigator = Navigator.new(keymap)
@@ -135,6 +158,17 @@ function LeaderKey.new(mods, key, keymap)
   self.infoPanel.panel.canvas:mouseCallback(function() end)
 
   return self
+end
+
+-- Restrict navigation to entries whose app the predicate keeps. Rebuilds from
+-- the original keymap, so it's safe to call late (e.g. from an async callback)
+-- or repeatedly.
+---@param keepApp fun(app: string): boolean
+function LeaderKey:filterApps(keepApp)
+  -- current is non-nil only while a session is active; rebuilding then would
+  -- reset it out from under the state machine and swallow the user's keys.
+  if self.navigator.current then return end
+  self.navigator = Navigator.new(pruneKeymap(self.keymap, keepApp))
 end
 
 function LeaderKey:_createStateMap()

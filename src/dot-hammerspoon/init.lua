@@ -1,3 +1,4 @@
+local installed = require 'installed'
 local layout = require 'layout'
 local LeaderKey = require 'leaderkey'
 local modtap = require 'modtap'
@@ -65,7 +66,8 @@ local keymap = {
   { 'v', desc = 'Audio',        children = audioGroup },
   { 'w', desc = 'Windows',      children = windowGroup },
 }
-LeaderKey.new({ 'cmd', 'ctrl', 'option', 'shift' }, '1', keymap)
+local leader = LeaderKey.new({ 'cmd', 'ctrl', 'option', 'shift' }, '1', keymap)
+installed.load(function(isInstalled) leader:filterApps(isInstalled) end)
 
 local gap = 10
 local browserW = 1440
