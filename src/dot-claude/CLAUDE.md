@@ -60,5 +60,6 @@
 
 ## Code Reviews
 - Use `/review` for the full workflow: code-reviewer agent + simplify pass.
+- Reviewing a PR (`/review <number|url>`) checks the branch out in a persistent `.workspaces/review` workspace via a remote-tracking fetch, so the reviewer reads real files and findings cite head-revision line numbers. Never `gh pr checkout` or create a local bookmark (leaves a mutable head stuck in `jj log`). The workspace is reused and re-pointed each review — nothing to clean up between reviews; it just leaves a persistent `review@` line in the log. `/review-cleanup` fully removes it on the rare occasion you want that line gone. Local/self reviews skip all of this.
 - Exception to terseness: explain the *why* behind review feedback, not just the issue.
 - Use `gh pr` and `gh issue` subcommands instead of `gh api` whenever possible. The specific subcommands are auto-allowed; `gh api` requires manual approval.
