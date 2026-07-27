@@ -45,17 +45,8 @@
 - For bug fixes: write a failing test that reproduces the bug first, verify it fails, then fix the code and confirm the test passes.
 
 ## Version Control
-- Always use `jj` (Jujutsu), never `git`, for version control commands.
-- Commits are cheap in jj. Commit with a terse message after each discrete unit of work.
-- Commit message rules:
-  - Limit the subject line to 50 characters, capitalizing only the first letter, and using the imperative mood.
-  - In the rare case that a subject line is insufficient, wrap the body at 72 characters. Describe what was done and perhaps why, but never how.
-- Before starting a new unit of work, ensure the working copy is clean: `jj log -r @ --no-graph -T 'empty'` returns `true` if clean. If dirty, `jj commit` or `jj new` first.
-- Never spawn an interactive editor. Always pass `-m` to `jj commit`, `jj describe`, and `jj new`. Prefer `jj commit -m` over `jj describe -m` to advance the working copy in one step.
-- `jj split` requires filesets to avoid spawning an interactive diff editor. Always pass file paths: `jj split -r <rev> -m "message" <filesets>`. Never use `--interactive` or `--tool` flags.
-- For `jj squash`: never pass `-m` (it overwrites the destination description). Always pass `-u` (`--use-destination-message`) to keep the destination description and avoid spawning an editor.
-- Always use `jj diff --git` for readable unified diffs. The default word-level format is ambiguous.
-- jj works from anywhere in the repo — don't `cd` to the root before running commands.
+- Always use `jj` (Jujutsu), never `git`. Load the `jj` skill before any command that mutates the repo.
+- Commits are cheap in jj. Commit with a terse message after each discrete unit of work, and make sure the working copy is clean before starting a new one.
 - Never push on my behalf.
 
 ## Code Reviews
