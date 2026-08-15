@@ -8,7 +8,9 @@ local toast = require 'toast'
 reload:start()
 
 modtap:start('cmd', { 'ctrl', 'option', 'cmd', 'shift' }, '1', 0.15)
-local function isProgrammableKeyboard(device) return device.productName == 'Keychron K7 Pro' end
+local function isProgrammableKeyboard(device)
+  return device.vendorName == 'Keebio' or device.productName == 'Keychron K7 Pro'
+end
 if not hs.fnutils.some(hs.usb.attachedDevices(), isProgrammableKeyboard) then
   modtap:start('ctrl', {}, 'escape', 0.3)
 end
