@@ -1,3 +1,4 @@
+local caffeine = require 'caffeine'
 local installed = require 'installed'
 local layout = require 'layout'
 local LeaderKey = require 'leaderkey'
@@ -6,6 +7,7 @@ local reload = require 'reload'
 local toast = require 'toast'
 
 reload:start()
+caffeine.start()
 
 modtap:start('cmd', { 'ctrl', 'option', 'cmd', 'shift' }, '1', 0.15)
 local function isProgrammableKeyboard(device)
@@ -36,8 +38,8 @@ local focusGroup = {
 }
 local systemGroup = {
   { 'a', desc = 'Toggle system appearance', url = 'raycast://extensions/raycast/system/toggle-system-appearance' },
-  { 'c', desc = 'Toggle caffeinate',        url = 'raycast://extensions/mooxl/coffee/caffeinateToggle?launchType=background' },
-  { 'l', desc = 'Lock screen',              url = 'raycast://extensions/raycast/system/lock-screen' },
+  { 'c', desc = 'Toggle caffeinate',        fn = caffeine.toggle },
+  { 'l', desc = 'Lock screen',              fn = hs.caffeinate.lockScreen },
   { ',', app = 'System Settings' },
   { 'h', desc = 'Reload Hammerspoon',       fn = hs.reload },
 }
