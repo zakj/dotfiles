@@ -55,8 +55,8 @@ local systemGroup = {
 local windowGroup = {
   { 'a', desc = 'Auto layout',     url = 'hammerspoon://autolayout' },
   { 'c', desc = 'Center',          fn = layout.setCurrentWin({ x = "center", y = "center" }) },
-  { 'm', desc = 'Maximize',        url = 'raycast://extensions/raycast/window-management/maximize' },
-  { 'r', desc = 'Restore',         url = 'raycast://extensions/raycast/window-management/restore' },
+  { 'm', desc = 'Maximize',        fn = layout.setCurrentWin({ x = 0, y = 0, right = 0, bottom = 0 }) },
+  { 'r', desc = 'Restore',         fn = layout.restore },
   { 's', desc = 'Reasonable size', fn = layout.setCurrentWin({ w = 1320, h = 945, x = "center", y = "center" }) },
   { 't', desc = 'Wide terminal',   url = 'hammerspoon://wide-terminal' },
 }

@@ -2,6 +2,8 @@
 
 local exports = {}
 
+local previousFrames = {}
+
 function exports.isBuiltinDisplay()
   return hs.screen.mainScreen():name():find('Built-in', 1, true) == 1
 end
@@ -79,6 +81,15 @@ local function localToAbsolute(rect, frame)
   return abs
 end
 
+-- Targets can be fractional (centering, screen fractions), but windows land on
+-- whole points, so an exact comparison would never match.
+local function sameFrame(a, b)
+  for _, k in ipairs({ 'x', 'y', 'w', 'h' }) do
+    if math.abs(a[k] - b[k]) > 1 then return false end
+  end
+  return true
+end
+
 local function set(win, rectOrFn)
   -- focusedWindow() is nil when nothing has focus, e.g. on an empty desktop.
   if not win then return end
@@ -88,13 +99,19 @@ local function set(win, rectOrFn)
     rect = rectOrFn(win)
   end
   if rect then
-    rect = normalizeRect(rect, win:frame(), screenFrame)
+    local frame = win:frame()
+    rect = normalizeRect(rect, frame, screenFrame)
     -- Clamp to screenFrame.
     rect.w = math.min(rect.w, screenFrame.w)
     rect.h = math.min(rect.h, screenFrame.h)
     rect.x = math.max(0, math.min(rect.x, screenFrame.w - rect.w))
     rect.y = math.max(0, math.min(rect.y, screenFrame.h - rect.h))
-    win:setFrame(localToAbsolute(rect, screenFrame))
+    local target = localToAbsolute(rect, screenFrame)
+
+    local id = win:id()
+    -- Skip no-op moves so re-running a layout keeps each window's restore point.
+    if id and not sameFrame(frame, target) then previousFrames[id] = frame end
+    win:setFrame(target)
   end
 end
 
@@ -120,6 +137,17 @@ function exports.apply(layout)
       end
     end
   end
+end
+
+-- Swaps, so a second restore undoes the first. setFrameInScreenBounds keeps a
+-- frame recorded on a since-disconnected display reachable.
+function exports.restore()
+  local win = hs.window.focusedWindow()
+  local id = win and win:id()
+  local previous = id and previousFrames[id]
+  if not previous then return end
+  previousFrames[id] = win:frame()
+  win:setFrameInScreenBounds(previous)
 end
 
 return exports
