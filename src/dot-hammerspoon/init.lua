@@ -24,6 +24,15 @@ local function systemKey(name)
   end
 end
 
+local function toggleAppearance()
+  local ok, _, err = hs.osascript.applescript(
+    'tell application "System Events" to tell appearance preferences to set dark mode to not dark mode')
+  if not ok then
+    print(hs.inspect(err))
+    toast('Could not toggle appearance', 3)
+  end
+end
+
 local focusGroup = {
   { 'a', app = 'Arc' },
   { 'c', app = 'Calendar' },
@@ -37,7 +46,7 @@ local focusGroup = {
   { 'z', app = 'zoom.us' },
 }
 local systemGroup = {
-  { 'a', desc = 'Toggle system appearance', url = 'raycast://extensions/raycast/system/toggle-system-appearance' },
+  { 'a', desc = 'Toggle system appearance', fn = toggleAppearance },
   { 'c', desc = 'Toggle caffeinate',        fn = caffeine.toggle },
   { 'l', desc = 'Lock screen',              fn = hs.caffeinate.lockScreen },
   { ',', app = 'System Settings' },
