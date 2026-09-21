@@ -80,6 +80,8 @@ local function localToAbsolute(rect, frame)
 end
 
 local function set(win, rectOrFn)
+  -- focusedWindow() is nil when nothing has focus, e.g. on an empty desktop.
+  if not win then return end
   local screenFrame = hs.screen.mainScreen():frame()
   local rect = rectOrFn
   if type(rectOrFn) == "function" then
