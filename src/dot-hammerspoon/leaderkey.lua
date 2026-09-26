@@ -1,12 +1,10 @@
 local Panel = require("panel")
-local pluck = require('util').pluck
 
 -- This is what we expect the user to pass in.
 ---@alias KeyMap {
 ---  [1]: string,
 ---  desc?: string,
 ---  app?: string,
----  url?: string,
 ---  fn?: function,
 ---  sticky?: boolean,
 ---  children?: KeyMap[],
@@ -363,11 +361,6 @@ function Navigator:_buildNodes(keymap, parent)
       node.fn = item.fn
     elseif item.app then
       node.fn = function() hs.application.launchOrFocus(item.app) end
-    elseif item.url then
-      -- hs.urlevent.openURL is the right thing here, but that foregrounds
-      -- whatever app handles the event, which means we lose focus for
-      -- non-interactive apps. Trying this as a workaround.
-      node.fn = function() hs.task.new('/usr/bin/open', nil, { '-g', item.url }):start() end
     end
 
     parent.children[key] = node
@@ -453,7 +446,7 @@ end
 
 ---@param pathNodes Node[]
 function Indicator:update(pathNodes)
-  local keyPath = pluck(pathNodes, "key")
+  local keyPath = hs.fnutils.map(pathNodes, function(node) return node.key end)
   local text = #keyPath == 0 and "●" or table.concat(keyPath)
   local size = 92
 
@@ -505,7 +498,7 @@ function InfoPanel:update(children, pathNodes)
   }
   local elements = {}
   local headerHeight = 0
-  local path = pluck(pathNodes, "desc")
+  local path = hs.fnutils.map(pathNodes, function(node) return node.desc end)
 
   if path and #path > 0 then
     local headerElement = self.panel:textElement(

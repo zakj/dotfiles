@@ -23,7 +23,6 @@ return {
           wantsTap = false
           timer:stop()
           hs.eventtap.keyStroke(mods, key, 5000)
-          -- return true -- suppress event  XXX not needed?
         end
       end
     end)

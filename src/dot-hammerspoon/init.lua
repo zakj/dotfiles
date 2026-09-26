@@ -3,10 +3,9 @@ local installed = require 'installed'
 local layout = require 'layout'
 local LeaderKey = require 'leaderkey'
 local modtap = require 'modtap'
-local reload = require 'reload'
 local toast = require 'toast'
 
-reload:start()
+ReloadWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/etc/src/dot-hammerspoon", hs.reload):start()
 caffeine.start()
 
 modtap:start('cmd', { 'ctrl', 'option', 'cmd', 'shift' }, '1', 0.15)
@@ -33,60 +32,18 @@ local function toggleAppearance()
   end
 end
 
-local focusGroup = {
-  { 'a', app = 'Arc' },
-  { 'c', app = 'Calendar' },
-  { 'f', app = 'Finder' },
-  { 'h', app = 'Hammerspoon' },
-  { 'i', app = 'Music' },
-  { 'l', app = 'Slack' },
-  { 'm', app = 'Messages' },
-  { 'n', app = 'Obsidian' },
-  { 't', app = 'Kitty' },
-  { 'z', app = 'zoom.us' },
-}
-local systemGroup = {
-  { 'a', desc = 'Toggle system appearance', fn = toggleAppearance },
-  { 'c', desc = 'Toggle caffeinate',        fn = caffeine.toggle },
-  { 'l', desc = 'Lock screen',              fn = hs.caffeinate.lockScreen },
-  { ',', app = 'System Settings' },
-  { 'h', desc = 'Reload Hammerspoon',       fn = hs.reload },
-}
-local windowGroup = {
-  { 'a', desc = 'Auto layout',     url = 'hammerspoon://autolayout' },
-  { 'c', desc = 'Center',          fn = layout.setCurrentWin({ x = "center", y = "center" }) },
-  { 'm', desc = 'Maximize',        fn = layout.setCurrentWin({ x = 0, y = 0, right = 0, bottom = 0 }) },
-  { 'r', desc = 'Restore',         fn = layout.restore },
-  { 's', desc = 'Reasonable size', fn = layout.setCurrentWin({ w = 1320, h = 945, x = "center", y = "center" }) },
-  { 't', desc = 'Wide terminal',   url = 'hammerspoon://wide-terminal' },
-}
-local audioGroup = {
-  { 'space', desc = 'Play/pause',      fn = systemKey('PLAY') },
-  { 'h',     desc = 'Previous track',  fn = systemKey('PREVIOUS') },
-  { 'l',     desc = 'Next track',      fn = systemKey('NEXT') },
-  { 'k',     desc = 'Increase volume', fn = systemKey('SOUND_UP'),   sticky = true },
-  { 'j',     desc = 'Decrease volume', fn = systemKey('SOUND_DOWN'), sticky = true },
-  { 'm',     desc = 'Mute',            fn = systemKey('MUTE') },
-}
-local keymap = {
-  { 'e', desc = 'Emoji picker', fn = function() hs.eventtap.keyStroke({ 'ctrl', 'cmd' }, 'space') end },
-  { 't', desc = 'Terminal',     app = 'Kitty' },
-  { 'f', desc = 'Focus',        children = focusGroup },
-  { 's', desc = 'System',       children = systemGroup, },
-  { 'v', desc = 'Audio',        children = audioGroup },
-  { 'w', desc = 'Windows',      children = windowGroup },
-}
-local leader = LeaderKey.new({ 'cmd', 'ctrl', 'option', 'shift' }, '1', keymap)
-installed.load(function(isInstalled) leader:filterApps(isInstalled) end)
-
 local gap = 10
 local browserW = 1440
+local function browser(win)
+  if not layout.isLargestVisible(win) then return end
+  return { x = 0, y = 0, w = browserW, bottom = 0 }
+end
 local externalLayout = {
-  Arc = function(win)
-    if not layout.isLargestVisible(win) then return end
-    return { x = 0, y = 0, w = browserW, bottom = 0 }
-  end,
+  Arc = browser,
+  Chrome = browser,
+  Dia = browser,
   Finder = { w = 900, h = 450 },
+  Helium = browser,
   kitty = function(win)
     if layout.isLargestVisible(win) then
       return { x = browserW + gap, y = gap, right = gap, bottom = gap }
@@ -111,23 +68,59 @@ laptopLayout.Slack = function(win)
   return { x = 0, y = gap, w = 1100, bottom = 0 }
 end
 
--- TODO clean this up, move inline where appropriate
-hs.urlevent.bind('autolayout', function()
-  local currentLayout = externalLayout
-  if layout.isBuiltinDisplay() then currentLayout = laptopLayout end
-  layout.apply(currentLayout)
-end)
-hs.urlevent.bind('wide-terminal', function()
-  layout.apply({
-    kitty = { right = 10, y = 10, bottom = 10, w = 1770 },
-  })
-end)
-hs.urlevent.bind('reload', hs.reload)
+local function autoLayout()
+  layout.apply(layout.isBuiltinDisplay() and laptopLayout or externalLayout)
+end
 
-hs.urlevent.bind('toast', function(_, params)
-  params = params or {}
-  toast(params.msg, tonumber(params.duration))
-end)
+local function wideTerminal()
+  layout.apply({ kitty = { right = 10, y = 10, bottom = 10, w = 1770 } })
+end
+
+local focusGroup = {
+  { 'a', app = 'Arc' },
+  { 'c', app = 'Calendar' },
+  { 'f', app = 'Finder' },
+  { 'h', app = 'Hammerspoon' },
+  { 'i', app = 'Music' },
+  { 'l', app = 'Slack' },
+  { 'm', app = 'Messages' },
+  { 'n', app = 'Obsidian' },
+  { 't', app = 'Kitty' },
+  { 'z', app = 'zoom.us' },
+}
+local systemGroup = {
+  { 'a', desc = 'Toggle system appearance', fn = toggleAppearance },
+  { 'c', desc = 'Toggle caffeinate',        fn = caffeine.toggle },
+  { 'l', desc = 'Lock screen',              fn = hs.caffeinate.lockScreen },
+  { ',', app = 'System Settings' },
+  { 'h', desc = 'Reload Hammerspoon',       fn = hs.reload },
+}
+local windowGroup = {
+  { 'a', desc = 'Auto layout',     fn = autoLayout },
+  { 'c', desc = 'Center',          fn = layout.setCurrentWin({ x = "center", y = "center" }) },
+  { 'm', desc = 'Maximize',        fn = layout.setCurrentWin({ x = 0, y = 0, right = 0, bottom = 0 }) },
+  { 'r', desc = 'Restore',         fn = layout.restore },
+  { 's', desc = 'Reasonable size', fn = layout.setCurrentWin({ w = 1320, h = 945, x = "center", y = "center" }) },
+  { 't', desc = 'Wide terminal',   fn = wideTerminal },
+}
+local audioGroup = {
+  { 'space', desc = 'Play/pause',      fn = systemKey('PLAY') },
+  { 'h',     desc = 'Previous track',  fn = systemKey('PREVIOUS') },
+  { 'l',     desc = 'Next track',      fn = systemKey('NEXT') },
+  { 'k',     desc = 'Increase volume', fn = systemKey('SOUND_UP'),   sticky = true },
+  { 'j',     desc = 'Decrease volume', fn = systemKey('SOUND_DOWN'), sticky = true },
+  { 'm',     desc = 'Mute',            fn = systemKey('MUTE') },
+}
+local keymap = {
+  { 'e', desc = 'Emoji picker', fn = function() hs.eventtap.keyStroke({ 'ctrl', 'cmd' }, 'space') end },
+  { 't', desc = 'Terminal',     app = 'Kitty' },
+  { 'f', desc = 'Focus',        children = focusGroup },
+  { 's', desc = 'System',       children = systemGroup, },
+  { 'v', desc = 'Audio',        children = audioGroup },
+  { 'w', desc = 'Windows',      children = windowGroup },
+}
+local leader = LeaderKey.new({ 'cmd', 'ctrl', 'option', 'shift' }, '1', keymap)
+installed.load(function(isInstalled) leader:filterApps(isInstalled) end)
 
 -- Make sure garbage collection doesn't break new functionality.
 hs.timer.doAfter(2, collectgarbage)

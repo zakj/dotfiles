@@ -6,22 +6,15 @@ local baseText = hs.styledtext.new(' ', {
   font = { name = hs.styledtext.defaultFonts.system, size = 16 },
 })
 
-local function defaultdict(factory)
-  return setmetatable({}, {
-    __index = function(t, k)
-      t[k] = factory()
-      return t[k]
-    end
-  })
-end
-
 local function repositionToasts()
   local margin = 20
-  local byScreen = defaultdict(function() return {} end)
+  local byScreen = {}
 
   for _, toast in ipairs(toasts) do
     local frame = toast.panel:frame()
-    local siblings = byScreen[toast.panel.screen:getUUID()]
+    local uuid = toast.panel.screen:getUUID()
+    byScreen[uuid] = byScreen[uuid] or {}
+    local siblings = byScreen[uuid]
     if #siblings == 0 then
       local screen = toast.panel.screen:fullFrame()
       toast.panel:position(Panel.pos.absolute(screen.w - margin - frame.w, screen.h - margin - frame.h))

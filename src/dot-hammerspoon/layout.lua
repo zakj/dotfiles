@@ -8,14 +8,6 @@ function exports.isBuiltinDisplay()
   return hs.screen.mainScreen():name():find('Built-in', 1, true) == 1
 end
 
-function exports.isFirstUserDesktop()
-  local screen = hs.screen.mainScreen()
-  local userSpaces = hs.fnutils.filter(hs.spaces.spacesForScreen(screen), function(space)
-    return hs.spaces.spaceType(space) == "user"
-  end)
-  return hs.fnutils.indexOf(userSpaces, hs.spaces.activeSpaceOnScreen(screen)) == 1
-end
-
 -- Used to detect the "main" window for a given app.
 function exports.isLargestVisible(win)
   return win == hs.fnutils.reduce(win:application():visibleWindows(), function(a, b)

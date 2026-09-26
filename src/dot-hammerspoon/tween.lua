@@ -36,7 +36,6 @@ return {
       end,
       cancel = function(self) timer:stop() end,
       onComplete = function(self, fn) table.insert(onComplete, fn) end,
-      running = function(self) return timer:running() end,
     }
   end
 }
