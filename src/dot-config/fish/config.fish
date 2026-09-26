@@ -3,7 +3,7 @@ if test -x /opt/homebrew/bin/brew
 end
 
 if test -x ~/.local/bin/mise
-    ~/.local/bin/mise activate | source
+    ~/.local/bin/mise activate fish | source
     ~/.local/bin/mise completion fish | source
 end
 
