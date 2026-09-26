@@ -58,7 +58,7 @@
 - For bug fixes: write a failing test that reproduces the bug first, verify it fails, then fix the code and confirm the test passes.
 
 ## Version Control
-- Use `jj` in any repo with a `.jj` directory, never git there. Load the `jj` skill before any command that mutates the repo. Some sessions run in plain git checkouts (e.g. desktop-app worktrees); use git there.
+- Always use `jj`, never `git`. Load the `jj` skill before any command that mutates the repo. Exception: in a desktop-app git worktree under `.claude/worktrees/`, jj finds the outer repo, so stop and ask before committing.
 - Commits are cheap. Commit with a terse message after each discrete unit of work, and make sure the working copy is clean before starting a new one.
 - Don't rewrite anything that's on the remote (rebase, squash, reorder) unless I ask or what I asked for requires it. A rewrite means a force-push, which re-runs CI and can detach review comments. I push mid-session, so check the remote right before each rewrite.
 - Responses to PR review feedback go in new commits on the PR's bookmark, never squashed into existing ones, even unpushed ones. The reviewer needs to see what changed. PRs squash-merge, so branch history doesn't need to be tidy.
