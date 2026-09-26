@@ -69,7 +69,7 @@ local audioGroup = {
   { 'm',     desc = 'Mute',            fn = systemKey('MUTE') },
 }
 local keymap = {
-  { 'e', desc = 'Emoji picker', url = "raycast://extensions/raycast/emoji-symbols/search-emoji-symbols" },
+  { 'e', desc = 'Emoji picker', fn = function() hs.eventtap.keyStroke({ 'ctrl', 'cmd' }, 'space') end },
   { 't', desc = 'Terminal',     app = 'Kitty' },
   { 'f', desc = 'Focus',        children = focusGroup },
   { 's', desc = 'System',       children = systemGroup, },
