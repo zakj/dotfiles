@@ -69,7 +69,17 @@ Recovery, if it already happened: the pre-amend commit id survives in `jj op log
 - After any history reconstruction (squash rebuild, split, resurrect), prove the tree is unchanged: `jj diff --from <old-tip> --to @ --stat` must report zero changes. Old commit ids stay reachable after rewrites, so this works even once they're hidden.
 - Commands work from any directory in the repo. Don't `cd` to the root.
 
+## Workspaces
+
+Workspaces live under `.workspaces/` at the repo root (`jj workspace root` from the default workspace). `.workspaces/review` belongs to the `review` skill; leave it alone.
+
+- Name: `zj-<slug>`, a terse kebab-case slug of the task (`zj-kitty-config`), unless Zak names it.
+- Ignore the directory in `.git/info/exclude`, never the tracked `.gitignore`: append `.workspaces/` there if it's missing.
+- Create: `mkdir -p .workspaces && jj workspace add .workspaces/<name>`. jj doesn't create the parent. The new working copy sits on the same parent as the current `@`; pass `-r <rev>` (e.g. `-r 'trunk()'`) when the current workspace is in use or the task starts elsewhere.
+- Remove: `jj workspace forget <name>`, then move the directory out with `mv .workspaces/<name> "$(mktemp -d)/"`. A leftover directory makes a later `jj workspace add` at that path fail.
+- A stale workspace needs `jj workspace update-stale`, run from inside it.
+- `jj workspace list` is the record of what exists. Report the full path of anything you create.
+
 ## Boundaries
 
-- Never push. Confirm before any other irreversible remote operation.
-- Delegate workspace operations to the `workspace-manager` agent — it owns the naming and directory conventions.
+- Never push; Zak does. Confirm before any other irreversible remote operation.
