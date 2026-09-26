@@ -186,7 +186,11 @@ function LeaderKey:_createStateMap()
   ---@param sticky boolean
   ---@return State|nil
   local function execute(node, sticky)
-    node.fn()
+    -- Run the action after this keydown callback returns, so keys it posts
+    -- aren't handled mid-callback and a slow action doesn't stall input.
+    -- Non-sticky actions run with the tap already stopped; sticky ones must
+    -- not post keyDowns, or the still-running tap will swallow them.
+    hs.timer.doAfter(0, node.fn)
     if sticky ~= node.sticky then return end
     return exitToInactive()
   end

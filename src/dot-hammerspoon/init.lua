@@ -17,11 +17,8 @@ end
 
 local function systemKey(name)
   return function()
-    -- HACK: without this delay, emitted system key events seem to get lost sometimes.
-    hs.timer.doAfter(0.001, function()
-      hs.eventtap.event.newSystemKeyEvent(name, true):post()
-      hs.eventtap.event.newSystemKeyEvent(name, false):post()
-    end)
+    hs.eventtap.event.newSystemKeyEvent(name, true):post()
+    hs.eventtap.event.newSystemKeyEvent(name, false):post()
   end
 end
 
