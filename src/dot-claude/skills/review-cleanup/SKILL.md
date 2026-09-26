@@ -1,6 +1,7 @@
 ---
 name: review-cleanup
 description: Fully remove the persistent PR review workspace (.workspaces/review). Rarely needed — the review skill reuses the workspace. Run only when you want its lines gone from jj log.
+disable-model-invocation: true
 ---
 
 Fully tear down the persistent PR review workspace created by the `review` skill. Idempotent.

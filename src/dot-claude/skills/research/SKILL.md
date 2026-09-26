@@ -1,6 +1,7 @@
 ---
 name: research
 description: Pre-implementation codebase exploration. Takes a topic to research, spawns parallel Explore agents, and saves findings to a file.
+disable-model-invocation: true
 ---
 
 Research `$ARGUMENTS` by exploring the codebase from multiple angles, then consolidate findings into a reference file.

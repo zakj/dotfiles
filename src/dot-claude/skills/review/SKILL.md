@@ -40,7 +40,7 @@ The workspace is left in place after the review — the next PR review reuses an
 
 ## Step 2: Detect authorship (PR reviews only)
 
-For PR reviews, run `gh pr view $NUM --json author --jq .author.login` and compare against the current user (`gh api user --jq .login`). Pass this context to the agent:
+For PR reviews, run `gh pr view $NUM --json author --jq .author.login` and compare against the current user (`gh config get user -h github.com`; avoids the `gh api` approval prompt). Pass this context to the agent:
 - Same user → "This is a self-review of your own code."
 - Different user → "This is a review of someone else's code."
 
