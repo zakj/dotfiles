@@ -59,6 +59,8 @@ function Toast.new(msg, duration)
 end
 
 function Toast:delete()
+  if not self.panel then return end
+  if self.timer then self.timer:stop() end
   for i, toast in ipairs(toasts) do
     if toast == self then
       table.remove(toasts, i)
