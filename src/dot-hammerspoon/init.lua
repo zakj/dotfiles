@@ -33,20 +33,21 @@ local function toggleAppearance()
 end
 
 local gap = 10
-local browserW = 1440
-local function browser(win)
+local primaryW = 1440
+local function primary(win)
   if not layout.isLargestVisible(win) then return end
-  return { x = 0, y = 0, w = browserW, bottom = 0 }
+  return { x = 0, y = 0, w = primaryW, bottom = 0 }
 end
 local externalLayout = {
-  Arc = browser,
-  Chrome = browser,
-  Dia = browser,
+  Arc = primary,
+  Chrome = primary,
+  Claude = primary,
+  Dia = primary,
   Finder = { w = 900, h = 450 },
-  Helium = browser,
+  Helium = primary,
   kitty = function(win)
     if layout.isLargestVisible(win) then
-      return { x = browserW + gap, y = gap, right = gap, bottom = gap }
+      return { x = primaryW + gap, y = gap, right = gap, bottom = gap }
     end
   end,
   Messages = { x = gap, bottom = gap, w = 850, h = 850 },
@@ -79,6 +80,7 @@ end
 local focusGroup = {
   { 'a', app = 'Arc' },
   { 'c', app = 'Calendar' },
+  { 'd', app = 'Claude' },
   { 'f', app = 'Finder' },
   { 'h', app = 'Hammerspoon' },
   { 'i', app = 'Music' },
