@@ -219,7 +219,9 @@ function Panel:delete()
 end
 
 function Panel:animate(createTweenCallback)
-  if self.currentTween then self.currentTween:cancel() end
+  -- Finish rather than cancel, so an interrupted animation (e.g. popIn cut off
+  -- by shake) doesn't strand the panel at partial alpha or offset.
+  if self.currentTween then self.currentTween:finish() end
   local newTween = createTweenCallback(self)
   newTween:onComplete(function() self.currentTween = nil end)
   newTween:start()

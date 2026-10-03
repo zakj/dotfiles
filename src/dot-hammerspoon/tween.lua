@@ -15,14 +15,18 @@ return {
     local start
     local timer
 
+    local function complete()
+      timer:stop()
+      fn(to)
+      for _, completeFn in ipairs(onComplete) do
+        completeFn()
+      end
+    end
+
     timer = hs.timer.new(.001, function()
       local elapsed = hs.timer.secondsSinceEpoch() - start
       if elapsed >= duration then
-        timer:stop()
-        fn(to)
-        for _, completeFn in ipairs(onComplete) do
-          completeFn()
-        end
+        complete()
       else
         fn(smootherstep(0, duration, elapsed) * delta + from)
       end
@@ -35,6 +39,8 @@ return {
         timer:start()
       end,
       cancel = function(self) timer:stop() end,
+      -- Jump to the end state and run onComplete; no-op if already done.
+      finish = function(self) if timer:running() then complete() end end,
       onComplete = function(self, fn) table.insert(onComplete, fn) end,
     }
   end
